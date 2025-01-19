@@ -1529,8 +1529,14 @@ MonoBehaviour:
   <Animator>k__BackingField: {fileID: 2422995165231925441}
   <Targeter>k__BackingField: {fileID: 2580331345392682153}
   <ForceReceiver>k__BackingField: {fileID: 0}
+  <Weapon>k__BackingField: {fileID: 0}
+  <Weapon2>k__BackingField: {fileID: 0}
+  <Health>k__BackingField: {fileID: 0}
   <FreeLookMovementSpeed>k__BackingField: 4
+  <TargetingMovementSpeed>k__BackingField: 0
   <RotationDamping>k__BackingField: 15
+  <JumpForce>k__BackingField: 0
+  <Attacks>k__BackingField: []
 --- !u!1 &5564463802717028640
 GameObject:
   m_ObjectHideFlags: 0
