@@ -11,6 +11,11 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public event Action JumpEvent;
     public event Action DodgeEvent;
     public event Action TargetEvent;
+    public event Action DetachPartEvent;
+    public event Action ReattachPartEvent;
+    public event Action ShootRightEvent;
+    public event Action ShootLeftEvent;
+
 
     Controls controls;
 
@@ -25,13 +30,13 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (!context.performed) { return; }
+        if (!context.performed) return;
         JumpEvent?.Invoke();
     }
 
     public void OnDodge(InputAction.CallbackContext context)
     {
-        if (!context.performed) { return; }
+        if (!context.performed) return;
         DodgeEvent?.Invoke();
     }
 
@@ -41,7 +46,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
 
     public void OnTarget(InputAction.CallbackContext context)
     {
-        if (!context.performed) { return; }
+        if (!context.performed) return;
         TargetEvent?.Invoke();
     }
 
@@ -52,12 +57,35 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
         else if (context.canceled)
             IsAttacking = false;
     }
-    
+
     public void OnBlock(InputAction.CallbackContext context)
     {
         if (context.performed)
             IsBlocking = true;
         else if (context.canceled)
             IsBlocking = false;
+    }
+
+    public void OnDetachPart(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        DetachPartEvent?.Invoke();
+    }
+
+    public void OnReattachPart(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        ReattachPartEvent?.Invoke();
+    }
+    public void OnShootR(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        ShootRightEvent?.Invoke();
+    }
+
+    public void OnShootL(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        ShootLeftEvent?.Invoke();
     }
 }

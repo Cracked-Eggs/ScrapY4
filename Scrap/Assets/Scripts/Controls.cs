@@ -89,6 +89,42 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DetachPart"",
+                    ""type"": ""Button"",
+                    ""id"": ""124e3a7d-5fa8-4874-976b-433609ae545a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ReattachPart"",
+                    ""type"": ""Button"",
+                    ""id"": ""53f18129-8efa-4316-b9c7-bf2c97e05fc9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShootR"",
+                    ""type"": ""Button"",
+                    ""id"": ""6f849afc-a52a-435c-ad9d-ccd21a5e3df5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShootL"",
+                    ""type"": ""Button"",
+                    ""id"": ""31eae7bc-0ac9-47a3-a52b-c296573e71e8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -344,6 +380,50 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Block"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""95c83228-9dee-491b-88b6-83b1f22595e6"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DetachPart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""04ad30f6-d959-4220-97c1-8976c5cc6a1e"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ReattachPart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""98bb21e0-252c-4ad7-a384-c984567d5921"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShootR"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9b37cd96-cabd-493e-8c6c-2aa8ea62d2b2"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShootL"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -387,6 +467,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_Target = m_Player.FindAction("Target", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
+        m_Player_DetachPart = m_Player.FindAction("DetachPart", throwIfNotFound: true);
+        m_Player_ReattachPart = m_Player.FindAction("ReattachPart", throwIfNotFound: true);
+        m_Player_ShootR = m_Player.FindAction("ShootR", throwIfNotFound: true);
+        m_Player_ShootL = m_Player.FindAction("ShootL", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -460,6 +544,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Target;
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Block;
+    private readonly InputAction m_Player_DetachPart;
+    private readonly InputAction m_Player_ReattachPart;
+    private readonly InputAction m_Player_ShootR;
+    private readonly InputAction m_Player_ShootL;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -471,6 +559,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Target => m_Wrapper.m_Player_Target;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @Block => m_Wrapper.m_Player_Block;
+        public InputAction @DetachPart => m_Wrapper.m_Player_DetachPart;
+        public InputAction @ReattachPart => m_Wrapper.m_Player_ReattachPart;
+        public InputAction @ShootR => m_Wrapper.m_Player_ShootR;
+        public InputAction @ShootL => m_Wrapper.m_Player_ShootL;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -501,6 +593,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Block.started += instance.OnBlock;
             @Block.performed += instance.OnBlock;
             @Block.canceled += instance.OnBlock;
+            @DetachPart.started += instance.OnDetachPart;
+            @DetachPart.performed += instance.OnDetachPart;
+            @DetachPart.canceled += instance.OnDetachPart;
+            @ReattachPart.started += instance.OnReattachPart;
+            @ReattachPart.performed += instance.OnReattachPart;
+            @ReattachPart.canceled += instance.OnReattachPart;
+            @ShootR.started += instance.OnShootR;
+            @ShootR.performed += instance.OnShootR;
+            @ShootR.canceled += instance.OnShootR;
+            @ShootL.started += instance.OnShootL;
+            @ShootL.performed += instance.OnShootL;
+            @ShootL.canceled += instance.OnShootL;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -526,6 +630,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Block.started -= instance.OnBlock;
             @Block.performed -= instance.OnBlock;
             @Block.canceled -= instance.OnBlock;
+            @DetachPart.started -= instance.OnDetachPart;
+            @DetachPart.performed -= instance.OnDetachPart;
+            @DetachPart.canceled -= instance.OnDetachPart;
+            @ReattachPart.started -= instance.OnReattachPart;
+            @ReattachPart.performed -= instance.OnReattachPart;
+            @ReattachPart.canceled -= instance.OnReattachPart;
+            @ShootR.started -= instance.OnShootR;
+            @ShootR.performed -= instance.OnShootR;
+            @ShootR.canceled -= instance.OnShootR;
+            @ShootL.started -= instance.OnShootL;
+            @ShootL.performed -= instance.OnShootL;
+            @ShootL.canceled -= instance.OnShootL;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -570,5 +686,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnTarget(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
+        void OnDetachPart(InputAction.CallbackContext context);
+        void OnReattachPart(InputAction.CallbackContext context);
+        void OnShootR(InputAction.CallbackContext context);
+        void OnShootL(InputAction.CallbackContext context);
     }
 }
