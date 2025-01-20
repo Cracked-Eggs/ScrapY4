@@ -5,42 +5,50 @@ using UnityEngine;
 
 public class PressurePlate : MonoBehaviour
 {
-    [SerializeField] GameObject objectToActivate; //door
     [SerializeField] GameObject pressurePlate;
     [SerializeField] private float delay = 1.5f;
 
     private Animator plateAnimator;
-    private Animator doorAnimator;
+
+    private PlatePuzzle puzzle;
     
     private bool isPressed = false;
     private bool isOpen = false;
 
+    public bool IsPressed => isPressed;
+    
     private void Start()
     {
         if (pressurePlate != null)
             plateAnimator = pressurePlate.GetComponent<Animator>();
         
-        if (objectToActivate != null)
-            doorAnimator = objectToActivate.GetComponent<Animator>();
-        
         if (plateAnimator != null)
             plateAnimator.SetBool("IsPressed", false);
-        
-        if (doorAnimator != null)
-            doorAnimator.SetBool("IsOpen", false);
+    }
+
+    //Set the puzzle this plate belongs to
+    public void SetPuzzle(PlatePuzzle assignedPuzzle)
+    {
+        puzzle = assignedPuzzle;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
+        //Debug.Log(other.name);
         isPressed = true;
         UpdatePlateState();
+
+        if (puzzle != null)
+            puzzle.PlateActivated();
     }
 
     private void OnTriggerExit(Collider other)
     {
         isPressed = false;
         UpdatePlateState();
+        
+        if (puzzle != null)
+            puzzle.PlateDeactivated();
     }
 
     private void UpdatePlateState()
@@ -61,13 +69,6 @@ public class PressurePlate : MonoBehaviour
 
         if (plateAnimator != null)
             plateAnimator.SetBool("IsPressed", true);
-
-        if (doorAnimator != null)
-        {
-            isOpen = true;
-            StartCoroutine(ActivateDoorWithDelay());
-        }
-            
     }
     
     private void DeactivatePlate()
@@ -76,26 +77,5 @@ public class PressurePlate : MonoBehaviour
         
         if (plateAnimator != null)
             plateAnimator.SetBool("IsPressed", false);
-
-        if (doorAnimator != null)
-        {
-            isOpen = false;
-            StartCoroutine(ActivateDoorWithDelay());
-        }
-    }
-
-    private IEnumerator ActivateDoorWithDelay()
-    {
-        yield return new WaitForSeconds(delay);
-
-        if (isOpen)
-        {
-            doorAnimator.SetBool("IsOpen", true);
-        }
-        else if (isOpen == false)
-        {
-            doorAnimator.SetBool("IsOpen", false);
-        }
-        
     }
 }
