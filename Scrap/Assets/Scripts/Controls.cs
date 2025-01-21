@@ -179,6 +179,33 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RecallBothArms"",
+                    ""type"": ""Button"",
+                    ""id"": ""cf02c858-c701-4056-bf57-793bdc945252"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RecallLeftArm"",
+                    ""type"": ""Button"",
+                    ""id"": ""ba31818a-56d3-40cd-a041-aa540b08ff11"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RecallRightArm"",
+                    ""type"": ""Button"",
+                    ""id"": ""d8db479a-a042-435a-96d4-dff55d89267a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -610,6 +637,61 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""DropBothLegs"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""567a685a-bb39-4351-a57f-389a226ba064"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RecallBothArms"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d7c72937-0315-41a2-894c-d4e8956c0d1d"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RecallBothArms"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dde36e41-fcd2-41fe-9422-8a5e2e64f79a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RecallLeftArm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""45b8b63d-616e-4cd2-84c6-1ef0341b6116"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RecallRightArm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""41625378-5893-4ccf-854a-8d2f60fb7217"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RecallRightArm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -663,6 +745,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_DropRightLeg = m_Player.FindAction("DropRightLeg", throwIfNotFound: true);
         m_Player_DropLeftLeg = m_Player.FindAction("DropLeftLeg", throwIfNotFound: true);
         m_Player_DropBothLegs = m_Player.FindAction("DropBothLegs", throwIfNotFound: true);
+        m_Player_RecallBothArms = m_Player.FindAction("RecallBothArms", throwIfNotFound: true);
+        m_Player_RecallLeftArm = m_Player.FindAction("RecallLeftArm", throwIfNotFound: true);
+        m_Player_RecallRightArm = m_Player.FindAction("RecallRightArm", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -746,6 +831,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_DropRightLeg;
     private readonly InputAction m_Player_DropLeftLeg;
     private readonly InputAction m_Player_DropBothLegs;
+    private readonly InputAction m_Player_RecallBothArms;
+    private readonly InputAction m_Player_RecallLeftArm;
+    private readonly InputAction m_Player_RecallRightArm;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -767,6 +855,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @DropRightLeg => m_Wrapper.m_Player_DropRightLeg;
         public InputAction @DropLeftLeg => m_Wrapper.m_Player_DropLeftLeg;
         public InputAction @DropBothLegs => m_Wrapper.m_Player_DropBothLegs;
+        public InputAction @RecallBothArms => m_Wrapper.m_Player_RecallBothArms;
+        public InputAction @RecallLeftArm => m_Wrapper.m_Player_RecallLeftArm;
+        public InputAction @RecallRightArm => m_Wrapper.m_Player_RecallRightArm;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -827,6 +918,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @DropBothLegs.started += instance.OnDropBothLegs;
             @DropBothLegs.performed += instance.OnDropBothLegs;
             @DropBothLegs.canceled += instance.OnDropBothLegs;
+            @RecallBothArms.started += instance.OnRecallBothArms;
+            @RecallBothArms.performed += instance.OnRecallBothArms;
+            @RecallBothArms.canceled += instance.OnRecallBothArms;
+            @RecallLeftArm.started += instance.OnRecallLeftArm;
+            @RecallLeftArm.performed += instance.OnRecallLeftArm;
+            @RecallLeftArm.canceled += instance.OnRecallLeftArm;
+            @RecallRightArm.started += instance.OnRecallRightArm;
+            @RecallRightArm.performed += instance.OnRecallRightArm;
+            @RecallRightArm.canceled += instance.OnRecallRightArm;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -882,6 +982,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @DropBothLegs.started -= instance.OnDropBothLegs;
             @DropBothLegs.performed -= instance.OnDropBothLegs;
             @DropBothLegs.canceled -= instance.OnDropBothLegs;
+            @RecallBothArms.started -= instance.OnRecallBothArms;
+            @RecallBothArms.performed -= instance.OnRecallBothArms;
+            @RecallBothArms.canceled -= instance.OnRecallBothArms;
+            @RecallLeftArm.started -= instance.OnRecallLeftArm;
+            @RecallLeftArm.performed -= instance.OnRecallLeftArm;
+            @RecallLeftArm.canceled -= instance.OnRecallLeftArm;
+            @RecallRightArm.started -= instance.OnRecallRightArm;
+            @RecallRightArm.performed -= instance.OnRecallRightArm;
+            @RecallRightArm.canceled -= instance.OnRecallRightArm;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -936,5 +1045,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnDropRightLeg(InputAction.CallbackContext context);
         void OnDropLeftLeg(InputAction.CallbackContext context);
         void OnDropBothLegs(InputAction.CallbackContext context);
+        void OnRecallBothArms(InputAction.CallbackContext context);
+        void OnRecallLeftArm(InputAction.CallbackContext context);
+        void OnRecallRightArm(InputAction.CallbackContext context);
     }
 }

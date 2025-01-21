@@ -23,6 +23,10 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public event Action DropRightLegEvent;
     public event Action DropBothLegsEvent;
 
+    public event Action RecallBothArmsEvent;
+    public event Action RecallLeftArmEvent;
+    public event Action RecallRightArmEvent;
+
     Controls controls;
 
     void Start()
@@ -131,5 +135,22 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     {
         if (!context.performed) return;
         DropBothLegsEvent?.Invoke();
+    }
+
+    public void OnRecallBothArms(InputAction.CallbackContext context)
+    {
+        if(!context.performed) return;
+        RecallBothArmsEvent?.Invoke();
+    }
+    public void OnRecallRightArm(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        RecallRightArmEvent?.Invoke();
+
+    }
+    public void OnRecallLeftArm(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        RecallLeftArmEvent?.Invoke();
     }
 }

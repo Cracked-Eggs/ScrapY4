@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class Attach : MonoBehaviour
 {
@@ -126,6 +127,13 @@ public class Attach : MonoBehaviour
         inputSystem.Player.ShootL.performed += ShootLeftArm;
         inputSystem.Player.ShootL.Enable();
 
+        inputSystem.Player.RecallBothArms.performed += RecallBothArms;
+        inputSystem.Player.RecallBothArms.Enable();
+        inputSystem.Player.RecallLeftArm.performed += RecallLeftArm;
+        inputSystem.Player.RecallLeftArm.Enable();
+        inputSystem.Player.RecallRightArm.performed += RecallRightArm;
+        inputSystem.Player.RecallRightArm.Enable();
+
         // Bind new D-pad controls
         inputSystem.Player.DropEverything.performed += DropEverything;
         inputSystem.Player.DropEverything.Enable();
@@ -153,6 +161,11 @@ public class Attach : MonoBehaviour
 
         inputSystem.Player.ShootR.Disable();
         inputSystem.Player.ShootL.Disable();
+
+        inputSystem.Player.RecallBothArms.Disable();
+        inputSystem.Player.RecallLeftArm.Disable();
+        inputSystem.Player.RecallRightArm.Disable();
+
 
         // Unbind new D-pad controls
         inputSystem.Player.DropEverything.Disable();
@@ -215,6 +228,10 @@ public class Attach : MonoBehaviour
             partRb.isKinematic = false; // Disable physics for detachment
         }
 
+        // Track specific parts
+        if (part == l_Arm) _isL_ArmDetached = true;
+        if (part == r_Arm) _isR_ArmDetached = true;
+
         // Handle SkinnedMeshRenderer baking
         SkinnedMeshRenderer skinnedMesh = part.GetComponent<SkinnedMeshRenderer>();
         if (skinnedMesh != null)
@@ -235,6 +252,7 @@ public class Attach : MonoBehaviour
             partRb.mass = 1f;
         }
     }
+
 
     public void On_Reattach(InputAction.CallbackContext context)
     {
@@ -274,6 +292,7 @@ public class Attach : MonoBehaviour
 
     private IEnumerator ShakeAndReattach(GameObject part)
     {
+        Debug.Log($"Reattaching {part.name}");
         _isL_ArmDetached = false;
         _isR_ArmDetached = false;
         // Destroy any temporary Rigidbody
@@ -449,6 +468,56 @@ public class Attach : MonoBehaviour
         }
    
     }
+
+    public void RecallBothArms(InputAction.CallbackContext context)
+    {
+        Debug.Log("botharms");
+
+        if (Time.time >= lastDetachTime + detachCooldown)
+        {
+            lastDetachTime = Time.time;
+            
+                Debug.Log("Recalling Left Arm");
+                StartCoroutine(ShakeAndReattach(l_Arm));
+                _isL_ArmDetached = false;
+            
+           
+                Debug.Log("Recalling Right Arm");
+                StartCoroutine(ShakeAndReattach(r_Arm));
+                _isR_ArmDetached = false;
+            
+        }
+    }
+
+
+    public void RecallRightArm(InputAction.CallbackContext context)
+    {
+        Debug.Log("rarms");
+        if (Time.time >= lastDetachTime + detachCooldown)
+        {
+            
+                Debug.Log("Recalling Right Arm");
+                lastDetachTime = Time.time;
+                StartCoroutine(ShakeAndReattach(r_Arm));
+                _isR_ArmDetached = false;
+            
+        }
+    }
+
+    public void RecallLeftArm(InputAction.CallbackContext context)
+    {
+        Debug.Log("larms");
+        if (Time.time >= lastDetachTime + detachCooldown)
+        {
+            
+                Debug.Log("Recalling Left Arm");
+                lastDetachTime = Time.time;
+                StartCoroutine(ShakeAndReattach(l_Arm));
+                _isL_ArmDetached = false;
+            
+        }
+    }
+
 
     public void ResetController()
     {
