@@ -3,6 +3,7 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     [SerializeField] int maxHealth = 100;
+    [SerializeField] Healthbar healthBar;
     
     int health;
     bool isInvulnerable;
@@ -23,6 +24,8 @@ public class Health : MonoBehaviour
         health = Mathf.Max(health - damage, 0);
         
         OnTakeDamage?.Invoke();
+        healthBar.UpdateHeathBar(maxHealth, health);
+
         
         if (health == 0)
             OnDie?.Invoke();
