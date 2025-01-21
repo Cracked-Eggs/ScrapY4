@@ -16,6 +16,12 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public event Action ShootRightEvent;
     public event Action ShootLeftEvent;
 
+    public event Action DropEverythingEvent;
+    public event Action DropLeftArmEvent;
+    public event Action DropRightArmEvent;
+    public event Action DropLeftLegEvent;
+    public event Action DropRightLegEvent;
+    public event Action DropBothLegsEvent;
 
     Controls controls;
 
@@ -77,6 +83,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
         if (!context.performed) return;
         ReattachPartEvent?.Invoke();
     }
+
     public void OnShootR(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
@@ -87,5 +94,42 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     {
         if (!context.performed) return;
         ShootLeftEvent?.Invoke();
+    }
+
+    // Missing methods for new D-pad actions
+    public void OnDropEverything(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        DropEverythingEvent?.Invoke();
+    }
+
+    public void OnDropLeftArm(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        DropLeftArmEvent?.Invoke();
+    }
+
+    public void OnDropRightArm(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        DropRightArmEvent?.Invoke();
+    }
+
+    public void OnDropLeftLeg(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        DropLeftLegEvent?.Invoke();
+    }
+
+    public void OnDropRightLeg(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        DropRightLegEvent?.Invoke();
+    }
+
+    public void OnDropBothLegs(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        DropBothLegsEvent?.Invoke();
     }
 }

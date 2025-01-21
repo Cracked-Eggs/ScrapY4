@@ -16,6 +16,7 @@ public class Attach : MonoBehaviour
 
     [SerializeField] public float customGravity = -9.81f;
     [SerializeField] AudioClip magnetRepel;
+    [SerializeField] public float shootingForce = 500f;
     AudioSource _audioSource;
     Animator _animator;
 
@@ -26,6 +27,11 @@ public class Attach : MonoBehaviour
     public bool isDetached = false;
     public bool _isL_ArmDetached = false;
     public bool _isR_ArmDetached = false;
+    public bool _isL_LegDetached = false;
+    public bool _isR_LegDetached = false;
+
+    public bool _isBothLegsDetached = false;
+    public bool _isEverythingDetached = false;
 
     private Dictionary<GameObject, Vector3> originalPositions = new Dictionary<GameObject, Vector3>();
     private Dictionary<GameObject, Quaternion> originalRotations = new Dictionary<GameObject, Quaternion>();
@@ -64,8 +70,6 @@ public class Attach : MonoBehaviour
     {
         transform.rotation = Quaternion.Euler(0, 0, 0);
 
-        playerCollider.enabled = false;
-
         StoreOriginalTransforms(head);
         StoreOriginalTransforms(head2);
         StoreOriginalTransforms(head3);
@@ -76,6 +80,15 @@ public class Attach : MonoBehaviour
         StoreOriginalTransforms(l_Leg);
         StoreOriginalTransforms(r_Arm);
         StoreOriginalTransforms(l_Arm);
+    }
+    private void Update()
+    {
+        if (_isR_LegDetached && _isL_LegDetached)
+        {
+            _isBothLegsDetached = false;
+            CharacterController controller = GetComponent<CharacterController>();
+            controller.height = 0f;
+        }
     }
 
     private void StoreOriginalTransforms(GameObject part)
@@ -103,15 +116,34 @@ public class Attach : MonoBehaviour
     {
         inputSystem.Player.DetachPart.performed += On_Detach;
         inputSystem.Player.DetachPart.Enable();
+
         inputSystem.Player.ReattachPart.performed += On_Reattach;
         inputSystem.Player.ReattachPart.Enable();
 
-        // Bind the ShootRightArm and ShootLeftArm controls
         inputSystem.Player.ShootR.performed += ShootRightArm;
         inputSystem.Player.ShootR.Enable();
 
         inputSystem.Player.ShootL.performed += ShootLeftArm;
         inputSystem.Player.ShootL.Enable();
+
+        // Bind new D-pad controls
+        inputSystem.Player.DropEverything.performed += DropEverything;
+        inputSystem.Player.DropEverything.Enable();
+
+        inputSystem.Player.DropLeftArm.performed += DropLeftArm;
+        inputSystem.Player.DropLeftArm.Enable();
+
+        inputSystem.Player.DropRightArm.performed += DropRightArm;
+        inputSystem.Player.DropRightArm.Enable();
+
+        inputSystem.Player.DropLeftLeg.performed += DropLeftLeg;
+        inputSystem.Player.DropLeftLeg.Enable();
+
+        inputSystem.Player.DropRightLeg.performed += DropRightLeg;
+        inputSystem.Player.DropRightLeg.Enable();
+
+        inputSystem.Player.DropBothLegs.performed += DropBothLegs;
+        inputSystem.Player.DropBothLegs.Enable();
     }
 
     public void OnDisable()
@@ -119,10 +151,18 @@ public class Attach : MonoBehaviour
         inputSystem.Player.DetachPart.Disable();
         inputSystem.Player.ReattachPart.Disable();
 
-        // Unbind the ShootRightArm and ShootLeftArm controls
         inputSystem.Player.ShootR.Disable();
         inputSystem.Player.ShootL.Disable();
+
+        // Unbind new D-pad controls
+        inputSystem.Player.DropEverything.Disable();
+        inputSystem.Player.DropLeftArm.Disable();
+        inputSystem.Player.DropRightArm.Disable();
+        inputSystem.Player.DropLeftLeg.Disable();
+        inputSystem.Player.DropRightLeg.Disable();
+        inputSystem.Player.DropBothLegs.Disable();
     }
+
 
     public void On_Detach(InputAction.CallbackContext context)
     {
@@ -172,7 +212,7 @@ public class Attach : MonoBehaviour
         Rigidbody partRb = part.GetComponent<Rigidbody>();
         if (partRb != null)
         {
-            partRb.isKinematic = true; // Disable physics for detachment
+            partRb.isKinematic = false; // Disable physics for detachment
         }
 
         // Handle SkinnedMeshRenderer baking
@@ -200,6 +240,14 @@ public class Attach : MonoBehaviour
     {
         if (isDetached || canRetach)
         {
+            // Move the player slightly above the ground
+            if(_isBothLegsDetached || _isEverythingDetached)
+            {
+                Vector3 groundPosition = transform.position;
+                float safeHeight = playerCollider.bounds.extents.y + 0.5f; // Adjust offset as needed
+                transform.position = new Vector3(groundPosition.x, groundPosition.y + safeHeight, groundPosition.z);
+            }
+            // Proceed with reattaching parts
             StartCoroutine(ShakeAndReattach(head));
             StartCoroutine(ShakeAndReattach(head2));
             StartCoroutine(ShakeAndReattach(head3));
@@ -212,12 +260,17 @@ public class Attach : MonoBehaviour
             StartCoroutine(ShakeAndReattach(l_Arm));
 
             canRetach = false;
-
+            ResetController();
+            _isL_LegDetached = false;
+            _isR_LegDetached = false;
+            _isBothLegsDetached = false;
+            _isEverythingDetached = false;
             isDetached = false;
             _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             playerCollider.enabled = false;
         }
     }
+
 
     private IEnumerator ShakeAndReattach(GameObject part)
     {
@@ -286,7 +339,7 @@ public class Attach : MonoBehaviour
             Rigidbody rb = r_Arm.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.AddForce(transform.forward * 5000f);  // Adjust force as needed
+                rb.AddForce(transform.forward * shootingForce);  // Adjust force as needed
             }
 
             _isR_ArmDetached = true;
@@ -303,11 +356,108 @@ public class Attach : MonoBehaviour
             Rigidbody rb = l_Arm.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.AddForce(transform.forward * 5000f);  // Adjust force as needed
+                rb.AddForce(transform.forward * shootingForce);  // Adjust force as needed
             }
 
             _isL_ArmDetached = true;
             _animator.SetTrigger("shootingL");
         }
     }
+    public void DropEverything(InputAction.CallbackContext context)
+    {
+        if (!isDetached && Time.time >= lastDetachTime + detachCooldown)
+        {
+            lastDetachTime = Time.time;
+
+            // Detach all parts
+
+            DetachPart(torso);
+            DetachPart(r_Leg);
+            DetachPart(l_Leg);
+            DetachPart(r_Arm);
+            DetachPart(l_Arm);
+            CharacterController controller = GetComponent<CharacterController>();
+            controller.center = new Vector3(0, 2f, 0);
+
+            isDetached = true;
+            _isEverythingDetached = true;
+        }
+
+    }
+
+    public void DropLeftArm(InputAction.CallbackContext context)
+    {
+        if (!_isL_ArmDetached && Time.time >= lastDetachTime + detachCooldown)
+        {
+            lastDetachTime = Time.time;
+
+            DetachPart(l_Arm);
+            _isL_ArmDetached = true;
+        }
+    }
+
+    public void DropRightArm(InputAction.CallbackContext context)
+    {
+        if (!_isR_ArmDetached && Time.time >= lastDetachTime + detachCooldown)
+        {
+            lastDetachTime = Time.time;
+
+            DetachPart(r_Arm);
+            _isR_ArmDetached = true;
+        }
+    }
+
+    public void DropLeftLeg(InputAction.CallbackContext context)
+    {
+        if (Time.time >= lastDetachTime + detachCooldown)
+        {
+            lastDetachTime = Time.time;
+
+            // Detach either leg (priority: right leg)
+            if (r_Leg != null) DetachPart(r_Leg);
+            else if (l_Leg != null) DetachPart(l_Leg);
+            _isL_LegDetached = true;
+        }
+    }
+
+    public void DropRightLeg(InputAction.CallbackContext context)
+    {
+        if (Time.time >= lastDetachTime + detachCooldown)
+        {
+            lastDetachTime = Time.time;
+
+            // Detach the other leg (priority: left leg)
+            if (l_Leg != null) DetachPart(l_Leg);
+            else if (r_Leg != null) DetachPart(r_Leg);
+            _isR_LegDetached = true;
+        }
+    }
+
+    public void DropBothLegs(InputAction.CallbackContext context)
+    {
+        if (Time.time >= lastDetachTime + detachCooldown)
+        {
+            lastDetachTime = Time.time;
+
+            // Detach both legs
+            DetachPart(r_Leg);
+            DetachPart(l_Leg);
+            CharacterController controller = GetComponent<CharacterController>();
+            controller.height = 0f;
+            _isBothLegsDetached = true;
+
+        }
+   
+    }
+
+    public void ResetController()
+    {
+        CharacterController controller = GetComponent<CharacterController>();
+        // Default settings for the full body
+        controller.height = 5.61f;
+        controller.center = new Vector3(0, -2.46f, 0);
+        controller.radius = 1.5f;
+    }
+
+
 }
