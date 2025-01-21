@@ -1575,6 +1575,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 5925999212404854600, guid: 1e8d1ff13b620384283d8ee80920d14e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6047729077117250638, guid: 1e8d1ff13b620384283d8ee80920d14e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1655,42 +1660,42 @@ PrefabInstance:
     - target: {fileID: 1505004025995584967, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9999875
+      value: 0.9999874
       objectReference: {fileID: 0}
     - target: {fileID: 1505004025995584967, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.005019556
+      value: -0.0050195563
       objectReference: {fileID: 0}
     - target: {fileID: 1505004025995584967, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 4.754228e-11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1505004025995584967, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -3.9813278e-13
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1939409876722455647, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99973184
+      value: 0.9997318
       objectReference: {fileID: 0}
     - target: {fileID: 1939409876722455647, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.023159966
+      value: -0.023159957
       objectReference: {fileID: 0}
     - target: {fileID: 1939409876722455647, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1.0167093e-11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1939409876722455647, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 1.3700564e-12
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2299937230005374736, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
@@ -1745,27 +1750,27 @@ PrefabInstance:
     - target: {fileID: 3171731053913476099, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99991333
+      value: 0.9999133
       objectReference: {fileID: 0}
     - target: {fileID: 3171731053913476099, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.013170532
+      value: 0.013170536
       objectReference: {fileID: 0}
     - target: {fileID: 3171731053913476099, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 8.0255885e-11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3171731053913476099, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -5.0269e-13
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4969511250981020276, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       propertyPath: <DodgeLength>k__BackingField
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4969511250981020276, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
@@ -1780,12 +1785,22 @@ PrefabInstance:
     - target: {fileID: 4969511250981020276, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       propertyPath: <Attacks>k__BackingField.Array.data[1].<Knockback>k__BackingField
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4969511250981020276, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       propertyPath: <Attacks>k__BackingField.Array.data[2].<Knockback>k__BackingField
-      value: 5
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4969511250981020276, guid: daa92d70368fd4645aeb8250293703c8,
+        type: 3}
+      propertyPath: <Attacks>k__BackingField.Array.data[2].<ComboAttackTime>k__BackingField
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4969511250981020276, guid: daa92d70368fd4645aeb8250293703c8,
+        type: 3}
+      propertyPath: <Attacks>k__BackingField.Array.data[2].<TransitionDuration>k__BackingField
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 5186357336198987799, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
@@ -1797,6 +1812,11 @@ PrefabInstance:
       propertyPath: m_LookAt
       value: 
       objectReference: {fileID: 8051912419390256714}
+    - target: {fileID: 6786010935340952712, guid: daa92d70368fd4645aeb8250293703c8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6941292410713183864, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       propertyPath: healthBar
