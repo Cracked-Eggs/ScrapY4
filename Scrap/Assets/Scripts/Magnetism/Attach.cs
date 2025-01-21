@@ -325,7 +325,7 @@ public class Attach : MonoBehaviour
         {
             partCollider.size = originalCollidersData[part].size;
             partCollider.center = originalCollidersData[part].center;
-            partCollider.enabled = false;
+            partCollider.enabled = true;
         }
 
         MeshRenderer meshRenderer = part.GetComponent<MeshRenderer>();
