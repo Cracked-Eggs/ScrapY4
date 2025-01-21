@@ -464,6 +464,17 @@
                 },
                 {
                     "name": "",
+                    "id": "7aaa717d-0645-4d0f-9636-a0ab7e0ab1fd",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ReattachPart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "98bb21e0-252c-4ad7-a384-c984567d5921",
                     "path": "<Keyboard>/1",
                     "interactions": "",
@@ -475,11 +486,33 @@
                 },
                 {
                     "name": "",
+                    "id": "d3c695b6-1c04-4390-bf23-65de625ab82e",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ShootR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "9b37cd96-cabd-493e-8c6c-2aa8ea62d2b2",
                     "path": "<Keyboard>/2",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
+                    "action": "ShootL",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ac677564-e9c9-4e5f-850a-90f9735fcf5a",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
                     "action": "ShootL",
                     "isComposite": false,
                     "isPartOfComposite": false
