@@ -563,6 +563,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""f6c14f3e-cf03-4f87-a7f8-f7bc86eae9bd"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DropLeftArm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""531a3387-c424-4c4c-a439-b58a16098af1"",
                     ""path"": ""<Gamepad>/dpad/right"",
                     ""interactions"": """",
