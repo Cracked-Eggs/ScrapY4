@@ -343,7 +343,7 @@ public class Attach : MonoBehaviour
     private IEnumerator WaitForRetractComplete(GameObject bodyPart)
     {
         // Wait until the retraction process completes (can check for some condition, like distance)
-        while (Vector3.Distance(bodyPart.transform.position, transform.position) > 1f)  // Customize distance threshold
+        while (Vector3.Distance(bodyPart.transform.position, transform.position) > 2f)  // Customize distance threshold
         {
             yield return null;  // Wait one frame
         }
