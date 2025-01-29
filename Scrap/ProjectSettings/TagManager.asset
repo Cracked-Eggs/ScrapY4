@@ -15,11 +15,12 @@ TagManager:
   - Head
   - Head2
   - RedPlayer
+  - parts
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Parts
   - Water
   - UI
   - 
