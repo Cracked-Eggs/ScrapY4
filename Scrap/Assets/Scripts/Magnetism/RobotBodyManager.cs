@@ -1,6 +1,8 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System;
 public class Attach : MonoBehaviour
 {
     private Rigidbody _rb;
@@ -21,6 +23,7 @@ public class Attach : MonoBehaviour
     public bool _isR_ArmDetached = false;
     public bool _isL_LegDetached = false;
     public bool _isR_LegDetached = false;
+    public bool _isTorsoDetached = false;
 
     public bool _isBothLegsDetached = false;
     public bool _isEverythingDetached = false;
@@ -75,62 +78,98 @@ public class Attach : MonoBehaviour
 
     public void On_Reattach(InputAction.CallbackContext context)
     {
-        if (isDetached || canRetach)
+        if (secondaryRadiusChecker.currentBodyParts < secondaryRadiusChecker.totalBodyParts)
         {
+            if (Time.time < lastDetachTime + detachCooldown) return; // Prevent rapid reattachment
+
+            lastDetachTime = Time.time;
+
+            // Clear previous body parts before adding new ones
+            secondaryRadiusChecker.targetBodyParts.Clear();
             bool bodyPartInRange = false;
 
-            // Check if any of the body parts are within the secondary radius
-            if (IsBodyPartInSecondaryRadius(partManager.head) ||
-                IsBodyPartInSecondaryRadius(partManager.head2) ||
-                IsBodyPartInSecondaryRadius(partManager.head3) ||
-                IsBodyPartInSecondaryRadius(partManager.head4) ||
-                IsBodyPartInSecondaryRadius(partManager.head5) ||
-                IsBodyPartInSecondaryRadius(partManager.torso) ||
-                IsBodyPartInSecondaryRadius(partManager.r_Leg) ||
-                IsBodyPartInSecondaryRadius(partManager.l_Leg) ||
-                IsBodyPartInSecondaryRadius(partManager.r_Arm) ||
-                IsBodyPartInSecondaryRadius(partManager.l_Arm))
+            // List of body parts to check (with lambdas to update their respective detached flags)
+            List<(GameObject part, Action resetFlag)> bodyParts = new()
             {
-                bodyPartInRange = true;
+                (partManager.r_Arm, () => _isR_ArmDetached = false),
+                (partManager.l_Arm, () => _isL_ArmDetached = false),
+                (partManager.r_Leg, () => _isR_LegDetached = false),
+                (partManager.l_Leg, () => _isL_LegDetached = false),
+                (partManager.torso, () => _isTorsoDetached = false)
+            };
+
+            // Add body parts in range to the list
+            foreach (var (bodyPart, resetFlag) in bodyParts)
+            {
+                if (IsBodyPartInSecondaryRadius(bodyPart))
+                {
+                    secondaryRadiusChecker.targetBodyParts.Add(bodyPart);
+                    resetFlag(); // Call the lambda function to reset the flag
+                    bodyPartInRange = true;
+                }
             }
 
-            // If no body part is within the secondary radius, prevent reattachment
+            // Prevent reattachment if no body parts are in range
             if (!bodyPartInRange)
             {
                 Debug.Log("No body parts in range to reattach.");
-                return; // Prevent reattachment if no body parts are in range
+                return;
             }
 
-            if (_isBothLegsDetached || _isEverythingDetached)
+            // Start retraction process
+            secondaryRadiusChecker.isRetracting = true;
+            foreach (GameObject bodyPart in secondaryRadiusChecker.targetBodyParts)
             {
-                Vector3 groundPosition = transform.position;
-                float safeHeight = playerCollider.bounds.extents.y + 0.5f;
-                transform.position = new Vector3(groundPosition.x, groundPosition.y + safeHeight, groundPosition.z);
+                StartCoroutine(WaitForRetractComplete(bodyPart));
             }
 
-            // Reattach body parts here if they're in range
-            StartCoroutine(partManager.ShakeAndReattach(partManager.head));
-            StartCoroutine(partManager.ShakeAndReattach(partManager.head2));
-            StartCoroutine(partManager.ShakeAndReattach(partManager.head3));
-            StartCoroutine(partManager.ShakeAndReattach(partManager.head4));
-            StartCoroutine(partManager.ShakeAndReattach(partManager.head5));
-            StartCoroutine(partManager.ShakeAndReattach(partManager.torso));
-            StartCoroutine(partManager.ShakeAndReattach(partManager.r_Leg));
-            StartCoroutine(partManager.ShakeAndReattach(partManager.l_Leg));
-            StartCoroutine(partManager.ShakeAndReattach(partManager.r_Arm));
-            StartCoroutine(partManager.ShakeAndReattach(partManager.l_Arm));
+            // Adjust height if necessary
 
+            StartCoroutine(SmoothRise(playerCollider.bounds.extents.y));
+
+
+            // Update CharacterController if available
+            if (TryGetComponent(out CharacterController characterController))
+            {
+                characterController.center = new Vector3(characterController.center.x, -2.46f, characterController.center.z);
+                characterController.height = 5.61f;
+                Debug.Log("CharacterController updated.");
+            }
+
+            // Reset states
             canRetach = false;
-            ResetController();
-            _isL_LegDetached = false;
-            _isR_LegDetached = false;
             _isBothLegsDetached = false;
             _isEverythingDetached = false;
             isDetached = false;
+
+            // Restore physics constraints
             _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             playerCollider.enabled = false;
+
+            Debug.Log("Reattachment process completed.");
+
         }
+
     }
+    private IEnumerator SmoothRise(float riseAmount)
+    {
+        Vector3 start = transform.position;
+        Vector3 end = start + Vector3.up * riseAmount;
+        float duration = 0.5f; // Adjust for speed
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            transform.position = Vector3.Lerp(start, end, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = end; // Ensure exact final position
+    }
+
+
+
 
     public bool IsBodyPartDetached(GameObject bodyPart)
     {
@@ -145,15 +184,13 @@ public class Attach : MonoBehaviour
         return false;
     }
 
-    
-   
     private bool IsBodyPartInSecondaryRadius(GameObject bodyPart)
     {
         if (secondaryRadiusChecker != null && bodyPart != null)
         {
             // Check if the body part is inside the secondary radius
             float distance = Vector3.Distance(secondaryRadiusChecker.transform.position, bodyPart.transform.position);
-            return distance <= secondaryRadiusChecker.secondaryRadius;
+            return distance <= secondaryRadiusChecker.radius;
         }
         return false;
     }
@@ -204,10 +241,14 @@ public class Attach : MonoBehaviour
             partManager.DetachPart(partManager.r_Arm);
             partManager.DetachPart(partManager.l_Arm);
             CharacterController controller = GetComponent<CharacterController>();
-            controller.center = new Vector3(0, 2f, 0);
+            controller.center = new Vector3(0, 0, 0);
 
             isDetached = true;
-            _isEverythingDetached = true;
+            _isL_ArmDetached = true;
+            _isR_ArmDetached = true;
+            _isL_LegDetached = true;
+            _isR_LegDetached = true;
+            _isTorsoDetached = true;
         }
     }
 
@@ -270,76 +311,110 @@ public class Attach : MonoBehaviour
     {
         if (Time.time >= lastDetachTime + detachCooldown)
         {
-            lastDetachTime = Time.time;
-
-            // Check if both arms are in range before reattaching
-            if (IsBodyPartInSecondaryRadius(partManager.l_Arm) && IsBodyPartInSecondaryRadius(partManager.r_Arm))
+            if (secondaryRadiusChecker.currentBodyParts < secondaryRadiusChecker.totalBodyParts)
             {
-                StartCoroutine(partManager.ShakeAndReattach(partManager.l_Arm));
-                _isL_ArmDetached = false;
+                if (IsBodyPartInSecondaryRadius(partManager.l_Arm) && IsBodyPartInSecondaryRadius(partManager.r_Arm) && _isR_ArmDetached && _isL_ArmDetached)
+                {
+                    Debug.Log("Both arms are in range, starting retraction.");
 
-                StartCoroutine(partManager.ShakeAndReattach(partManager.r_Arm));
-                _isR_ArmDetached = false;
+                    // Ensure the list is cleared before adding new body parts
+                    secondaryRadiusChecker.targetBodyParts.Clear();
+
+                    // Add both arms to the list
+                    secondaryRadiusChecker.targetBodyParts.Add(partManager.r_Arm);
+                    secondaryRadiusChecker.targetBodyParts.Add(partManager.l_Arm);
+
+                    secondaryRadiusChecker.isRetracting = true; // Start retraction
+                    StartCoroutine(WaitForRetractComplete(partManager.r_Arm));
+                    StartCoroutine(WaitForRetractComplete(partManager.l_Arm));
+
+                    _isR_ArmDetached = false;
+                    _isL_ArmDetached = false;
+                }
+                else
+                {
+                    Debug.Log("One or both arms are not in range for reattachment.");
+                }
+                lastDetachTime = Time.time;
             }
-            else
-            {
-                Debug.Log("One or both arms are not in range for reattachment.");
-            }
+               
+
+            
         }
     }
 
+
     public void RecallRightArm(InputAction.CallbackContext context)
     {
-        if (Time.time >= lastDetachTime + detachCooldown)
+        if (secondaryRadiusChecker.currentBodyParts < secondaryRadiusChecker.totalBodyParts)
         {
-            lastDetachTime = Time.time;
 
-            // Check if the right arm is in range before reattaching
-            if (secondaryRadiusChecker.isRightArmInRange)  // Check if within the main range
+            if (Time.time >= lastDetachTime + detachCooldown)
             {
-                Debug.Log("Right arm in range, starting retraction.");
+                lastDetachTime = Time.time;
 
-                // Assign the target and start retraction
-                secondaryRadiusChecker.targetBodyPart = partManager.r_Arm;
-                secondaryRadiusChecker.isRetracting = true;
-                _isR_ArmDetached = false;
-                
+                // Check if the right arm is in range before reattaching
+                if (secondaryRadiusChecker.isRightArmInRange && _isR_ArmDetached)
+                {
+                    Debug.Log("Right arm is in range, starting retraction.");
 
-                StartCoroutine(WaitForRetractComplete(partManager.r_Arm));
-                
-            }
-            else
-            {
-                Debug.Log("Right arm is not in range for reattachment.");
+                    // Add the right arm to the secondaryRadiusChecker's targetBodyParts list
+                    secondaryRadiusChecker.targetBodyParts.Clear(); // Clear previous body parts
+                    secondaryRadiusChecker.targetBodyParts.Add(partManager.r_Arm);
+
+                    // Retract the right arm
+                    foreach (GameObject bodyPart in secondaryRadiusChecker.targetBodyParts)
+                    {
+                        secondaryRadiusChecker.isRetracting = true;  // Retract the right arm
+                        StartCoroutine(WaitForRetractComplete(bodyPart));
+
+                        _isR_ArmDetached = false;
+                    }
+                }
+                else
+                {
+                    Debug.Log("Right arm is not in range for reattachment.");
+                }
             }
         }
     }
 
     public void RecallLeftArm(InputAction.CallbackContext context)
     {
-        if (Time.time >= lastDetachTime + detachCooldown)
+        if (secondaryRadiusChecker.currentBodyParts < secondaryRadiusChecker.totalBodyParts)
         {
-            lastDetachTime = Time.time;
-
-            // Check if the left arm is in range before reattaching
-            if (secondaryRadiusChecker.isLeftArmInRange)  // Check if within the main range
+            if (Time.time >= lastDetachTime + detachCooldown)
             {
-                Debug.Log("Left arm in range, starting retraction.");
+                lastDetachTime = Time.time;
 
-                // Assign the target and start retraction
-                secondaryRadiusChecker.targetBodyPart = partManager.l_Arm;
-                secondaryRadiusChecker.isRetracting = true;
-                _isL_ArmDetached = false;
+                // Check if the left arm is in range before reattaching
+                if (secondaryRadiusChecker.isLeftArmInRange && _isL_ArmDetached)
+                {
+                    Debug.Log("Left arm is in range, starting retraction.");
 
-                StartCoroutine(WaitForRetractComplete(partManager.l_Arm));
-                
-            }
-            else
-            {
-                Debug.Log("Left arm is not in range for reattachment.");
+                    // Add the left arm to the secondaryRadiusChecker's targetBodyParts list
+                    secondaryRadiusChecker.targetBodyParts.Clear(); // Clear previous body parts
+                    secondaryRadiusChecker.targetBodyParts.Add(partManager.l_Arm);
+
+                    // Retract the left arm
+                    foreach (GameObject bodyPart in secondaryRadiusChecker.targetBodyParts)
+                    {
+                        secondaryRadiusChecker.isRetracting = true;  // Retract the left arm
+                        StartCoroutine(WaitForRetractComplete(bodyPart));
+
+                        _isL_ArmDetached = false;
+                    }
+                }
+                else
+                {
+                    Debug.Log("Left arm is not in range for reattachment.");
+                }
             }
         }
+            
     }
+
+
     private IEnumerator WaitForRetractComplete(GameObject bodyPart)
     {
         // Wait until the retraction process completes (can check for some condition, like distance)
@@ -361,15 +436,32 @@ public class Attach : MonoBehaviour
             // Check if both legs are in range before reattaching
             if (IsBodyPartInSecondaryRadius(partManager.r_Leg) && IsBodyPartInSecondaryRadius(partManager.l_Leg))
             {
-                StartCoroutine(partManager.ShakeAndReattach(partManager.r_Leg));
-                _isR_LegDetached = false;
+                Debug.Log("Both legs are in range, starting retraction.");
 
-                StartCoroutine(partManager.ShakeAndReattach(partManager.l_Leg));
-                _isL_LegDetached = false;
+                // Add both legs to the secondaryRadiusChecker's targetBodyParts list
+                secondaryRadiusChecker.targetBodyParts.Clear(); // Clear previous body parts
+                secondaryRadiusChecker.targetBodyParts.Add(partManager.r_Leg);
+                secondaryRadiusChecker.targetBodyParts.Add(partManager.l_Leg);
+
+                // Retract all the body parts in the list
+                foreach (GameObject bodyPart in secondaryRadiusChecker.targetBodyParts)
+                {
+                    secondaryRadiusChecker.isRetracting = true;  // Retract each part
+                    StartCoroutine(WaitForRetractComplete(bodyPart));
+
+                    // Update the detached flags based on the body part
+                    if (bodyPart == partManager.r_Leg) _isR_LegDetached = false;
+                    else if (bodyPart == partManager.l_Leg) _isL_LegDetached = false;
+                }
+
                 _isBothLegsDetached = false;
 
+                // Reset the character's height (if needed)
                 CharacterController controller = GetComponent<CharacterController>();
-                controller.height = 2.0f;
+                if (controller != null)
+                {
+                    controller.height = 2.0f;  // Adjust height as required
+                }
             }
             else
             {
@@ -377,13 +469,68 @@ public class Attach : MonoBehaviour
             }
         }
     }
-    private void ResetController()
+
+    public void RecallRightLeg(InputAction.CallbackContext context)
     {
-        CharacterController controller = GetComponent<CharacterController>();
-        if (controller != null)
+        if (Time.time >= lastDetachTime + detachCooldown)
         {
-            controller.center = Vector3.zero;
-            controller.height = 2.0f;
+            lastDetachTime = Time.time;
+
+            // Check if the right leg is in range before reattaching
+            if (secondaryRadiusChecker.isRightLegInRange)
+            {
+                Debug.Log("Right leg is in range, starting retraction.");
+
+                // Add the right leg to the secondaryRadiusChecker's targetBodyParts list
+                secondaryRadiusChecker.targetBodyParts.Clear(); // Clear previous body parts
+                secondaryRadiusChecker.targetBodyParts.Add(partManager.r_Leg);
+
+                // Retract the right leg
+                foreach (GameObject bodyPart in secondaryRadiusChecker.targetBodyParts)
+                {
+                    secondaryRadiusChecker.isRetracting = true;  // Retract the right leg
+                    StartCoroutine(WaitForRetractComplete(bodyPart));
+
+                    _isR_LegDetached = false;
+                }
+            }
+            else
+            {
+                Debug.Log("Right leg is not in range for reattachment.");
+            }
         }
     }
+
+    public void RecallLeftLeg(InputAction.CallbackContext context)
+    {
+        if (Time.time >= lastDetachTime + detachCooldown)
+        {
+            lastDetachTime = Time.time;
+
+            // Check if the left leg is in range before reattaching
+            if (secondaryRadiusChecker.isLeftLegInRange)
+            {
+                Debug.Log("Left leg is in range, starting retraction.");
+
+                // Add the left leg to the secondaryRadiusChecker's targetBodyParts list
+                secondaryRadiusChecker.targetBodyParts.Clear(); // Clear previous body parts
+                secondaryRadiusChecker.targetBodyParts.Add(partManager.l_Leg);
+
+                // Retract the left leg
+                foreach (GameObject bodyPart in secondaryRadiusChecker.targetBodyParts)
+                {
+                    secondaryRadiusChecker.isRetracting = true;  // Retract the left leg
+                    StartCoroutine(WaitForRetractComplete(bodyPart));
+
+                    _isL_LegDetached = false;
+                }
+            }
+            else
+            {
+                Debug.Log("Left leg is not in range for reattachment.");
+            }
+        }
+    }
+
+
 }

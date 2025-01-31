@@ -24,7 +24,7 @@ public class RadiusChecker : MonoBehaviour
     public Attach attachScript;
 
     // Store the current body part being recalled
-    public GameObject targetBodyPart;
+    public List<GameObject> targetBodyParts = new List<GameObject>();
 
     // New variables for tracking body parts count
     public int totalBodyParts;  // Total body parts (including detached)
@@ -41,20 +41,23 @@ public class RadiusChecker : MonoBehaviour
     {
         if (isRepelling)
         {
-            RepelObjects();
+            RepelObjects(); // Handle repelling logic
         }
 
-        // Only retract the target body part if isRetracting is true and the targetBodyPart is assigned
-        if (isRetracting && targetBodyPart != null)
+        // Only retract target body parts if isRetracting is true and there are targets
+        if (isRetracting && targetBodyParts.Count > 0)
         {
-            RetractObject(targetBodyPart); // Update only this body part
+            RetractObjects(); // Retract all target body parts
         }
+
+        // If all body parts are reattached, clear the targets and stop retraction
         if (currentBodyParts == totalBodyParts)
         {
-            targetBodyPart = null;  // Clear the target body part when all are reattached
+            targetBodyParts.Clear(); // Clear the list of target body parts
             Debug.Log("All body parts reattached!");
             isRetracting = false;
         }
+
         // Check if any body part is inside the secondary radius
         CheckBodyPartsInSecondaryRadius();
 
@@ -86,25 +89,29 @@ public class RadiusChecker : MonoBehaviour
     }
 
     // Method to retract the specific body part
-    void RetractObject(GameObject bodyPart)
+    void RetractObjects()
     {
-        if (bodyPart != null) // Ensure we have a valid target
+        foreach (GameObject bodyPart in targetBodyParts)
         {
-            float distance = Vector3.Distance(transform.position, bodyPart.transform.position);
-            if (distance <= radius)
+            if (bodyPart != null) // Ensure we have a valid target
             {
-                Rigidbody rb = bodyPart.GetComponent<Rigidbody>();
-                if (rb != null) // Ensure the object has a Rigidbody
+                float distance = Vector3.Distance(transform.position, bodyPart.transform.position);
+                if (distance <= radius)
                 {
-                    Vector3 direction = transform.position - bodyPart.transform.position; // Direction toward center
-                    direction.Normalize(); // Normalize force
+                    Rigidbody rb = bodyPart.GetComponent<Rigidbody>();
+                    if (rb != null) // Ensure the object has a Rigidbody
+                    {
+                        Vector3 direction = transform.position - bodyPart.transform.position; // Direction toward center
+                        direction.Normalize(); // Normalize force
 
-                    rb.AddForce(direction * forceStrength / distance, ForceMode.Impulse);
-                    Debug.Log("Retracted: " + bodyPart.name);
+                        rb.AddForce(direction * forceStrength / distance, ForceMode.Impulse);
+                        Debug.Log("Retracted: " + bodyPart.name);
+                    }
                 }
             }
         }
     }
+
 
     // Method to check if any body part is inside the secondary radius
     void CheckBodyPartsInSecondaryRadius()

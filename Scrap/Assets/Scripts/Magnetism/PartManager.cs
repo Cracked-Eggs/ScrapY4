@@ -108,11 +108,9 @@ public class PartManager : MonoBehaviour
 
     public IEnumerator ShakeAndReattach(GameObject part)
     {
-        if(secondaryRadiusChecker.currentBodyParts != 10)
-        {
-            secondaryRadiusChecker.currentBodyParts++;
-        }
-        
+        secondaryRadiusChecker.currentBodyParts++;
+ 
+
         Rigidbody partRb = part.GetComponent<Rigidbody>();
         if (partRb != null)
         {
