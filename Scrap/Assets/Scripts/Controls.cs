@@ -206,6 +206,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PauseMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""2ab1e113-87ef-4c8b-a0b8-eaffb6c05028"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -648,6 +657,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""RecallRightArm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""39ff91b3-c444-4479-bc27-e77f36efc96e"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Mouse & Keyboard"",
+                    ""action"": ""PauseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a6cb07f0-6bef-4aa8-9d06-42848988a7b1"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""PauseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -704,6 +735,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_RecallBothArms = m_Player.FindAction("RecallBothArms", throwIfNotFound: true);
         m_Player_RecallLeftArm = m_Player.FindAction("RecallLeftArm", throwIfNotFound: true);
         m_Player_RecallRightArm = m_Player.FindAction("RecallRightArm", throwIfNotFound: true);
+        m_Player_PauseMenu = m_Player.FindAction("PauseMenu", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -790,6 +822,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_RecallBothArms;
     private readonly InputAction m_Player_RecallLeftArm;
     private readonly InputAction m_Player_RecallRightArm;
+    private readonly InputAction m_Player_PauseMenu;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -814,6 +847,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @RecallBothArms => m_Wrapper.m_Player_RecallBothArms;
         public InputAction @RecallLeftArm => m_Wrapper.m_Player_RecallLeftArm;
         public InputAction @RecallRightArm => m_Wrapper.m_Player_RecallRightArm;
+        public InputAction @PauseMenu => m_Wrapper.m_Player_PauseMenu;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -883,6 +917,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @RecallRightArm.started += instance.OnRecallRightArm;
             @RecallRightArm.performed += instance.OnRecallRightArm;
             @RecallRightArm.canceled += instance.OnRecallRightArm;
+            @PauseMenu.started += instance.OnPauseMenu;
+            @PauseMenu.performed += instance.OnPauseMenu;
+            @PauseMenu.canceled += instance.OnPauseMenu;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -947,6 +984,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @RecallRightArm.started -= instance.OnRecallRightArm;
             @RecallRightArm.performed -= instance.OnRecallRightArm;
             @RecallRightArm.canceled -= instance.OnRecallRightArm;
+            @PauseMenu.started -= instance.OnPauseMenu;
+            @PauseMenu.performed -= instance.OnPauseMenu;
+            @PauseMenu.canceled -= instance.OnPauseMenu;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1004,5 +1044,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnRecallBothArms(InputAction.CallbackContext context);
         void OnRecallLeftArm(InputAction.CallbackContext context);
         void OnRecallRightArm(InputAction.CallbackContext context);
+        void OnPauseMenu(InputAction.CallbackContext context);
     }
 }
