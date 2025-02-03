@@ -1,81 +1,31 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PressurePlate : MonoBehaviour
 {
-    [SerializeField] GameObject pressurePlate;
-    [SerializeField] private float delay = 1.5f;
+    Animator animator;
+    const string PressedHash = "isPressed";
+    [SerializeField] UnityEvent magnetEvent;
 
-    private Animator plateAnimator;
-
-    private PlatePuzzle puzzle;
-    
-    private bool isPressed = false;
-    private bool isOpen = false;
-
-    public bool IsPressed => isPressed;
-    
-    private void Start()
+    void Awake()
     {
-        if (pressurePlate != null)
-            plateAnimator = pressurePlate.GetComponent<Animator>();
-        
-        if (plateAnimator != null)
-            plateAnimator.SetBool("IsPressed", false);
+        animator = GetComponentInChildren<Animator>(); 
     }
 
-    //Set the puzzle this plate belongs to
-    public void SetPuzzle(PlatePuzzle assignedPuzzle)
+    void OnTriggerEnter(Collider other)
     {
-        puzzle = assignedPuzzle;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        //Debug.Log(other.name);
-        isPressed = true;
-        UpdatePlateState();
-
-        if (puzzle != null)
-            puzzle.PlateActivated();
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        isPressed = false;
-        UpdatePlateState();
-        
-        if (puzzle != null)
-            puzzle.PlateDeactivated();
-    }
-
-    private void UpdatePlateState()
-    {
-        if (isPressed)
+        if (other.gameObject.CompareTag("Player"))
         {
-            ActivatePlate();
-        }
-        else if(isPressed == false)
-        {
-            DeactivatePlate();
+            animator.SetBool(PressedHash, true);
+            magnetEvent.Invoke();
         }
     }
 
-    private void ActivatePlate()
+    void OnTriggerExit(Collider other)
     {
-        Debug.Log("PressurePlate Activated");
-
-        if (plateAnimator != null)
-            plateAnimator.SetBool("IsPressed", true);
-    }
-    
-    private void DeactivatePlate()
-    {
-        Debug.Log("PressurePlate Deactivated");
-        
-        if (plateAnimator != null)
-            plateAnimator.SetBool("IsPressed", false);
+        if (other.gameObject.CompareTag("Player"))
+            animator.SetBool(PressedHash, false);
     }
 }
