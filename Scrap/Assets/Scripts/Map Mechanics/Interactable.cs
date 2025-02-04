@@ -46,9 +46,15 @@ public class Interactable : MonoBehaviour
     void ToggleLever()
     {
         if (leverDown)
+        {
             Debug.Log("lever up" + this.gameObject.name);
-        else 
+            onUp.Invoke();
+        }
+        else
+        {
             Debug.Log("lever down" + this.gameObject.name);
+            onDown.Invoke();
+        }
         leverDown = !leverDown;
     }
 }
