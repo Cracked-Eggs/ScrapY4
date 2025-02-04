@@ -6,6 +6,7 @@ public class PlayerInteractState : PlayerBaseState
     float duration = 0.6f;
 
     const float CrossFadeDuration = 0.1f;
+    Interactable interactable;
 
     public PlayerInteractState(PlayerStateMachine stateMachine) : base(stateMachine) { }
 

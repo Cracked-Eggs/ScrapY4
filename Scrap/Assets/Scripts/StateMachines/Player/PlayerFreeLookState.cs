@@ -55,7 +55,22 @@ public class PlayerFreeLookState : PlayerBaseState
     
     void OnJump() => stateMachine.SwitchState(new PlayerJumpingState(stateMachine));
 
-    void OnInteract() => stateMachine.SwitchState(new PlayerInteractState(stateMachine));
+    void OnInteract()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(stateMachine.transform.position, 1.5f);
+    
+        foreach (Collider hitCollider in hitColliders)
+        {
+            Interactable interactable = hitCollider.GetComponent<Interactable>();
+
+            if (interactable != null)
+            {
+                interactable.TryInteract();
+                stateMachine.SwitchState(new PlayerInteractState(stateMachine)); // Enter interaction state
+                return;
+            }
+        }
+    }
 
     Vector3 CalculateMovement()
     {
