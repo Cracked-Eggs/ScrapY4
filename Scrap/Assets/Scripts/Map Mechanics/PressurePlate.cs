@@ -8,6 +8,7 @@ public class PressurePlate : MonoBehaviour
     Animator animator;
     const string PressedHash = "isPressed";
     [SerializeField] UnityEvent magnetEvent;
+    [SerializeField] UnityEvent offMagnetEvent;
 
     void Awake()
     {
@@ -26,6 +27,9 @@ public class PressurePlate : MonoBehaviour
     void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
+        {
             animator.SetBool(PressedHash, false);
+            offMagnetEvent.Invoke();
+        }
     }
 }

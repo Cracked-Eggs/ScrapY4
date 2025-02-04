@@ -12,6 +12,13 @@ public class MagneticObject : MonoBehaviour
     void Awake() => rb = GetComponent<Rigidbody>();
     
     public void ActivateMagnet() => isActive = true;
+    
+    public void DeactivateMagnet()
+    {
+        isActive = false;
+        rb.useGravity = true;  // Ensure gravity is re-enabled
+        rb.velocity = Vector3.zero; // Stop movement when deactivated
+    }
 
     void FixedUpdate()
     {
