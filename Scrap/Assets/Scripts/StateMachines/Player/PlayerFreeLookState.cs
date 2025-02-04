@@ -4,6 +4,7 @@ public class PlayerFreeLookState : PlayerBaseState
 {
     int FreeLookBlendTreeHash = Animator.StringToHash("FreeLookBlendTree");
     int FreeLookSpeedHash = Animator.StringToHash("FreeLookSpeed");
+    bool hasInteracted;
 
     const float AnimatorDampTime = 0.1f;
     const float CrossFadeDuration = 0.1f;
@@ -14,6 +15,7 @@ public class PlayerFreeLookState : PlayerBaseState
     {
         stateMachine.InputReader.TargetEvent += OnTarget;
         stateMachine.InputReader.JumpEvent += OnJump;
+        stateMachine.InputReader.InteractEvent += OnInteract;
         stateMachine.Animator.CrossFadeInFixedTime(FreeLookBlendTreeHash, CrossFadeDuration);
     }
 
@@ -42,6 +44,7 @@ public class PlayerFreeLookState : PlayerBaseState
     {
         stateMachine.InputReader.TargetEvent -= OnTarget;
         stateMachine.InputReader.JumpEvent -= OnJump;
+        stateMachine.InputReader.InteractEvent -= OnInteract;
     }
     
     void OnTarget()
@@ -51,6 +54,8 @@ public class PlayerFreeLookState : PlayerBaseState
     }
     
     void OnJump() => stateMachine.SwitchState(new PlayerJumpingState(stateMachine));
+
+    void OnInteract() => stateMachine.SwitchState(new PlayerInteractState(stateMachine));
 
     Vector3 CalculateMovement()
     {

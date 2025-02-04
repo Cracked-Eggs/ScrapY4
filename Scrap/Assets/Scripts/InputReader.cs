@@ -28,6 +28,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public event Action RecallRightArmEvent;
     
     public event Action PauseEvent;
+    public event Action InteractEvent;
 
     Controls controls;
 
@@ -160,5 +161,11 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     {
         if (!context.performed) return;
         RecallLeftArmEvent?.Invoke();
+    }
+    
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        InteractEvent?.Invoke();
     }
 }
