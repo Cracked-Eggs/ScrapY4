@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,18 +6,19 @@ public class PressurePlate : MonoBehaviour
 {
     Animator animator;
     const string PressedHash = "isPressed";
+    
     [SerializeField] UnityEvent magnetEvent;
     [SerializeField] UnityEvent offMagnetEvent;
+    
+    [SerializeField] int objectsOnPlate = 0; // Counter for objects on the plate
 
-    void Awake()
-    {
-        animator = GetComponentInChildren<Animator>(); 
-    }
+    void Awake() => animator = GetComponentInChildren<Animator>();
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("R_Arm") || other.CompareTag("L_Arm"))
         {
+            objectsOnPlate++; // Increase counter
             animator.SetBool(PressedHash, true);
             magnetEvent.Invoke();
         }
@@ -26,10 +26,15 @@ public class PressurePlate : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("R_Arm") || other.CompareTag("L_Arm"))
         {
-            animator.SetBool(PressedHash, false);
-            offMagnetEvent.Invoke();
+            objectsOnPlate--; // Decrease counter
+
+            if (objectsOnPlate <= 0) // Only deactivate if no objects remain
+            {
+                animator.SetBool(PressedHash, false);
+                offMagnetEvent.Invoke();
+            }
         }
     }
 }

@@ -318,6 +318,7 @@ public class Attach : MonoBehaviour
         part.transform.localPosition = originalPositions[part];
         part.transform.localRotation = originalRotations[part];
         part.transform.localScale = originalScales[part]; // Restore original scale
+        
 
         // Restore collider and SkinnedMeshRenderer
         BoxCollider partCollider = part.GetComponent<BoxCollider>();
