@@ -476,7 +476,7 @@ MonoBehaviour:
   - {fileID: 1054971375}
   - {fileID: 1605990073}
   radius: 6.48
-  secondaryRadius: 2.28
+  secondaryRadius: 1.28
   forceStrength: 0.58
   isRepelling: 0
   isRetracting: 0
@@ -489,7 +489,7 @@ MonoBehaviour:
   isRightArmInRange: 0
   isLeftArmInRange: 0
   attachScript: {fileID: 684524538}
-  targetBodyPart: {fileID: 0}
+  targetBodyParts: []
   totalBodyParts: 0
   currentBodyParts: 0
 --- !u!1 &410087039
@@ -667,16 +667,19 @@ MonoBehaviour:
   canRetach: 0
   customGravity: -9.81
   magnetRepel: {fileID: 0}
-  shootingForce: 500
+  shootingForce: 17.26
+  cameraTransform: {fileID: 0}
+  aimingSystem: {fileID: 684524563}
   detachCooldown: 0.05
   isDetached: 0
   _isL_ArmDetached: 0
   _isR_ArmDetached: 0
   _isL_LegDetached: 0
   _isR_LegDetached: 0
+  _isTorsoDetached: 0
   _isBothLegsDetached: 0
   _isEverythingDetached: 0
-  partManager: {fileID: 0}
+  partManager: {fileID: 684524554}
   secondaryRadiusChecker: {fileID: 406554454}
 --- !u!4 &684524546 stripped
 Transform:
@@ -708,6 +711,7 @@ MonoBehaviour:
   l_Arm: {fileID: 1730059700}
   parent: {fileID: 289935365}
   secondaryRadiusChecker: {fileID: 406554454}
+  attach: {fileID: 684524538}
 --- !u!114 &684524555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -721,6 +725,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attachScript: {fileID: 0}
+--- !u!114 &684524563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 684524531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 277d2d5e2ee77964d97817433f25a93d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &690587867
 GameObject:
   m_ObjectHideFlags: 0
@@ -1741,7 +1757,7 @@ PrefabInstance:
     - target: {fileID: 5925999212404854600, guid: 1e8d1ff13b620384283d8ee80920d14e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6047729077117250638, guid: 1e8d1ff13b620384283d8ee80920d14e,
         type: 3}
@@ -2001,6 +2017,11 @@ PrefabInstance:
       propertyPath: m_LookAt
       value: 
       objectReference: {fileID: 684524546}
+    - target: {fileID: 6445890646850469461, guid: daa92d70368fd4645aeb8250293703c8,
+        type: 3}
+      propertyPath: m_LookaheadTime
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8592759183707139175, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       propertyPath: m_Name
@@ -2018,14 +2039,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8748262554147549674, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       insertIndex: 2
-      addedObject: {fileID: 684524555}
+      addedObject: {fileID: 684524563}
     - targetCorrespondingSourceObject: {fileID: 8748262554147549674, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       insertIndex: 3
-      addedObject: {fileID: 684524554}
+      addedObject: {fileID: 684524555}
     - targetCorrespondingSourceObject: {fileID: 8748262554147549674, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       insertIndex: 4
+      addedObject: {fileID: 684524554}
+    - targetCorrespondingSourceObject: {fileID: 8748262554147549674, guid: daa92d70368fd4645aeb8250293703c8,
+        type: 3}
+      insertIndex: 5
       addedObject: {fileID: 684524538}
     - targetCorrespondingSourceObject: {fileID: 8693312885652629327, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}

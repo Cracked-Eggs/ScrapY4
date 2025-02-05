@@ -13,6 +13,7 @@ public class PartManager : MonoBehaviour
     private Dictionary<GameObject, Mesh> originalMeshes = new Dictionary<GameObject, Mesh>();
     private Dictionary<GameObject, ColliderData> originalCollidersData = new Dictionary<GameObject, ColliderData>();
     [SerializeField] private RadiusChecker secondaryRadiusChecker;
+    [SerializeField] private Attach attach;
 
     [System.Serializable]
     public struct ColliderData
@@ -66,11 +67,14 @@ public class PartManager : MonoBehaviour
 
     public void DetachPart(GameObject part)
     {
-        if (part == null) return;
-        secondaryRadiusChecker.currentBodyParts--;
+        if (part == null || attach.IsBodyPartDetached(part)) return; // Skip if already detached
+        secondaryRadiusChecker.UpdateBodyPartCount(-1);
 
         part.transform.SetParent(null, true);
         part.transform.localScale = originalScales[part];
+
+        // Slightly adjust position to avoid physics overlap issues
+        part.transform.position += new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(0.05f, 0.15f), Random.Range(-0.1f, 0.1f));
 
         BoxCollider partCollider = part.GetComponent<BoxCollider>();
         if (partCollider != null)
@@ -78,14 +82,19 @@ public class PartManager : MonoBehaviour
             Vector3 worldScale = part.transform.lossyScale;
             partCollider.size = Vector3.Scale(originalCollidersData[part].size, worldScale) * 0.25f;
             partCollider.center = Vector3.Scale(originalCollidersData[part].center, worldScale) * 0.25f;
-            partCollider.enabled = true;
+
+            // Temporarily disable collider to prevent immediate physics conflicts
+            partCollider.enabled = false;
+            StartCoroutine(ReEnableCollider(partCollider, 0.1f));
         }
 
         Rigidbody partRb = part.GetComponent<Rigidbody>();
-        if (partRb != null)
+        if (partRb == null)
         {
-            partRb.isKinematic = false;
+            partRb = part.AddComponent<Rigidbody>();
+            partRb.mass = 1f;
         }
+        partRb.isKinematic = false;
 
         SkinnedMeshRenderer skinnedMesh = part.GetComponent<SkinnedMeshRenderer>();
         if (skinnedMesh != null)
@@ -98,18 +107,23 @@ public class PartManager : MonoBehaviour
             meshRenderer.materials = skinnedMesh.materials;
             Destroy(skinnedMesh);
         }
+    }
 
-        if (partRb == null)
+    // Coroutine to re-enable collider after delay
+    private IEnumerator ReEnableCollider(BoxCollider collider, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (collider != null)
         {
-            partRb = part.AddComponent<Rigidbody>();
-            partRb.mass = 1f;
+            collider.enabled = true;
         }
     }
 
+
     public IEnumerator ShakeAndReattach(GameObject part)
     {
-        secondaryRadiusChecker.currentBodyParts++;
- 
+        secondaryRadiusChecker.UpdateBodyPartCount(1);
+
 
         Rigidbody partRb = part.GetComponent<Rigidbody>();
         if (partRb != null)

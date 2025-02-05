@@ -337,9 +337,9 @@ public class Attach : MonoBehaviour
                 }
                 lastDetachTime = Time.time;
             }
-               
 
-            
+
+
         }
     }
 
@@ -411,7 +411,7 @@ public class Attach : MonoBehaviour
                 }
             }
         }
-            
+
     }
 
 

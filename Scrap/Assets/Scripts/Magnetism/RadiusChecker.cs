@@ -201,10 +201,15 @@ public class RadiusChecker : MonoBehaviour
             }
         }
     }
+    public void UpdateBodyPartCount(int change)
+    {
+        currentBodyParts += change;
+        currentBodyParts = Mathf.Clamp(currentBodyParts, 0, totalBodyParts); // Ensure it stays within bounds
+        Debug.Log($"Updated body part count: {currentBodyParts}/{totalBodyParts}");
+    }
 
-    // Method to update body part counts when a part is detached or reattached
-    
-    // Optional: Visualize both radii in the editor
+
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
