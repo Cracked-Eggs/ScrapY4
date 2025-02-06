@@ -4,6 +4,7 @@ public class Health : MonoBehaviour
 {
     [SerializeField] int maxHealth = 100;
     [SerializeField] Healthbar healthBar;
+    [SerializeField] GameObject damagePrefab;
     
     int health;
     bool isInvulnerable;
@@ -22,6 +23,11 @@ public class Health : MonoBehaviour
         
         if (isInvulnerable) { return; }
         health = Mathf.Max(health - damage, 0);
+        
+        if (damagePrefab != null)
+        {
+            Instantiate(damagePrefab, transform.position, Quaternion.identity);
+        }
         
         OnTakeDamage?.Invoke();
         healthBar.UpdateHeathBar(maxHealth, health);

@@ -1058,6 +1058,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthbarSprite: {fileID: 4627136925811048184}
+  reduceSpeed: 2
 --- !u!1 &3007289209096973617
 GameObject:
   m_ObjectHideFlags: 0
@@ -2076,6 +2077,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   healthBar: {fileID: 5411928774942220974}
+  damagePrefab: {fileID: 3392681967298815628, guid: 969fa613c6226394cac6a8fa6aba9044,
+    type: 3}
 --- !u!114 &7831797283207266870
 MonoBehaviour:
   m_ObjectHideFlags: 0

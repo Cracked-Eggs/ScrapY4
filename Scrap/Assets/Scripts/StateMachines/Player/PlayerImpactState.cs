@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerImpactState : PlayerBaseState
@@ -9,7 +10,10 @@ public class PlayerImpactState : PlayerBaseState
 
     public PlayerImpactState(PlayerStateMachine stateMachine) : base(stateMachine) { }
 
-    public override void Enter() => stateMachine.Animator.CrossFadeInFixedTime(ImpactHash, CrossFadeDuration);
+    public override void Enter()
+    {
+        stateMachine.Animator.CrossFadeInFixedTime(ImpactHash, CrossFadeDuration);
+    }
 
     public override void Tick(float deltaTime)
     {

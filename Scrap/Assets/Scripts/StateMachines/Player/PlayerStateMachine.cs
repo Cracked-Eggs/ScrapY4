@@ -21,6 +21,7 @@ public class PlayerStateMachine : StateMachine
     [field: SerializeField] public CinemachineInputProvider FreeLookInput { get; private set; }
     [field: SerializeField] public GameObject PauseMenu { get; private set; }
     [field: SerializeField] public Attack[] Attacks { get; private set; }
+    
 
     public float PreviousDodgeTime { get; private set; } = Mathf.NegativeInfinity;
     public Transform MainCameraTransform { get; private set; }
