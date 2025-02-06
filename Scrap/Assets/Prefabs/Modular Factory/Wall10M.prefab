@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4537407038306127008}
   - component: {fileID: 434312270639259014}
   - component: {fileID: 8921837421911491851}
-  - component: {fileID: 3819301456523886267}
+  - component: {fileID: 405090328885811641}
   m_Layer: 6
   m_Name: Wall10M
   m_TagString: Ground
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3819301456523886267
-MeshCollider:
+--- !u!65 &405090328885811641
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -102,7 +102,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -4927669619875815125, guid: bc2d5c1873042a24a9fe903378c5819c, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 9.999998, y: 5, z: 0}
+  m_Center: {x: -4.999999, y: 2.5, z: 0}
