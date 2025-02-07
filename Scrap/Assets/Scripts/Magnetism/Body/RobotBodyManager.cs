@@ -28,6 +28,10 @@ public class Attach : MonoBehaviour
     public bool _isBothLegsDetached = false;
     public bool _isEverythingDetached = false;
 
+    public Magnet leftArmMagnetScript;
+    public Magnet rightArmMagnetScript;
+    public SphereCollider leftArmSphereColl;
+    public SphereCollider rightArmSphereColl;
     public PartManager partManager;
 
     // Reference to the second radius checker script
@@ -42,15 +46,11 @@ public class Attach : MonoBehaviour
         partManager = GetComponent<PartManager>();
 
     }
-
-    private void Update()
+    private void Start()
     {
-        if (_isR_LegDetached && _isL_LegDetached)
-        {
-            _isBothLegsDetached = false;
-            CharacterController controller = GetComponent<CharacterController>();
-            controller.height = 0f;
-        }
+        if (leftArmMagnetScript != null && _isL_ArmDetached == false) leftArmMagnetScript.enabled = false;
+        if (rightArmMagnetScript != null && _isR_ArmDetached == false) rightArmMagnetScript.enabled = false;
+
     }
 
     public void On_Detach(InputAction.CallbackContext context)
@@ -59,6 +59,7 @@ public class Attach : MonoBehaviour
         {
             lastDetachTime = Time.time;
 
+            // Detach the body parts
             partManager.DetachPart(partManager.head);
             partManager.DetachPart(partManager.head2);
             partManager.DetachPart(partManager.head3);
@@ -70,6 +71,12 @@ public class Attach : MonoBehaviour
             partManager.DetachPart(partManager.r_Arm);
             partManager.DetachPart(partManager.l_Arm);
 
+            // Disable the Magnet scripts for the arms when they are detached
+            leftArmMagnetScript.enabled = true;
+            rightArmMagnetScript.enabled = true;
+            leftArmSphereColl.enabled = true;
+            rightArmSphereColl.enabled = true;
+
             playerCollider.enabled = true;
             _rb.constraints = RigidbodyConstraints.FreezeAll;
             isDetached = true;
@@ -80,77 +87,76 @@ public class Attach : MonoBehaviour
     {
         if (secondaryRadiusChecker.currentBodyParts < secondaryRadiusChecker.totalBodyParts)
         {
-            if (Time.time < lastDetachTime + detachCooldown) return; // Prevent rapid reattachment
+            if (Time.time < lastDetachTime + detachCooldown) return;
 
             lastDetachTime = Time.time;
-
+            CharacterController controller = GetComponent<CharacterController>();
+            controller.center = new Vector3(0, -2.46f, 0);
+            controller.height = 5.61f;
             // Clear previous body parts before adding new ones
             secondaryRadiusChecker.targetBodyParts.Clear();
             bool bodyPartInRange = false;
 
-            // List of body parts to check (with lambdas to update their respective detached flags)
             List<(GameObject part, Action resetFlag)> bodyParts = new()
-            {
-                (partManager.r_Arm, () => _isR_ArmDetached = false),
-                (partManager.l_Arm, () => _isL_ArmDetached = false),
-                (partManager.r_Leg, () => _isR_LegDetached = false),
-                (partManager.l_Leg, () => _isL_LegDetached = false),
-                (partManager.torso, () => _isTorsoDetached = false)
-            };
+        {
+            (partManager.r_Arm, () => _isR_ArmDetached = false),
+            (partManager.l_Arm, () => _isL_ArmDetached = false),
+            (partManager.r_Leg, () => _isR_LegDetached = false),
+            (partManager.l_Leg, () => _isL_LegDetached = false),
+            (partManager.torso, () => _isTorsoDetached = false)
+        };
 
-            // Add body parts in range to the list
+            // Add body parts to the list if they are in range
             foreach (var (bodyPart, resetFlag) in bodyParts)
             {
                 if (IsBodyPartInSecondaryRadius(bodyPart))
                 {
                     secondaryRadiusChecker.targetBodyParts.Add(bodyPart);
-                    resetFlag(); // Call the lambda function to reset the flag
+                    resetFlag();
                     bodyPartInRange = true;
                 }
             }
 
-            // Prevent reattachment if no body parts are in range
             if (!bodyPartInRange)
             {
                 Debug.Log("No body parts in range to reattach.");
                 return;
             }
 
-            // Start retraction process
             secondaryRadiusChecker.isRetracting = true;
+
+            // Iterate through all target body parts and retract them
             foreach (GameObject bodyPart in secondaryRadiusChecker.targetBodyParts)
             {
-                StartCoroutine(WaitForRetractComplete(bodyPart));
+                StartCoroutine(WaitForRetractComplete(bodyPart)); // Ensure retraction completes for each part
             }
-
-            // Adjust height if necessary
 
             StartCoroutine(SmoothRise(playerCollider.bounds.extents.y));
 
+            // Disable Magnet scripts and colliders for reattached arms
+            if (leftArmMagnetScript != null && !_isL_ArmDetached) leftArmMagnetScript.enabled = false;
+            if (rightArmMagnetScript != null && !_isR_ArmDetached) rightArmMagnetScript.enabled = false;
+            leftArmSphereColl.enabled = false;
+            rightArmSphereColl.enabled = false;
 
-            // Update CharacterController if available
-            if (TryGetComponent(out CharacterController characterController))
-            {
-                characterController.center = new Vector3(characterController.center.x, -2.46f, characterController.center.z);
-                characterController.height = 5.61f;
-                Debug.Log("CharacterController updated.");
-            }
-
-            // Reset states
+            // Reset other states
             canRetach = false;
             _isBothLegsDetached = false;
             _isEverythingDetached = false;
             isDetached = false;
 
-            // Restore physics constraints
             _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             playerCollider.enabled = false;
+
+           
 
             Debug.Log("Reattachment process completed.");
 
         }
-
     }
+
+
+
     private IEnumerator SmoothRise(float riseAmount)
     {
         Vector3 start = transform.position;
@@ -209,6 +215,10 @@ public class Attach : MonoBehaviour
 
             _isR_ArmDetached = true;
             _animator.SetTrigger("shootingR");
+           
+            rightArmMagnetScript.enabled = true;
+            
+            rightArmSphereColl.enabled = true;
         }
     }
 
@@ -226,6 +236,11 @@ public class Attach : MonoBehaviour
 
             _isL_ArmDetached = true;
             _animator.SetTrigger("shootingL");
+            leftArmMagnetScript.enabled = true;
+
+            leftArmSphereColl.enabled = true;
+       
+
         }
     }
 
@@ -241,14 +256,18 @@ public class Attach : MonoBehaviour
             partManager.DetachPart(partManager.r_Arm);
             partManager.DetachPart(partManager.l_Arm);
             CharacterController controller = GetComponent<CharacterController>();
-            controller.center = new Vector3(0, 0, 0);
-
+            controller.center = new Vector3(0, 0.77f, 0);
+            controller.height = 0f;
             isDetached = true;
             _isL_ArmDetached = true;
             _isR_ArmDetached = true;
             _isL_LegDetached = true;
             _isR_LegDetached = true;
             _isTorsoDetached = true;
+            leftArmMagnetScript.enabled = true;
+            rightArmMagnetScript.enabled = true;
+            leftArmSphereColl.enabled = true;
+            rightArmSphereColl.enabled = true;
         }
     }
 
@@ -259,6 +278,10 @@ public class Attach : MonoBehaviour
             lastDetachTime = Time.time;
             partManager.DetachPart(partManager.l_Arm);
             _isL_ArmDetached = true;
+            leftArmMagnetScript.enabled = true;
+            leftArmSphereColl.enabled = true;
+           
+
         }
     }
 
@@ -269,6 +292,10 @@ public class Attach : MonoBehaviour
             lastDetachTime = Time.time;
             partManager.DetachPart(partManager.r_Arm);
             _isR_ArmDetached = true;
+       
+            rightArmMagnetScript.enabled = true;
+       
+            rightArmSphereColl.enabled = true;
         }
     }
 
@@ -330,6 +357,12 @@ public class Attach : MonoBehaviour
 
                     _isR_ArmDetached = false;
                     _isL_ArmDetached = false;
+                    leftArmMagnetScript.enabled = false;
+                    rightArmMagnetScript.enabled = false;
+                    leftArmSphereColl.enabled = false;
+                    rightArmSphereColl.enabled = false;
+                    secondaryRadiusChecker.isRightArmInRange = false;
+                    secondaryRadiusChecker.isLeftArmInRange = false;
                 }
                 else
                 {
@@ -348,28 +381,27 @@ public class Attach : MonoBehaviour
     {
         if (secondaryRadiusChecker.currentBodyParts < secondaryRadiusChecker.totalBodyParts)
         {
-
             if (Time.time >= lastDetachTime + detachCooldown)
             {
                 lastDetachTime = Time.time;
 
-                // Check if the right arm is in range before reattaching
                 if (secondaryRadiusChecker.isRightArmInRange && _isR_ArmDetached)
                 {
                     Debug.Log("Right arm is in range, starting retraction.");
 
-                    // Add the right arm to the secondaryRadiusChecker's targetBodyParts list
-                    secondaryRadiusChecker.targetBodyParts.Clear(); // Clear previous body parts
-                    secondaryRadiusChecker.targetBodyParts.Add(partManager.r_Arm);
-
-                    // Retract the right arm
-                    foreach (GameObject bodyPart in secondaryRadiusChecker.targetBodyParts)
-                    {
-                        secondaryRadiusChecker.isRetracting = true;  // Retract the right arm
-                        StartCoroutine(WaitForRetractComplete(bodyPart));
-
-                        _isR_ArmDetached = false;
+                    if (!secondaryRadiusChecker.targetBodyParts.Contains(partManager.r_Arm))
+                    {   
+                        secondaryRadiusChecker.targetBodyParts.Add(partManager.r_Arm);
                     }
+
+                    secondaryRadiusChecker.isRetracting = true;
+                    StartCoroutine(WaitForRetractComplete(partManager.r_Arm));
+
+                    _isR_ArmDetached = false;
+                    rightArmMagnetScript.enabled = false;
+                    rightArmSphereColl.enabled = false;
+                    //secondaryRadiusChecker.isRightArmInRange = false;
+                    //secondaryRadiusChecker.targetBodyParts.Clear();
                 }
                 else
                 {
@@ -390,20 +422,22 @@ public class Attach : MonoBehaviour
                 // Check if the left arm is in range before reattaching
                 if (secondaryRadiusChecker.isLeftArmInRange && _isL_ArmDetached)
                 {
-                    Debug.Log("Left arm is in range, starting retraction.");
+                    Debug.Log("Right arm is in range, starting retraction.");
+                    
 
-                    // Add the left arm to the secondaryRadiusChecker's targetBodyParts list
-                    secondaryRadiusChecker.targetBodyParts.Clear(); // Clear previous body parts
-                    secondaryRadiusChecker.targetBodyParts.Add(partManager.l_Arm);
-
-                    // Retract the left arm
-                    foreach (GameObject bodyPart in secondaryRadiusChecker.targetBodyParts)
+                    if (!secondaryRadiusChecker.targetBodyParts.Contains(partManager.l_Arm))
                     {
-                        secondaryRadiusChecker.isRetracting = true;  // Retract the left arm
-                        StartCoroutine(WaitForRetractComplete(bodyPart));
-
-                        _isL_ArmDetached = false;
+                        secondaryRadiusChecker.targetBodyParts.Add(partManager.l_Arm);
                     }
+
+                    secondaryRadiusChecker.isRetracting = true;
+                    StartCoroutine(WaitForRetractComplete(partManager.l_Arm));
+
+                    _isL_ArmDetached = false;
+                    leftArmMagnetScript.enabled = false;
+                    leftArmSphereColl.enabled = false;
+                    //secondaryRadiusChecker.isLeftArmInRange = false;
+                   // secondaryRadiusChecker.targetBodyParts.Clear();
                 }
                 else
                 {
@@ -417,16 +451,34 @@ public class Attach : MonoBehaviour
 
     private IEnumerator WaitForRetractComplete(GameObject bodyPart)
     {
-        // Wait until the retraction process completes (can check for some condition, like distance)
-        while (Vector3.Distance(bodyPart.transform.position, transform.position) > 2f)  // Customize distance threshold
+        float timeout = 1f; // Adjust based on your needs
+        float startTime = Time.time;
+
+        while (Vector3.Distance(bodyPart.transform.position, transform.position) > 2f)
         {
-            yield return null;  // Wait one frame
+            if (Time.time - startTime > timeout)
+            {
+                Debug.LogWarning(bodyPart.name + " retraction timed out.");
+                yield break;
+            }
+            yield return null;
         }
 
-        // Once the body part is close enough, reattach it
-        StartCoroutine(partManager.ShakeAndReattach(bodyPart));
+        // Ensure we complete the reattachment process
+        yield return StartCoroutine(partManager.ShakeAndReattach(bodyPart));
+
         Debug.Log(bodyPart.name + " has been reattached.");
+
+        // Remove the body part from targetBodyParts after successful reattachment
+        if (secondaryRadiusChecker.targetBodyParts.Contains(bodyPart))
+        {
+            secondaryRadiusChecker.targetBodyParts.Remove(bodyPart);
+            Debug.Log(bodyPart.name + " removed from targetBodyParts.");
+        }
     }
+
+
+
     public void RecallBothLegs(InputAction.CallbackContext context)
     {
         if (Time.time >= lastDetachTime + detachCooldown)
