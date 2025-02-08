@@ -581,6 +581,17 @@
                 },
                 {
                     "name": "",
+                    "id": "d1c4c3ca-2989-4a8c-ba1b-04e41b3ca95b",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DropRightArm",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "3cfc40fe-df6a-4d97-909c-d18c040cfdf1",
                     "path": "<Gamepad>/dpad/down",
                     "interactions": "",
@@ -636,11 +647,33 @@
                 },
                 {
                     "name": "",
+                    "id": "19b8a437-a2b1-4233-9b5d-78711e44eb9a",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Mouse & Keyboard",
+                    "action": "RecallLeftArm",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "8c955ccd-cdb0-4dd2-b968-6d079a923f26",
                     "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
+                    "action": "RecallRightArm",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "348dfa86-4bf2-4cf5-93a3-a2365f8fa000",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Mouse & Keyboard",
                     "action": "RecallRightArm",
                     "isComposite": false,
                     "isPartOfComposite": false

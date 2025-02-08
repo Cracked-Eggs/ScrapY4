@@ -1,22 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 
 public class Attach : MonoBehaviour
 {
-
     private Controls inputSystem;
-
     private Rigidbody _rb;
     private Collider playerCollider;
 
     public bool canRetach;
 
     [SerializeField] public float customGravity = -9.81f;
-    [SerializeField] AudioClip magnetRepel;
     [SerializeField] public float shootingForce = 500f;
     AudioManager _audioManager;
     Animator _animator;
@@ -293,8 +288,6 @@ public class Attach : MonoBehaviour
     private IEnumerator ShakeAndReattach(GameObject part)
     {
         Debug.Log($"Reattaching {part.name}");
-        _isL_ArmDetached = false;
-        _isR_ArmDetached = false;
         // Destroy any temporary Rigidbody
         Rigidbody partRb = part.GetComponent<Rigidbody>();
         if (partRb != null)
@@ -424,7 +417,7 @@ public class Attach : MonoBehaviour
             lastDetachTime = Time.time;
 
             DetachPart(r_Arm);
-            _audioManager.Play("Detach2");
+            _audioManager.Play("Detach1");
             _isR_ArmDetached = true;
         }
     }

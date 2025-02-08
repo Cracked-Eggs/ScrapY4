@@ -4,6 +4,7 @@ public class PlayerFreeLookState : PlayerBaseState
 {
     int FreeLookBlendTreeHash = Animator.StringToHash("FreeLookBlendTree");
     int FreeLookSpeedHash = Animator.StringToHash("FreeLookSpeed");
+    float footstepTimer = 0f;
     bool hasInteracted;
 
     const float AnimatorDampTime = 0.1f;
@@ -18,6 +19,7 @@ public class PlayerFreeLookState : PlayerBaseState
         stateMachine.InputReader.InteractEvent += OnInteract;
         stateMachine.InputReader.PauseEvent += OnPause;
         stateMachine.Animator.CrossFadeInFixedTime(FreeLookBlendTreeHash, CrossFadeDuration);
+
     }
 
     public override void Tick(float deltaTime)
@@ -39,6 +41,7 @@ public class PlayerFreeLookState : PlayerBaseState
 
         stateMachine.Animator.SetFloat(FreeLookSpeedHash, 1, AnimatorDampTime, deltaTime);
         FaceMovementDirection(movement, deltaTime);
+        Footsteps();
     }
 
     public override void Exit()
@@ -96,5 +99,19 @@ public class PlayerFreeLookState : PlayerBaseState
             stateMachine.transform.rotation,
             Quaternion.LookRotation(movement),
             deltaTime * stateMachine.RotationDamping);
+    }
+    
+    void Footsteps()
+    {
+        footstepTimer -= Time.deltaTime;
+
+        if (footstepTimer <= 0)
+        {
+            if (stateMachine.TargetingMovementSpeed != 0)
+            {
+                stateMachine.AudioManager.PlayFootsteps();
+                footstepTimer = 0.5f;
+            }
+        }
     }
 }
