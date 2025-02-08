@@ -18,7 +18,7 @@ public class Attach : MonoBehaviour
     [SerializeField] public float customGravity = -9.81f;
     [SerializeField] AudioClip magnetRepel;
     [SerializeField] public float shootingForce = 500f;
-    AudioSource _audioSource;
+    AudioManager _audioManager;
     Animator _animator;
 
     public GameObject head, head2, head3, head4, head5, torso, r_Leg, l_Leg, r_Arm, l_Arm, parent;
@@ -63,7 +63,7 @@ public class Attach : MonoBehaviour
 
         _rb = GetComponent<Rigidbody>();
         playerCollider = GetComponent<Collider>();
-        _audioSource = GetComponent<AudioSource>();
+        _audioManager = FindObjectOfType<AudioManager>();
         _animator = GetComponent<Animator>();
     }
 
@@ -412,6 +412,7 @@ public class Attach : MonoBehaviour
             lastDetachTime = Time.time;
 
             DetachPart(l_Arm);
+            _audioManager.Play("Detach1");
             _isL_ArmDetached = true;
         }
     }
@@ -423,6 +424,7 @@ public class Attach : MonoBehaviour
             lastDetachTime = Time.time;
 
             DetachPart(r_Arm);
+            _audioManager.Play("Detach2");
             _isR_ArmDetached = true;
         }
     }
@@ -494,12 +496,13 @@ public class Attach : MonoBehaviour
     public void RecallRightArm(InputAction.CallbackContext context)
     {
         Debug.Log("rarms");
-        if (Time.time >= lastDetachTime + detachCooldown)
+        if (Time.time >= lastDetachTime + detachCooldown && _isR_ArmDetached == true)
         {
             
                 Debug.Log("Recalling Right Arm");
                 lastDetachTime = Time.time;
                 StartCoroutine(ShakeAndReattach(r_Arm));
+                _audioManager.Play("RepelBody");
                 _isR_ArmDetached = false;
             
         }
@@ -508,12 +511,13 @@ public class Attach : MonoBehaviour
     public void RecallLeftArm(InputAction.CallbackContext context)
     {
         Debug.Log("larms");
-        if (Time.time >= lastDetachTime + detachCooldown)
+        if (Time.time >= lastDetachTime + detachCooldown && _isL_ArmDetached == true) 
         {
             
                 Debug.Log("Recalling Left Arm");
                 lastDetachTime = Time.time;
                 StartCoroutine(ShakeAndReattach(l_Arm));
+                _audioManager.Play("RepelBody");
                 _isL_ArmDetached = false;
             
         }
