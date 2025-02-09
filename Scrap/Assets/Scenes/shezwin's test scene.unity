@@ -512,7 +512,7 @@ MonoBehaviour:
   - {fileID: 1054971375}
   - {fileID: 1605990073}
   radius: 6.48
-  secondaryRadius: 1.28
+  secondaryRadius: 0.74
   forceStrength: 0.58
   isRepelling: 0
   isRetracting: 0
@@ -703,7 +703,7 @@ MonoBehaviour:
   canRetach: 0
   customGravity: -9.81
   magnetRepel: {fileID: 0}
-  shootingForce: 394.5
+  shootingForce: 1.7
   detachCooldown: 0.05
   isDetached: 0
   _isL_ArmDetached: 0
@@ -750,6 +750,9 @@ MonoBehaviour:
   parent: {fileID: 289935365}
   secondaryRadiusChecker: {fileID: 406554454}
   attach: {fileID: 684524538}
+  reattachSpeed: 10
+  rotationSpeed: 2
+  reattachDistanceThreshold: 0.1
 --- !u!114 &684524555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1841,6 +1844,33 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8051912419390256690}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2101186971 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8592759183707139175, guid: daa92d70368fd4645aeb8250293703c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 8051912419390256690}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2101186973
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101186971}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6634e3a4bf4070c47ab1ce4d3460fc42, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &6133231358373539275
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1857,7 +1887,7 @@ PrefabInstance:
     - target: {fileID: 5925999212404854600, guid: 1e8d1ff13b620384283d8ee80920d14e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6047729077117250638, guid: 1e8d1ff13b620384283d8ee80920d14e,
         type: 3}
@@ -2136,6 +2166,10 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 406554453}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8592759183707139175, guid: daa92d70368fd4645aeb8250293703c8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2101186973}
     - targetCorrespondingSourceObject: {fileID: 8748262554147549674, guid: daa92d70368fd4645aeb8250293703c8,
         type: 3}
       insertIndex: 2

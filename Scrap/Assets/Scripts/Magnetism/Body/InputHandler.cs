@@ -20,18 +20,14 @@ public class InputHandler : MonoBehaviour
         inputSystem.Player.ReattachPart.performed += attachScript.On_Reattach;
         inputSystem.Player.ReattachPart.Enable();
 
-        inputSystem.Player.ShootR.performed += attachScript.ShootRightArm;
+        inputSystem.Player.ShootR.performed += attachScript.ShootOrRecallRightArm;
         inputSystem.Player.ShootR.Enable();
 
-        inputSystem.Player.ShootL.performed += attachScript.ShootLeftArm;
+        inputSystem.Player.ShootL.performed += attachScript.ShootOrRecallLeftArm;
         inputSystem.Player.ShootL.Enable();
 
         inputSystem.Player.RecallBothArms.performed += attachScript.RecallBothArms;
         inputSystem.Player.RecallBothArms.Enable();
-        inputSystem.Player.RecallLeftArm.performed += attachScript.RecallLeftArm;
-        inputSystem.Player.RecallLeftArm.Enable();
-        inputSystem.Player.RecallRightArm.performed += attachScript.RecallRightArm;
-        inputSystem.Player.RecallRightArm.Enable();
 
         inputSystem.Player.DropEverything.performed += attachScript.DropEverything;
         inputSystem.Player.DropEverything.Enable();

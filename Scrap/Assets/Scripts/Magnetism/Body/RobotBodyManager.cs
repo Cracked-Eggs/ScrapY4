@@ -17,6 +17,8 @@ public class Attach : MonoBehaviour
 
     public float detachCooldown = 2.0f;
     private float lastDetachTime = -2.0f;
+    private float lastActionTime = 0f;
+    private float actionCooldown = 0.5f;
 
     public bool isDetached = false;
     public bool _isL_ArmDetached = false;
@@ -82,7 +84,6 @@ public class Attach : MonoBehaviour
             isDetached = true;
         }
     }
-
     public void On_Reattach(InputAction.CallbackContext context)
     {
         if (secondaryRadiusChecker.currentBodyParts < secondaryRadiusChecker.totalBodyParts)
@@ -154,9 +155,6 @@ public class Attach : MonoBehaviour
 
         }
     }
-
-
-
     private IEnumerator SmoothRise(float riseAmount)
     {
         Vector3 start = transform.position;
@@ -173,10 +171,6 @@ public class Attach : MonoBehaviour
 
         transform.position = end; // Ensure exact final position
     }
-
-
-
-
     public bool IsBodyPartDetached(GameObject bodyPart)
     {
         if (bodyPart == partManager.r_Arm) return _isR_ArmDetached;
@@ -189,7 +183,6 @@ public class Attach : MonoBehaviour
         // Default case: body part is considered not detached
         return false;
     }
-
     private bool IsBodyPartInSecondaryRadius(GameObject bodyPart)
     {
         if (secondaryRadiusChecker != null && bodyPart != null)
@@ -200,47 +193,119 @@ public class Attach : MonoBehaviour
         }
         return false;
     }
-
-    public void ShootRightArm(InputAction.CallbackContext context)
+    public void ShootOrRecallRightArm(InputAction.CallbackContext context)
     {
-        if (!_isR_ArmDetached && Time.time >= lastDetachTime + detachCooldown)
+        if (Time.time < lastDetachTime + detachCooldown) return;
+
+        lastDetachTime = Time.time;
+
+        if (_isR_ArmDetached)
         {
-            lastDetachTime = Time.time;
+            // The arm is out, recall it
+            RecallRightArm();
+        }
+        else
+        {
+            // The arm is not out, shoot it
+            ShootRightArm();
+        }
+    }
+
+    public void ShootOrRecallLeftArm(InputAction.CallbackContext context)
+    {
+        if (Time.time < lastDetachTime + detachCooldown) return;
+
+        lastDetachTime = Time.time;
+
+        if (_isL_ArmDetached)
+        {
+            // The arm is out, recall it
+            RecallLeftArm();
+        }
+        else
+        {
+            // The arm is not out, shoot it
+            ShootLeftArm();
+        }
+    }
+
+    public void ShootRightArm()
+    {
+        if (!_isR_ArmDetached)
+        {
+            // Detach and shoot right arm
             partManager.DetachPart(partManager.r_Arm);
             Rigidbody rb = partManager.r_Arm.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.AddForce(transform.forward * shootingForce);
+                Vector3 repulsionDirection = transform.forward; // Push the arm forward
+                rb.AddForce(repulsionDirection * shootingForce, ForceMode.Impulse);
             }
 
             _isR_ArmDetached = true;
-            _animator.SetTrigger("shootingR");
-           
             rightArmMagnetScript.enabled = true;
-            
             rightArmSphereColl.enabled = true;
         }
     }
 
-    public void ShootLeftArm(InputAction.CallbackContext context)
+    public void RecallRightArm()
     {
-        if (!_isL_ArmDetached && Time.time >= lastDetachTime + detachCooldown)
+        if (_isR_ArmDetached)
         {
-            lastDetachTime = Time.time;
+            // Handle retraction of right arm
+            if (secondaryRadiusChecker.isRightArmInRange)
+            {
+                secondaryRadiusChecker.targetBodyParts.Add(partManager.r_Arm);
+                secondaryRadiusChecker.isRetracting = true;
+                StartCoroutine(WaitForRetractComplete(partManager.r_Arm));
+                _isR_ArmDetached = false;
+                rightArmMagnetScript.enabled = false;
+                rightArmSphereColl.enabled = false;
+            }
+            else
+            {
+                Debug.Log("Right arm is not in range for reattachment.");
+            }
+        }
+    }
+
+    public void ShootLeftArm()
+    {
+        if (!_isL_ArmDetached)
+        {
+            // Detach and shoot left arm
             partManager.DetachPart(partManager.l_Arm);
             Rigidbody rb = partManager.l_Arm.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.AddForce(transform.forward * shootingForce);
+                Vector3 repulsionDirection = transform.forward; // Push the arm forward
+                rb.AddForce(repulsionDirection * shootingForce, ForceMode.Impulse);
             }
 
             _isL_ArmDetached = true;
-            _animator.SetTrigger("shootingL");
             leftArmMagnetScript.enabled = true;
-
             leftArmSphereColl.enabled = true;
-       
+        }
+    }
 
+    public void RecallLeftArm()
+    {
+        if (_isL_ArmDetached)
+        {
+            // Handle retraction of left arm
+            if (secondaryRadiusChecker.isLeftArmInRange)
+            {
+                secondaryRadiusChecker.targetBodyParts.Add(partManager.l_Arm);
+                secondaryRadiusChecker.isRetracting = true;
+                StartCoroutine(WaitForRetractComplete(partManager.l_Arm));
+                _isL_ArmDetached = false;
+                leftArmMagnetScript.enabled = false;
+                leftArmSphereColl.enabled = false;
+            }
+            else
+            {
+                Debug.Log("Left arm is not in range for reattachment.");
+            }
         }
     }
 
@@ -270,7 +335,6 @@ public class Attach : MonoBehaviour
             rightArmSphereColl.enabled = true;
         }
     }
-
     public void DropLeftArm(InputAction.CallbackContext context)
     {
         if (!_isL_ArmDetached && Time.time >= lastDetachTime + detachCooldown)
@@ -284,7 +348,6 @@ public class Attach : MonoBehaviour
 
         }
     }
-
     public void DropRightArm(InputAction.CallbackContext context)
     {
         if (!_isR_ArmDetached && Time.time >= lastDetachTime + detachCooldown)
@@ -292,13 +355,12 @@ public class Attach : MonoBehaviour
             lastDetachTime = Time.time;
             partManager.DetachPart(partManager.r_Arm);
             _isR_ArmDetached = true;
-       
+
             rightArmMagnetScript.enabled = true;
-       
+
             rightArmSphereColl.enabled = true;
         }
     }
-
     public void DropLeftLeg(InputAction.CallbackContext context)
     {
         if (Time.time >= lastDetachTime + detachCooldown)
@@ -309,7 +371,6 @@ public class Attach : MonoBehaviour
             _isL_LegDetached = true;
         }
     }
-
     public void DropRightLeg(InputAction.CallbackContext context)
     {
         if (Time.time >= lastDetachTime + detachCooldown)
@@ -320,7 +381,6 @@ public class Attach : MonoBehaviour
             _isR_LegDetached = true;
         }
     }
-
     public void DropBothLegs(InputAction.CallbackContext context)
     {
         if (Time.time >= lastDetachTime + detachCooldown)
@@ -333,7 +393,6 @@ public class Attach : MonoBehaviour
             _isBothLegsDetached = true;
         }
     }
-
     public void RecallBothArms(InputAction.CallbackContext context)
     {
         if (Time.time >= lastDetachTime + detachCooldown)
@@ -375,80 +434,7 @@ public class Attach : MonoBehaviour
 
         }
     }
-
-
-    public void RecallRightArm(InputAction.CallbackContext context)
-    {
-        if (secondaryRadiusChecker.currentBodyParts < secondaryRadiusChecker.totalBodyParts)
-        {
-            if (Time.time >= lastDetachTime + detachCooldown)
-            {
-                lastDetachTime = Time.time;
-
-                if (secondaryRadiusChecker.isRightArmInRange && _isR_ArmDetached)
-                {
-                    Debug.Log("Right arm is in range, starting retraction.");
-
-                    if (!secondaryRadiusChecker.targetBodyParts.Contains(partManager.r_Arm))
-                    {   
-                        secondaryRadiusChecker.targetBodyParts.Add(partManager.r_Arm);
-                    }
-
-                    secondaryRadiusChecker.isRetracting = true;
-                    StartCoroutine(WaitForRetractComplete(partManager.r_Arm));
-
-                    _isR_ArmDetached = false;
-                    rightArmMagnetScript.enabled = false;
-                    rightArmSphereColl.enabled = false;
-                    //secondaryRadiusChecker.isRightArmInRange = false;
-                    //secondaryRadiusChecker.targetBodyParts.Clear();
-                }
-                else
-                {
-                    Debug.Log("Right arm is not in range for reattachment.");
-                }
-            }
-        }
-    }
-
-    public void RecallLeftArm(InputAction.CallbackContext context)
-    {
-        if (secondaryRadiusChecker.currentBodyParts < secondaryRadiusChecker.totalBodyParts)
-        {
-            if (Time.time >= lastDetachTime + detachCooldown)
-            {
-                lastDetachTime = Time.time;
-
-                // Check if the left arm is in range before reattaching
-                if (secondaryRadiusChecker.isLeftArmInRange && _isL_ArmDetached)
-                {
-                    Debug.Log("Right arm is in range, starting retraction.");
-                    
-
-                    if (!secondaryRadiusChecker.targetBodyParts.Contains(partManager.l_Arm))
-                    {
-                        secondaryRadiusChecker.targetBodyParts.Add(partManager.l_Arm);
-                    }
-
-                    secondaryRadiusChecker.isRetracting = true;
-                    StartCoroutine(WaitForRetractComplete(partManager.l_Arm));
-
-                    _isL_ArmDetached = false;
-                    leftArmMagnetScript.enabled = false;
-                    leftArmSphereColl.enabled = false;
-                    //secondaryRadiusChecker.isLeftArmInRange = false;
-                   // secondaryRadiusChecker.targetBodyParts.Clear();
-                }
-                else
-                {
-                    Debug.Log("Left arm is not in range for reattachment.");
-                }
-            }
-        }
-
-    }
-
-
+   
     private IEnumerator WaitForRetractComplete(GameObject bodyPart)
     {
         float timeout = 1f; // Adjust based on your needs
@@ -476,9 +462,6 @@ public class Attach : MonoBehaviour
             Debug.Log(bodyPart.name + " removed from targetBodyParts.");
         }
     }
-
-
-
     public void RecallBothLegs(InputAction.CallbackContext context)
     {
         if (Time.time >= lastDetachTime + detachCooldown)
@@ -521,7 +504,6 @@ public class Attach : MonoBehaviour
             }
         }
     }
-
     public void RecallRightLeg(InputAction.CallbackContext context)
     {
         if (Time.time >= lastDetachTime + detachCooldown)
@@ -552,7 +534,6 @@ public class Attach : MonoBehaviour
             }
         }
     }
-
     public void RecallLeftLeg(InputAction.CallbackContext context)
     {
         if (Time.time >= lastDetachTime + detachCooldown)
