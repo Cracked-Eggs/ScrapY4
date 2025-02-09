@@ -16,6 +16,7 @@ public class PlayerTargetingState : PlayerBaseState
         stateMachine.InputReader.TargetEvent += OnTarget;
         stateMachine.InputReader.JumpEvent += OnJump;
         stateMachine.Animator.CrossFadeInFixedTime(TargetingBlendTreeHash, CrossFadeDuration);
+        stateMachine.InputReader.IsInCombat = true;
     }
 
     public override void Tick(float deltaTime)
@@ -31,7 +32,6 @@ public class PlayerTargetingState : PlayerBaseState
             stateMachine.SwitchState(new PlayerBlockingState(stateMachine));
             return;
         }
-
 
         if (stateMachine.Targeter.CurrentTarget == null)
         {
@@ -51,6 +51,7 @@ public class PlayerTargetingState : PlayerBaseState
         stateMachine.InputReader.TargetEvent -= OnTarget;
         stateMachine.InputReader.JumpEvent -= OnJump;
         stateMachine.InputReader.DodgeEvent -= OnDodge;
+        stateMachine.InputReader.IsInCombat = false;
     }
 
     void OnTarget()

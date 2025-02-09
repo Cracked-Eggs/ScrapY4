@@ -18,11 +18,8 @@ public class PlayerFreeLookState : PlayerBaseState
         stateMachine.InputReader.JumpEvent += OnJump;
         stateMachine.InputReader.InteractEvent += OnInteract;
         stateMachine.InputReader.PauseEvent += OnPause;
-        stateMachine.InputReader.AimEvent += OnAim;
         stateMachine.Animator.CrossFadeInFixedTime(FreeLookBlendTreeHash, CrossFadeDuration);
-
-      
-
+        Debug.Log(stateMachine.InputReader.IsInCombat);
     }
 
     public override void Tick(float deltaTime)
@@ -30,6 +27,12 @@ public class PlayerFreeLookState : PlayerBaseState
         if (stateMachine.InputReader.IsAttacking)
         {
             stateMachine.SwitchState(new PlayerAttackingState(stateMachine, 0));
+            return;
+        }
+
+        if (stateMachine.InputReader.IsAiming)
+        {
+            stateMachine.SwitchState(new PlayerAimingState(stateMachine));
             return;
         }
 
@@ -63,12 +66,6 @@ public class PlayerFreeLookState : PlayerBaseState
         stateMachine.SwitchState(new PlayerTargetingState(stateMachine));
     }
 
-    void OnAim()
-    {
-        if (stateMachine.InputReader.IsAiming)
-            stateMachine.SwitchState(new PlayerAimingState(stateMachine));
-    }
-    
     void OnJump() => stateMachine.SwitchState(new PlayerJumpingState(stateMachine));
     void OnPause() => stateMachine.SwitchState(new PlayerPausedState(stateMachine));
 

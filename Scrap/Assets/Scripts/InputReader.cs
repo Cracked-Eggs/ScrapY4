@@ -7,6 +7,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public bool IsAttacking { get; private set; }
     public bool IsBlocking { get; private set; }
     public bool IsAiming { get; private set; }
+    public bool IsInCombat;
     public Vector2 MovementValue { get; private set; }
 
     public event Action JumpEvent;
@@ -173,10 +174,10 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
 
     public void OnAiming(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !IsInCombat)
             IsAiming = true; 
         else if (context.canceled)
             IsAiming = false;
-        AimEvent.Invoke();
+        AimEvent?.Invoke();
     }
 }
