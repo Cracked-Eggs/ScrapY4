@@ -13,6 +13,8 @@ public class Attach : MonoBehaviour
 
     [SerializeField] public float customGravity = -9.81f;
     [SerializeField] public float shootingForce = 500f;
+    [SerializeField] LayerMask aimColliderLayerMask = new LayerMask();
+    [SerializeField] Transform debugTransform;
     AudioManager _audioManager;
     Animator _animator;
 
@@ -28,6 +30,7 @@ public class Attach : MonoBehaviour
 
     public bool _isBothLegsDetached = false;
     public bool _isEverythingDetached = false;
+    private Vector3 mouseWorldPosition;
 
     private Dictionary<GameObject, Vector3> originalPositions = new Dictionary<GameObject, Vector3>();
     private Dictionary<GameObject, Quaternion> originalRotations = new Dictionary<GameObject, Quaternion>();
@@ -84,6 +87,16 @@ public class Attach : MonoBehaviour
             _isBothLegsDetached = false;
             CharacterController controller = GetComponent<CharacterController>();
             controller.height = 0f;
+        }
+        
+        // Calculate the aim position
+        Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
+        {
+            debugTransform.position = raycastHit.point; // Optional: Visualize the aim point
+            mouseWorldPosition = raycastHit.point; // Store the aim position
         }
     }
 
@@ -349,10 +362,11 @@ public class Attach : MonoBehaviour
         {
             lastDetachTime = Time.time;
             DetachPart(r_Arm);
+            Vector3 aimDirection = (mouseWorldPosition - r_Arm.transform.position).normalized;
             Rigidbody rb = r_Arm.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.AddForce(transform.forward * shootingForce);  // Adjust force as needed
+                rb.AddForce(aimDirection * shootingForce, ForceMode.Impulse); // Adjust force as needed
             }
 
             _isR_ArmDetached = true;
@@ -366,10 +380,11 @@ public class Attach : MonoBehaviour
         {
             lastDetachTime = Time.time;
             DetachPart(l_Arm);
+            Vector3 aimDirection = (mouseWorldPosition - l_Arm.transform.position).normalized;
             Rigidbody rb = l_Arm.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.AddForce(transform.forward * shootingForce);  // Adjust force as needed
+                rb.AddForce(aimDirection * shootingForce, ForceMode.Impulse);
             }
 
             _isL_ArmDetached = true;
@@ -525,6 +540,4 @@ public class Attach : MonoBehaviour
         controller.center = new Vector3(0, -2.46f, 0);
         controller.radius = 1.5f;
     }
-
-
 }

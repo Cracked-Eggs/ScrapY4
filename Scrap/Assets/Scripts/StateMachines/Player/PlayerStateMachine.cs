@@ -24,6 +24,8 @@ public class PlayerStateMachine : StateMachine
     [field: SerializeField] public AudioManager AudioManager { get; private set; }
     [field: SerializeField] public LayerMask aimColliderLayerMask = new LayerMask();
     [field: SerializeField] public Transform debugTransform { get; private set; }
+    [field: SerializeField] public GameObject Crosshair { get; private set; }
+    
     
 
     public float PreviousDodgeTime { get; private set; } = Mathf.NegativeInfinity;
