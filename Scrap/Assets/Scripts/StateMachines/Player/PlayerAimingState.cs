@@ -13,6 +13,7 @@ public class PlayerAimingState : PlayerBaseState
     public override void Enter()
     {
         stateMachine.Animator.CrossFadeInFixedTime(AimingBlendTreeHash, CrossFadeDuration);
+        Debug.Log("Enter Aiming");
     }
 
     public override void Tick(float deltaTime)
@@ -24,19 +25,33 @@ public class PlayerAimingState : PlayerBaseState
         
         Move(movement * stateMachine.TargetingMovementSpeed, deltaTime);
         UpdateAnimator(deltaTime);
+        RotateTowardsCamera();
     }
 
     public override void Exit()
     {
+        Debug.Log("exit aiming");
     }
     
     Vector3 CalculateMovement(float deltaTime)
     {
-        Vector3 movement = new Vector3();
+        Vector3 forward = stateMachine.MainCameraTransform.forward;
+        Vector3 right = stateMachine.MainCameraTransform.right;
+    
+        forward.y = 0f; // Keep movement horizontal
+        right.y = 0f;
 
-        movement += stateMachine.transform.right * stateMachine.InputReader.MovementValue.x;
-        movement += stateMachine.transform.forward * stateMachine.InputReader.MovementValue.y;
-        return movement;
+        forward.Normalize();
+        right.Normalize();
+
+        return forward * stateMachine.InputReader.MovementValue.y +
+               right * stateMachine.InputReader.MovementValue.x;
+    }
+    
+    void RotateTowardsCamera()
+    {
+        Quaternion targetRotation = Quaternion.Euler(0f, stateMachine.MainCameraTransform.eulerAngles.y, 0f);
+        stateMachine.transform.rotation = Quaternion.Lerp(stateMachine.transform.rotation, targetRotation, Time.deltaTime * stateMachine.RotationDamping);
     }
     
     void UpdateAnimator(float deltaTime)
