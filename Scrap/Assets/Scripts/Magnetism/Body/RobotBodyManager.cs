@@ -57,6 +57,7 @@ public class Attach : MonoBehaviour
 
     public void On_Detach(InputAction.CallbackContext context)
     {
+        
         if (!isDetached && Time.time >= lastDetachTime + detachCooldown)
         {
             lastDetachTime = Time.time;
@@ -159,7 +160,7 @@ public class Attach : MonoBehaviour
     {
         Vector3 start = transform.position;
         Vector3 end = start + Vector3.up * riseAmount;
-        float duration = 0.5f; // Adjust for speed
+        float duration = 0.1f; // Adjust for speed
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -231,8 +232,11 @@ public class Attach : MonoBehaviour
 
     public void ShootRightArm()
     {
+        if (partManager.isReattaching) return;
+
         if (!_isR_ArmDetached)
         {
+
             // Detach and shoot right arm
             partManager.DetachPart(partManager.r_Arm);
             Rigidbody rb = partManager.r_Arm.GetComponent<Rigidbody>();
@@ -271,6 +275,7 @@ public class Attach : MonoBehaviour
 
     public void ShootLeftArm()
     {
+        if (partManager.isReattaching) return;
         if (!_isL_ArmDetached)
         {
             // Detach and shoot left arm
@@ -290,6 +295,7 @@ public class Attach : MonoBehaviour
 
     public void RecallLeftArm()
     {
+        if(partManager.isReattaching) return;
         if (_isL_ArmDetached)
         {
             // Handle retraction of left arm
@@ -311,6 +317,7 @@ public class Attach : MonoBehaviour
 
     public void DropEverything(InputAction.CallbackContext context)
     {
+        if(partManager.isReattaching) return;
         if (!isDetached && Time.time >= lastDetachTime + detachCooldown)
         {
             lastDetachTime = Time.time;
@@ -434,7 +441,6 @@ public class Attach : MonoBehaviour
 
         }
     }
-   
     private IEnumerator WaitForRetractComplete(GameObject bodyPart)
     {
         float timeout = 1f; // Adjust based on your needs
