@@ -144,6 +144,10 @@ public class PartManager : MonoBehaviour
         }
 
         isReattaching = false;  // Reattachment is complete
+        attach.leftArmVFX.Stop();
+        attach.rightArmVFX.Stop();
+        attach.rightArmARCVFX.SetActive(false);
+        attach.leftArmARCVFX.SetActive(false);
     }
 
     public void DetachPart(GameObject part)

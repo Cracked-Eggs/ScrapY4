@@ -3,11 +3,18 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine.VFX;
 public class Attach : MonoBehaviour
 {
     private Rigidbody _rb;
     private Collider playerCollider;
     public bool canRetach;
+    [SerializeField] public VisualEffect leftArmVFX;
+    [SerializeField] public GameObject leftArmARCVFX;
+    [SerializeField] public VisualEffect rightArmVFX;
+    [SerializeField] public GameObject rightArmARCVFX;
+
+
 
     [SerializeField] public float customGravity = -9.81f;
     [SerializeField] AudioClip magnetRepel;
@@ -52,6 +59,11 @@ public class Attach : MonoBehaviour
     {
         if (leftArmMagnetScript != null && _isL_ArmDetached == false) leftArmMagnetScript.enabled = false;
         if (rightArmMagnetScript != null && _isR_ArmDetached == false) rightArmMagnetScript.enabled = false;
+        leftArmVFX.Stop();
+        rightArmVFX.Stop();
+     
+        rightArmARCVFX.SetActive(false);
+        leftArmARCVFX.SetActive(false);
 
     }
 
@@ -443,8 +455,19 @@ public class Attach : MonoBehaviour
     }
     private IEnumerator WaitForRetractComplete(GameObject bodyPart)
     {
-        float timeout = 1f; // Adjust based on your needs
+        float timeout = 10f; // Adjust based on your needs
         float startTime = Time.time;
+        if (bodyPart.CompareTag("L_Arm"))
+        {
+            leftArmVFX.Play();
+            leftArmARCVFX.SetActive(true);
+        }
+        else if (bodyPart.CompareTag("R_Arm"))
+        {
+            rightArmVFX.Play();
+            rightArmARCVFX.SetActive(true);
+        }
+
 
         while (Vector3.Distance(bodyPart.transform.position, transform.position) > 2f)
         {
