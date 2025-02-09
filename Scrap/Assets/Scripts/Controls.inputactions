@@ -524,17 +524,6 @@
                 },
                 {
                     "name": "",
-                    "id": "7ce41617-b93d-42aa-b36a-4e92b7c24c93",
-                    "path": "<Gamepad>/leftTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "ShootL",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "c5b8d6e0-6c51-4af6-9d83-72f8a9629944",
                     "path": "<Keyboard>/2",
                     "interactions": "",
@@ -724,6 +713,17 @@
                     "name": "",
                     "id": "d608af20-f313-4560-b035-99905823e70c",
                     "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aiming",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c432459d-1714-4f82-b327-c5501640ebe8",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
