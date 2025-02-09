@@ -356,6 +356,15 @@ public class Attach : MonoBehaviour
             skinnedMeshRenderer.rootBone = originalRootBones[part];
         }
     }
+    
+    IEnumerator MovePartToTarget(GameObject part, Vector3 targetPosition, float speed)
+    {
+        while (Vector3.Distance(part.transform.position, targetPosition) > 0.1f)
+        {
+            part.transform.position = Vector3.MoveTowards(part.transform.position, targetPosition, speed * Time.deltaTime);
+            yield return null;
+        }
+    }
 
     public void ShootRightArm(InputAction.CallbackContext context)
     {
@@ -367,7 +376,7 @@ public class Attach : MonoBehaviour
             Rigidbody rb = r_Arm.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.AddForce(aimDirection * shootingForce, ForceMode.VelocityChange); // Adjust force as needed
+                StartCoroutine(MovePartToTarget(r_Arm, mouseWorldPosition, shootingForce));
             }
 
             _isR_ArmDetached = true;
@@ -385,7 +394,7 @@ public class Attach : MonoBehaviour
             Rigidbody rb = l_Arm.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.AddForce(aimDirection * shootingForce, ForceMode.VelocityChange);
+                StartCoroutine(MovePartToTarget(r_Arm, mouseWorldPosition, shootingForce));
             }
 
             _isL_ArmDetached = true;
