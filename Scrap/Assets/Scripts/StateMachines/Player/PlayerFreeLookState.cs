@@ -20,6 +20,8 @@ public class PlayerFreeLookState : PlayerBaseState
         stateMachine.InputReader.PauseEvent += OnPause;
         stateMachine.Animator.CrossFadeInFixedTime(FreeLookBlendTreeHash, CrossFadeDuration);
 
+      
+
     }
 
     public override void Tick(float deltaTime)
@@ -38,6 +40,9 @@ public class PlayerFreeLookState : PlayerBaseState
             stateMachine.Animator.SetFloat(FreeLookSpeedHash, 0, AnimatorDampTime, deltaTime);
             return;
         }
+        
+        if (stateMachine.InputReader.IsAiming)
+            stateMachine.SwitchState(new PlayerAimingState(stateMachine));
 
         stateMachine.Animator.SetFloat(FreeLookSpeedHash, 1, AnimatorDampTime, deltaTime);
         FaceMovementDirection(movement, deltaTime);

@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "name": "Jump",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "6aff9f1a-abe2-4af8-b916-dd35c49d3692",
                     "expectedControlType": "",
                     "processors": "",
@@ -198,6 +198,15 @@
                     "name": "Interact",
                     "type": "Button",
                     "id": "c2a332f1-9302-45f0-9331-fac271169846",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Aiming",
+                    "type": "Button",
+                    "id": "180e5aea-7d19-4a54-8a41-26e25d57b902",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -708,6 +717,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d608af20-f313-4560-b035-99905823e70c",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aiming",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
