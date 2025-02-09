@@ -30,6 +30,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     
     public event Action PauseEvent;
     public event Action InteractEvent;
+    public event Action AimEvent;
 
     Controls controls;
 
@@ -176,5 +177,6 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
             IsAiming = true; 
         else if (context.canceled)
             IsAiming = false;
+        AimEvent.Invoke();
     }
 }

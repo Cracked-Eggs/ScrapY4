@@ -18,6 +18,7 @@ public class PlayerFreeLookState : PlayerBaseState
         stateMachine.InputReader.JumpEvent += OnJump;
         stateMachine.InputReader.InteractEvent += OnInteract;
         stateMachine.InputReader.PauseEvent += OnPause;
+        stateMachine.InputReader.AimEvent += OnAim;
         stateMachine.Animator.CrossFadeInFixedTime(FreeLookBlendTreeHash, CrossFadeDuration);
 
       
@@ -41,8 +42,7 @@ public class PlayerFreeLookState : PlayerBaseState
             return;
         }
         
-        if (stateMachine.InputReader.IsAiming)
-            stateMachine.SwitchState(new PlayerAimingState(stateMachine));
+       
 
         stateMachine.Animator.SetFloat(FreeLookSpeedHash, 1, AnimatorDampTime, deltaTime);
         FaceMovementDirection(movement, deltaTime);
@@ -61,6 +61,12 @@ public class PlayerFreeLookState : PlayerBaseState
     {
         if (!stateMachine.Targeter.SelectTarget()) { return; }
         stateMachine.SwitchState(new PlayerTargetingState(stateMachine));
+    }
+
+    void OnAim()
+    {
+        if (stateMachine.InputReader.IsAiming)
+            stateMachine.SwitchState(new PlayerAimingState(stateMachine));
     }
     
     void OnJump() => stateMachine.SwitchState(new PlayerJumpingState(stateMachine));
