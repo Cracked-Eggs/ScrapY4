@@ -19,7 +19,6 @@ public class PlayerFreeLookState : PlayerBaseState
         stateMachine.InputReader.InteractEvent += OnInteract;
         stateMachine.InputReader.PauseEvent += OnPause;
         stateMachine.Animator.CrossFadeInFixedTime(FreeLookBlendTreeHash, CrossFadeDuration);
-        Debug.Log(stateMachine.InputReader.IsInCombat);
     }
 
     public override void Tick(float deltaTime)
