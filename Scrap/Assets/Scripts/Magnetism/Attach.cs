@@ -96,8 +96,9 @@ public class Attach : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
         {
             debugTransform.position = raycastHit.point; // Optional: Visualize the aim point
-            mouseWorldPosition = raycastHit.point; // Store the aim position
         }
+        mouseWorldPosition = raycastHit.point; // Store the aim position
+
     }
 
     private void StoreOriginalTransforms(GameObject part)
@@ -366,7 +367,7 @@ public class Attach : MonoBehaviour
             Rigidbody rb = r_Arm.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.AddForce(aimDirection * shootingForce, ForceMode.Impulse); // Adjust force as needed
+                rb.AddForce(aimDirection * shootingForce, ForceMode.VelocityChange); // Adjust force as needed
             }
 
             _isR_ArmDetached = true;
@@ -384,7 +385,7 @@ public class Attach : MonoBehaviour
             Rigidbody rb = l_Arm.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.AddForce(aimDirection * shootingForce, ForceMode.Impulse);
+                rb.AddForce(aimDirection * shootingForce, ForceMode.VelocityChange);
             }
 
             _isL_ArmDetached = true;
