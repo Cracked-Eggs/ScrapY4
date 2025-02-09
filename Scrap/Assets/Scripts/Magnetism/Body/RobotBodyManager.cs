@@ -16,6 +16,7 @@ public class Attach : MonoBehaviour
 
 
 
+
     [SerializeField] public float customGravity = -9.81f;
     [SerializeField] AudioClip magnetRepel;
     [SerializeField] public float shootingForce = 500f;
@@ -64,6 +65,7 @@ public class Attach : MonoBehaviour
      
         rightArmARCVFX.SetActive(false);
         leftArmARCVFX.SetActive(false);
+     
 
     }
 
@@ -461,11 +463,13 @@ public class Attach : MonoBehaviour
         {
             leftArmVFX.Play();
             leftArmARCVFX.SetActive(true);
+            
         }
         else if (bodyPart.CompareTag("R_Arm"))
         {
             rightArmVFX.Play();
             rightArmARCVFX.SetActive(true);
+            
         }
 
 
