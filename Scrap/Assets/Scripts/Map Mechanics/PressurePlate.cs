@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,19 +6,20 @@ public class PressurePlate : MonoBehaviour
 {
     Animator animator;
     const string PressedHash = "isPressed";
-    
+
     [SerializeField] UnityEvent magnetEvent;
     [SerializeField] UnityEvent offMagnetEvent;
-    
-    [SerializeField] int objectsOnPlate = 0; // Counter for objects on the plate
+
+    public HashSet<GameObject> objectsOnPlate = new HashSet<GameObject>();
 
     void Awake() => animator = GetComponentInChildren<Animator>();
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("R_Arm") || other.CompareTag("L_Arm"))
+        if (IsValidObject(other))
         {
-            objectsOnPlate++; // Increase counter
+            objectsOnPlate.Add(other.gameObject); // Add object
+            PrintObjectsOnPlate();
             animator.SetBool(PressedHash, true);
             magnetEvent.Invoke();
         }
@@ -26,15 +27,48 @@ public class PressurePlate : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("R_Arm") || other.CompareTag("L_Arm"))
+        if (IsValidObject(other))
         {
-            objectsOnPlate--; // Decrease counter
+            objectsOnPlate.Remove(other.gameObject); // Remove object
+            PrintObjectsOnPlate();
+        }
+    }
 
-            if (objectsOnPlate <= 0) // Only deactivate if no objects remain
-            {
-                animator.SetBool(PressedHash, false);
-                offMagnetEvent.Invoke();
-            }
+    void FixedUpdate()
+    {
+        // Remove objects that are no longer valid (destroyed or moved)
+        objectsOnPlate.RemoveWhere(obj => obj == null || !obj.activeInHierarchy || !IsStillInTrigger(obj));
+
+        // Update plate state
+        if (objectsOnPlate.Count == 0)
+        {
+            animator.SetBool(PressedHash, false);
+            offMagnetEvent.Invoke();
+        }
+    }
+
+    bool IsValidObject(Collider other)
+    {
+        return other.CompareTag("Player") || other.CompareTag("R_Arm") || other.CompareTag("L_Arm");
+    }
+
+    bool IsStillInTrigger(GameObject obj)
+    {
+        Collider objCollider = obj.GetComponent<Collider>();
+        if (objCollider == null) return false;
+
+        return GetComponent<Collider>().bounds.Intersects(objCollider.bounds);
+    }
+
+    void PrintObjectsOnPlate()
+    {
+        if (objectsOnPlate.Count > 0)
+        {
+            Debug.Log("Objects on plate: " + string.Join(", ", objectsOnPlate));
+        }
+        else
+        {
+            Debug.Log("Pressure plate is empty.");
         }
     }
 }
