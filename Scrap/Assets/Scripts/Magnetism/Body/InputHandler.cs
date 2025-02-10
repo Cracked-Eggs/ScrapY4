@@ -17,8 +17,7 @@ public class InputHandler : MonoBehaviour
         inputSystem.Player.DetachPart.performed += attachScript.On_Detach;
         inputSystem.Player.DetachPart.Enable();
 
-        inputSystem.Player.ReattachPart.performed += attachScript.On_Reattach;
-        inputSystem.Player.ReattachPart.Enable();
+      
 
         inputSystem.Player.ShootR.performed += attachScript.ShootOrRecallRightArm;
         inputSystem.Player.ShootR.Enable();
@@ -29,7 +28,7 @@ public class InputHandler : MonoBehaviour
         inputSystem.Player.RecallBothArms.performed += attachScript.RecallBothArms;
         inputSystem.Player.RecallBothArms.Enable();
 
-        inputSystem.Player.DropEverything.performed += attachScript.DropEverything;
+        inputSystem.Player.DropEverything.performed += attachScript.ToggleDetachReattach;
         inputSystem.Player.DropEverything.Enable();
 
         inputSystem.Player.DropLeftArm.performed += attachScript.DropLeftArm;
@@ -38,20 +37,13 @@ public class InputHandler : MonoBehaviour
         inputSystem.Player.DropRightArm.performed += attachScript.DropRightArm;
         inputSystem.Player.DropRightArm.Enable();
 
-        inputSystem.Player.DropLeftLeg.performed += attachScript.DropLeftLeg;
-        inputSystem.Player.DropLeftLeg.Enable();
-
-        inputSystem.Player.DropRightLeg.performed += attachScript.DropRightLeg;
-        inputSystem.Player.DropRightLeg.Enable();
-
-        inputSystem.Player.DropBothLegs.performed += attachScript.DropBothLegs;
-        inputSystem.Player.DropBothLegs.Enable();
+     
     }
 
     private void OnDisable()
     {
         inputSystem.Player.DetachPart.Disable();
-        inputSystem.Player.ReattachPart.Disable();
+        
 
         inputSystem.Player.ShootR.Disable();
         inputSystem.Player.ShootL.Disable();
@@ -63,8 +55,6 @@ public class InputHandler : MonoBehaviour
         inputSystem.Player.DropEverything.Disable();
         inputSystem.Player.DropLeftArm.Disable();
         inputSystem.Player.DropRightArm.Disable();
-        inputSystem.Player.DropLeftLeg.Disable();
-        inputSystem.Player.DropRightLeg.Disable();
-        inputSystem.Player.DropBothLegs.Disable();
+     
     }
 }

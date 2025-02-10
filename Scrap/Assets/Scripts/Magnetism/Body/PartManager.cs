@@ -146,6 +146,9 @@ public class PartManager : MonoBehaviour
         isReattaching = false;  // Reattachment is complete
         attach.leftArmVFX.Stop();
         attach.rightArmVFX.Stop();
+        attach.RightLegVFX.Stop();
+        attach.LeftLegVFX.Stop();
+        attach.HeadVFX.Stop();
         attach.rightArmARCVFX.SetActive(false);
         attach.leftArmARCVFX.SetActive(false);
         attach.headARCVFX.SetActive(false);
