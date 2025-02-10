@@ -375,27 +375,23 @@ public class Attach : MonoBehaviour
         lastDetachTime = Time.time;
         DetachPart(r_Arm);
 
-        // Check for nearby magnetic objects
-        Collider[] magneticObjects = Physics.OverlapSphere(r_Arm.transform.position, 5f, LayerMask.GetMask("Magnetic"));
-        if (magneticObjects.Length > 0)
+        // Check for a nearby magnetic object
+        Vector3? magneticTarget = GetMagneticTargetPosition(r_Arm.transform.position, 10f); // Adjust range as needed
+
+        if (magneticTarget.HasValue)
         {
-            // Apply magnetic force
+            // Attract to the magnetic object
             Rigidbody rb = r_Arm.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                Vector3 direction = (magneticObjects[0].transform.position - r_Arm.transform.position).normalized;
-                rb.AddForce(direction * 10f, ForceMode.Impulse); // Adjust force as needed
+                Vector3 direction = (magneticTarget.Value - r_Arm.transform.position).normalized;
+                rb.AddForce(direction * shootingForce, ForceMode.Impulse); // Apply force toward the magnetic object
             }
         }
         else
         {
-            // Shoot normally
-            Vector3 aimDirection = (mouseWorldPosition - r_Arm.transform.position).normalized;
-            Rigidbody rb = r_Arm.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                StartCoroutine(MovePartToTarget(r_Arm, mouseWorldPosition, shootingForce));
-            }
+            // Shoot toward the aim point
+            StartCoroutine(MovePartToTarget(r_Arm, mouseWorldPosition, shootingForce));
         }
 
         _isR_ArmDetached = true;
@@ -410,27 +406,23 @@ public void ShootLeftArm(InputAction.CallbackContext context)
         lastDetachTime = Time.time;
         DetachPart(l_Arm);
 
-        // Check for nearby magnetic objects
-        Collider[] magneticObjects = Physics.OverlapSphere(l_Arm.transform.position, 5f, LayerMask.GetMask("Magnetic"));
-        if (magneticObjects.Length > 0)
+        // Check for a nearby magnetic object
+        Vector3? magneticTarget = GetMagneticTargetPosition(l_Arm.transform.position, 10f); // Adjust range as needed
+
+        if (magneticTarget.HasValue)
         {
-            // Apply magnetic force
+            // Attract to the magnetic object
             Rigidbody rb = l_Arm.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                Vector3 direction = (magneticObjects[0].transform.position - l_Arm.transform.position).normalized;
-                rb.AddForce(direction * 10f, ForceMode.Impulse); // Adjust force as needed
+                Vector3 direction = (magneticTarget.Value - l_Arm.transform.position).normalized;
+                rb.AddForce(direction * shootingForce, ForceMode.Impulse); // Apply force toward the magnetic object
             }
         }
         else
         {
-            // Shoot normally
-            Vector3 aimDirection = (mouseWorldPosition - l_Arm.transform.position).normalized;
-            Rigidbody rb = l_Arm.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                StartCoroutine(MovePartToTarget(l_Arm, mouseWorldPosition, shootingForce));
-            }
+            // Shoot toward the aim point
+            StartCoroutine(MovePartToTarget(l_Arm, mouseWorldPosition, shootingForce));
         }
 
         _isL_ArmDetached = true;
@@ -585,5 +577,16 @@ public void ShootLeftArm(InputAction.CallbackContext context)
         controller.height = 5.61f;
         controller.center = new Vector3(0, -2.46f, 0);
         controller.radius = 1.5f;
+    }
+    
+    private Vector3? GetMagneticTargetPosition(Vector3 position, float range)
+    {
+        Collider[] magneticObjects = Physics.OverlapSphere(position, range, LayerMask.GetMask("Magnetic"));
+        if (magneticObjects.Length > 0)
+        {
+            // Return the position of the first magnetic object found
+            return magneticObjects[0].transform.position;
+        }
+        return null; // No magnetic object found
     }
 }
