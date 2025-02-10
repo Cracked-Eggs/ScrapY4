@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 747268600575352692}
   - component: {fileID: 3341535505335064746}
   - component: {fileID: 278822920384028552}
+  - component: {fileID: 3643047412745360369}
   m_Layer: 0
   m_Name: Magnet
   m_TagString: Untagged
@@ -166,6 +167,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3643047412745360369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8063757706691393521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8241fae32201f24697a9f8338a23e25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  polarity: 0
+  attractionForce: 10
+  maxVelocity: 5
 --- !u!1 &8872675809238597946
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,7 +195,7 @@ GameObject:
   - component: {fileID: 5986088408695243930}
   - component: {fileID: 2128471982413101643}
   - component: {fileID: 8002953620866437958}
-  - component: {fileID: 9096973550246024273}
+  - component: {fileID: 7316920042702327938}
   m_Layer: 0
   m_Name: Magnetic Object
   m_TagString: Untagged
@@ -300,7 +316,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &9096973550246024273
+--- !u!114 &7316920042702327938
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -309,9 +325,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8872675809238597946}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0051b0a2a6650554ebc36874fc7be59c, type: 3}
+  m_Script: {fileID: 11500000, guid: c8241fae32201f24697a9f8338a23e25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magnet: {fileID: 1663528119697567725}
-  magnetForce: 2
-  maxDistance: 10
+  polarity: 0
+  attractionForce: 10
+  maxVelocity: 5

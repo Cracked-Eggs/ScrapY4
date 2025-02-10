@@ -60,7 +60,7 @@ Material:
     - _CastShadows: 1
     - _Cull: 0
     - _DstBlend: 1
-    - _MaskPower: 4
+    - _MaskPower: 0.5
     - _NoiseScale: 30
     - _NoiseScaleGradient: 10
     - _QueueControl: 0
@@ -72,7 +72,7 @@ Material:
     - _ZWrite: 0
     - _ZWriteControl: 0
     m_Colors:
-    - _Colour: {r: 0.0990566, g: 0.8156506, b: 1, a: 1}
+    - _Colour: {r: 0.7056604, g: 0, b: 0.03499142, a: 1}
     - _NoiseSpeed: {r: 0, g: 0.2, b: 0, a: 0}
     - _Tiling: {r: 25, g: 16, b: 0, a: 0}
   m_BuildTextureStacks: []
