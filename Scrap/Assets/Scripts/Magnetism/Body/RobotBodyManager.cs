@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine.VFX;
+using System.Linq;
 public class Attach : MonoBehaviour
 {
     private Rigidbody _rb;
@@ -13,6 +14,14 @@ public class Attach : MonoBehaviour
     [SerializeField] public GameObject leftArmARCVFX;
     [SerializeField] public VisualEffect rightArmVFX;
     [SerializeField] public GameObject rightArmARCVFX;
+    [SerializeField] public GameObject headARCVFX;
+    [SerializeField] public GameObject LeftLegARCVFX;
+    [SerializeField] public GameObject RightLegARCVFX;
+
+    
+    private Vector3 resetPos1Original;
+    private Vector3 resetPos2Original;
+
 
 
 
@@ -65,12 +74,16 @@ public class Attach : MonoBehaviour
      
         rightArmARCVFX.SetActive(false);
         leftArmARCVFX.SetActive(false);
+        headARCVFX.SetActive(false);
+        LeftLegARCVFX.SetActive(false);
+        RightLegARCVFX.SetActive(false);
      
+
 
     }
 
     public void On_Detach(InputAction.CallbackContext context)
-    {
+    {   
         
         if (!isDetached && Time.time >= lastDetachTime + detachCooldown)
         {
@@ -93,6 +106,7 @@ public class Attach : MonoBehaviour
             rightArmMagnetScript.enabled = true;
             leftArmSphereColl.enabled = true;
             rightArmSphereColl.enabled = true;
+    
 
             playerCollider.enabled = true;
             _rb.constraints = RigidbodyConstraints.FreezeAll;
@@ -109,27 +123,53 @@ public class Attach : MonoBehaviour
             CharacterController controller = GetComponent<CharacterController>();
             controller.center = new Vector3(0, -2.46f, 0);
             controller.height = 5.61f;
+
             // Clear previous body parts before adding new ones
             secondaryRadiusChecker.targetBodyParts.Clear();
             bool bodyPartInRange = false;
 
-            List<(GameObject part, Action resetFlag)> bodyParts = new()
+            // List of body parts, checking individually if detached
+            List<(GameObject part, Action resetFlag, bool isDetached)> bodyParts = new()
         {
-            (partManager.r_Arm, () => _isR_ArmDetached = false),
-            (partManager.l_Arm, () => _isL_ArmDetached = false),
-            (partManager.r_Leg, () => _isR_LegDetached = false),
-            (partManager.l_Leg, () => _isL_LegDetached = false),
-            (partManager.torso, () => _isTorsoDetached = false)
+            (partManager.r_Arm, () => _isR_ArmDetached = false, _isR_ArmDetached),
+            (partManager.l_Arm, () => _isL_ArmDetached = false, _isL_ArmDetached),
+            (partManager.r_Leg, () => _isR_LegDetached = false, _isR_LegDetached),
+            (partManager.l_Leg, () => _isL_LegDetached = false, _isL_LegDetached),
+            (partManager.torso, () => _isTorsoDetached = false, _isTorsoDetached)
         };
 
-            // Add body parts to the list if they are in range
-            foreach (var (bodyPart, resetFlag) in bodyParts)
+            // Add body parts to the list if they are in range and detached
+            foreach (var (bodyPart, resetFlag, isDetached) in bodyParts)
             {
-                if (IsBodyPartInSecondaryRadius(bodyPart))
+                if (isDetached && IsBodyPartInSecondaryRadius(bodyPart))
                 {
                     secondaryRadiusChecker.targetBodyParts.Add(bodyPart);
                     resetFlag();
                     bodyPartInRange = true;
+
+                    // Play VFX for each detached part being retracted
+                    if (bodyPart.CompareTag("R_Arm"))
+                    {
+                        rightArmVFX.Play();
+                        rightArmARCVFX.SetActive(true);
+                    }
+                    else if (bodyPart.CompareTag("L_Arm"))
+                    {
+                        leftArmVFX.Play();
+                        leftArmARCVFX.SetActive(true);
+                    }
+                    else if (bodyPart.CompareTag("Torso"))
+                    {
+                        headARCVFX.SetActive(true);
+                    }
+                    else if (bodyPart.CompareTag("R_Leg"))
+                    {
+                        RightLegARCVFX.SetActive(true);
+                    }
+                    else if (bodyPart.CompareTag("L_Leg"))
+                    {
+                        LeftLegARCVFX.SetActive(true);
+                    }
                 }
             }
 
@@ -147,7 +187,10 @@ public class Attach : MonoBehaviour
                 StartCoroutine(WaitForRetractComplete(bodyPart)); // Ensure retraction completes for each part
             }
 
+
             StartCoroutine(SmoothRise(playerCollider.bounds.extents.y));
+
+
 
             // Disable Magnet scripts and colliders for reattached arms
             if (leftArmMagnetScript != null && !_isL_ArmDetached) leftArmMagnetScript.enabled = false;
@@ -163,18 +206,21 @@ public class Attach : MonoBehaviour
 
             _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             playerCollider.enabled = false;
-
            
 
             Debug.Log("Reattachment process completed.");
-
         }
     }
+
+    // New Coroutine that waits until all parts are reattached before calling SmoothRise
+  
+       
+   
     private IEnumerator SmoothRise(float riseAmount)
     {
         Vector3 start = transform.position;
         Vector3 end = start + Vector3.up * riseAmount;
-        float duration = 0.1f; // Adjust for speed
+        float duration = 0.05f; // Adjust for speed
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -354,6 +400,7 @@ public class Attach : MonoBehaviour
             rightArmMagnetScript.enabled = true;
             leftArmSphereColl.enabled = true;
             rightArmSphereColl.enabled = true;
+          
         }
     }
     public void DropLeftArm(InputAction.CallbackContext context)
@@ -461,8 +508,10 @@ public class Attach : MonoBehaviour
         float startTime = Time.time;
         if (bodyPart.CompareTag("L_Arm"))
         {
+            
             leftArmVFX.Play();
             leftArmARCVFX.SetActive(true);
+           
             
         }
         else if (bodyPart.CompareTag("R_Arm"))
@@ -470,6 +519,21 @@ public class Attach : MonoBehaviour
             rightArmVFX.Play();
             rightArmARCVFX.SetActive(true);
             
+        }
+        else if(bodyPart.CompareTag("Torso"))
+        {
+         
+            headARCVFX.SetActive(true);
+           
+
+        }
+        else if(bodyPart.CompareTag("L_Leg"))
+        {
+            LeftLegARCVFX.SetActive(true) ;
+        }
+        else if (bodyPart.CompareTag("R_Leg"))
+        {
+            RightLegARCVFX.SetActive(true);
         }
 
 

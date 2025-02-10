@@ -53,6 +53,9 @@ public class RadiusChecker : MonoBehaviour
         // If all body parts are reattached, clear the targets and stop retraction
         if (currentBodyParts == totalBodyParts)
         {
+            // Reset in-range flags for all body parts when all parts are reattached
+            ResetInRangeFlags();
+
             targetBodyParts.Clear(); // Clear the list of target body parts
             Debug.Log("All body parts reattached!");
             isRetracting = false;
@@ -63,6 +66,19 @@ public class RadiusChecker : MonoBehaviour
 
         // Check if any body part is inside the main radius
         CheckBodyPartsInMainRadius();
+    }
+    void ResetInRangeFlags()
+    {
+        // Reset the in-range flags for all parts when they are reattached
+        isHeadInRange = false;
+        isTorsoInRange = false;
+        isRightLegInRange = false;
+        isLeftLegInRange = false;
+        isRightArmInRange = false;
+        isLeftArmInRange = false;
+
+        // Also reset the main radius flag
+        isBodyPartInMainRange = false;
     }
 
     void RepelObjects()
@@ -127,14 +143,13 @@ public class RadiusChecker : MonoBehaviour
                 float distance = Vector3.Distance(transform.position, bodyPart.transform.position);
                 if (distance <= secondaryRadius)
                 {
-                    // Update the corresponding public bool for each body part
+                    // Update the corresponding public bool for each body part if it's detached
                     if (bodyPart == attachScript.partManager.head) isHeadInRange = true;
                     if (bodyPart == attachScript.partManager.torso) isTorsoInRange = true;
                     if (bodyPart == attachScript.partManager.r_Leg) isRightLegInRange = true;
                     if (bodyPart == attachScript.partManager.l_Leg) isLeftLegInRange = true;
                     if (bodyPart == attachScript.partManager.r_Arm) isRightArmInRange = true;
                     if (bodyPart == attachScript.partManager.l_Arm) isLeftArmInRange = true;
-
 
                     Debug.Log("Body part " + bodyPart.name + " is inside the secondary radius.");
                 }
@@ -147,13 +162,11 @@ public class RadiusChecker : MonoBehaviour
                     if (bodyPart == attachScript.partManager.l_Leg) isLeftLegInRange = false;
                     if (bodyPart == attachScript.partManager.r_Arm) isRightArmInRange = false;
                     if (bodyPart == attachScript.partManager.l_Arm) isLeftArmInRange = false;
-
                 }
             }
         }
     }
 
-    // Method to check if any body part is inside the main radius
     void CheckBodyPartsInMainRadius()
     {
         foreach (var bodyPart in bodyParts)
@@ -167,19 +180,17 @@ public class RadiusChecker : MonoBehaviour
                 float distance = Vector3.Distance(transform.position, bodyPart.transform.position);
                 if (distance <= radius)
                 {
-                    // Update the corresponding public bool for each body part
+                    // Update the corresponding public bool for each body part if it's detached
                     if (bodyPart == attachScript.partManager.head) isHeadInRange = true;
                     if (bodyPart == attachScript.partManager.torso) isTorsoInRange = true;
                     if (bodyPart == attachScript.partManager.r_Leg) isRightLegInRange = true;
                     if (bodyPart == attachScript.partManager.l_Leg) isLeftLegInRange = true;
                     if (bodyPart == attachScript.partManager.r_Arm) isRightArmInRange = true;
                     if (bodyPart == attachScript.partManager.l_Arm) isLeftArmInRange = true;
-                    if (bodyPart == attachScript.partManager.head) isBodyPartInMainRange = true;
-                    if (bodyPart == attachScript.partManager.torso) isBodyPartInMainRange = true;
-                    if (bodyPart == attachScript.partManager.r_Leg) isBodyPartInMainRange = true;
-                    if (bodyPart == attachScript.partManager.l_Leg) isBodyPartInMainRange = true;
-                    if (bodyPart == attachScript.partManager.r_Arm) isBodyPartInMainRange = true;
-                    if (bodyPart == attachScript.partManager.l_Arm) isBodyPartInMainRange = true;
+
+                    // Update the main radius flag
+                    isBodyPartInMainRange = true;
+
                     Debug.Log("Body part " + bodyPart.name + " is inside the main radius.");
                 }
                 else
@@ -191,12 +202,9 @@ public class RadiusChecker : MonoBehaviour
                     if (bodyPart == attachScript.partManager.l_Leg) isLeftLegInRange = false;
                     if (bodyPart == attachScript.partManager.r_Arm) isRightArmInRange = false;
                     if (bodyPart == attachScript.partManager.l_Arm) isLeftArmInRange = false;
-                    if (bodyPart == attachScript.partManager.head) isBodyPartInMainRange = false;
-                    if (bodyPart == attachScript.partManager.torso) isBodyPartInMainRange = false;
-                    if (bodyPart == attachScript.partManager.r_Leg) isBodyPartInMainRange = false;
-                    if (bodyPart == attachScript.partManager.l_Leg) isBodyPartInMainRange = false;
-                    if (bodyPart == attachScript.partManager.r_Arm) isBodyPartInMainRange = false;
-                    if (bodyPart == attachScript.partManager.l_Arm) isBodyPartInMainRange = false;
+
+                    // Reset the main radius flag
+                    isBodyPartInMainRange = false;
                 }
             }
         }

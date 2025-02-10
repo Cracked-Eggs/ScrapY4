@@ -148,7 +148,9 @@ public class PartManager : MonoBehaviour
         attach.rightArmVFX.Stop();
         attach.rightArmARCVFX.SetActive(false);
         attach.leftArmARCVFX.SetActive(false);
-        
+        attach.headARCVFX.SetActive(false);
+        attach.LeftLegARCVFX.SetActive(false);
+        attach.RightLegARCVFX .SetActive(false);
     }
 
     public void DetachPart(GameObject part)
