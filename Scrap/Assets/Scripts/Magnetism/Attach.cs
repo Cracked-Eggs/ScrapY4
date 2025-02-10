@@ -218,6 +218,8 @@ public class Attach : MonoBehaviour
         // Detach while retaining world transformation
         part.transform.SetParent(null, true);
 
+        part.tag = "DetachedArm";
+
         // Ensure the part maintains its original scale
         part.transform.localScale = originalScales[part];
 
@@ -367,40 +369,74 @@ public class Attach : MonoBehaviour
     }
 
     public void ShootRightArm(InputAction.CallbackContext context)
+{
+    if (!_isR_ArmDetached && Time.time >= lastDetachTime + detachCooldown)
     {
-        if (!_isR_ArmDetached && Time.time >= lastDetachTime + detachCooldown)
+        lastDetachTime = Time.time;
+        DetachPart(r_Arm);
+
+        // Check for nearby magnetic objects
+        Collider[] magneticObjects = Physics.OverlapSphere(r_Arm.transform.position, 5f, LayerMask.GetMask("Magnetic"));
+        if (magneticObjects.Length > 0)
         {
-            lastDetachTime = Time.time;
-            DetachPart(r_Arm);
+            // Apply magnetic force
+            Rigidbody rb = r_Arm.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                Vector3 direction = (magneticObjects[0].transform.position - r_Arm.transform.position).normalized;
+                rb.AddForce(direction * 10f, ForceMode.Impulse); // Adjust force as needed
+            }
+        }
+        else
+        {
+            // Shoot normally
             Vector3 aimDirection = (mouseWorldPosition - r_Arm.transform.position).normalized;
             Rigidbody rb = r_Arm.GetComponent<Rigidbody>();
             if (rb != null)
             {
                 StartCoroutine(MovePartToTarget(r_Arm, mouseWorldPosition, shootingForce));
             }
-
-            _isR_ArmDetached = true;
-            _animator.SetTrigger("shootingR");
         }
-    }
 
-    public void ShootLeftArm(InputAction.CallbackContext context)
+        _isR_ArmDetached = true;
+        _animator.SetTrigger("shootingR");
+    }
+}
+
+public void ShootLeftArm(InputAction.CallbackContext context)
+{
+    if (!_isL_ArmDetached && Time.time >= lastDetachTime + detachCooldown)
     {
-        if (!_isL_ArmDetached && Time.time >= lastDetachTime + detachCooldown)
+        lastDetachTime = Time.time;
+        DetachPart(l_Arm);
+
+        // Check for nearby magnetic objects
+        Collider[] magneticObjects = Physics.OverlapSphere(l_Arm.transform.position, 5f, LayerMask.GetMask("Magnetic"));
+        if (magneticObjects.Length > 0)
         {
-            lastDetachTime = Time.time;
-            DetachPart(l_Arm);
+            // Apply magnetic force
+            Rigidbody rb = l_Arm.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                Vector3 direction = (magneticObjects[0].transform.position - l_Arm.transform.position).normalized;
+                rb.AddForce(direction * 10f, ForceMode.Impulse); // Adjust force as needed
+            }
+        }
+        else
+        {
+            // Shoot normally
             Vector3 aimDirection = (mouseWorldPosition - l_Arm.transform.position).normalized;
             Rigidbody rb = l_Arm.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                StartCoroutine(MovePartToTarget(r_Arm, mouseWorldPosition, shootingForce));
+                StartCoroutine(MovePartToTarget(l_Arm, mouseWorldPosition, shootingForce));
             }
-
-            _isL_ArmDetached = true;
-            _animator.SetTrigger("shootingL");
         }
+
+        _isL_ArmDetached = true;
+        _animator.SetTrigger("shootingL");
     }
+}
     public void DropEverything(InputAction.CallbackContext context)
     {
         if (!isDetached && Time.time >= lastDetachTime + detachCooldown)
