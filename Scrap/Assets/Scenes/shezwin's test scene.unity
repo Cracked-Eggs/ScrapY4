@@ -12978,7 +12978,31 @@ MonoBehaviour:
   <JumpForce>k__BackingField: 4
   <FreeLookInput>k__BackingField: {fileID: 6726517552563056279}
   <PauseMenu>k__BackingField: {fileID: 0}
-  <Attacks>k__BackingField: []
+  <Attacks>k__BackingField:
+  - <AnimationName>k__BackingField: Attack1
+    <TransitionDuration>k__BackingField: 0.1
+    <ComboStateIndex>k__BackingField: 1
+    <ComboAttackTime>k__BackingField: 0.8
+    <ForceTime>k__BackingField: 0.35
+    <Force>k__BackingField: 15
+    <Damage>k__BackingField: 10
+    <Knockback>k__BackingField: 5
+  - <AnimationName>k__BackingField: Attack2
+    <TransitionDuration>k__BackingField: 0.1
+    <ComboStateIndex>k__BackingField: 1
+    <ComboAttackTime>k__BackingField: 0.8
+    <ForceTime>k__BackingField: 0.35
+    <Force>k__BackingField: 15
+    <Damage>k__BackingField: 10
+    <Knockback>k__BackingField: 5
+  - <AnimationName>k__BackingField: Attack3
+    <TransitionDuration>k__BackingField: 0.1
+    <ComboStateIndex>k__BackingField: 1
+    <ComboAttackTime>k__BackingField: 0.85
+    <ForceTime>k__BackingField: 0.35
+    <Force>k__BackingField: 15
+    <Damage>k__BackingField: 10
+    <Knockback>k__BackingField: 20
   <TooltipManager>k__BackingField: {fileID: 0}
   Resume: 0
 --- !u!114 &8051912419390256693
@@ -13024,7 +13048,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   healthBar: {fileID: 2034110722}
-  damagePrefab: {fileID: 0}
+  damagePrefab: {fileID: 3392681967298815628, guid: 969fa613c6226394cac6a8fa6aba9044,
+    type: 3}
 --- !u!4 &8063790609413707174
 Transform:
   m_ObjectHideFlags: 0
