@@ -1,32 +1,52 @@
 using System;
 using UnityEngine;
+
 public class Health : MonoBehaviour
 {
     [SerializeField] int maxHealth = 100;
-    
+    [SerializeField] Healthbar healthBar;
+    [SerializeField] GameObject damagePrefab;
+
     int health;
-    bool isInvunerable;
-    
+    bool isInvulnerable;
+    float lastDamageTime; // Track the last time damage was dealt
+    float damageCooldown = 0.5f; // Cooldown time in seconds
+
     public event Action OnTakeDamage;
     public event Action OnDie;
     public bool IsDead => health == 0;
-    
+
     void Start() => health = maxHealth;
 
-    public void SetInvunerable(bool isInvunerable) => this.isInvunerable = isInvunerable;
+    public void SetInvulnerable(bool isInvulnerable) => this.isInvulnerable = isInvulnerable;
 
     public void DealDamage(int damage)
     {
-        if (health == 0) { return; }
-        
-        if (isInvunerable) { return; }
+        // Check if enough time has passed since the last damage
+        if (Time.time < lastDamageTime + damageCooldown)
+        {
+            return;
+        }
+
+        if (health == 0 || isInvulnerable)
+        {
+            return;
+        }
+
         health = Mathf.Max(health - damage, 0);
-        
+        lastDamageTime = Time.time; // Update the last damage time
+
+        if (damagePrefab != null)
+        {
+            Instantiate(damagePrefab, transform.position, Quaternion.identity);
+        }
+
         OnTakeDamage?.Invoke();
-        
+        healthBar.UpdateHeathBar(maxHealth, health);
+
         if (health == 0)
             OnDie?.Invoke();
-        
+
         Debug.Log(health);
     }
 }

@@ -4,6 +4,7 @@ public class PlayerFreeLookState : PlayerBaseState
 {
     int FreeLookBlendTreeHash = Animator.StringToHash("FreeLookBlendTree");
     int FreeLookSpeedHash = Animator.StringToHash("FreeLookSpeed");
+    bool hasInteracted;
 
     const float AnimatorDampTime = 0.1f;
     const float CrossFadeDuration = 0.1f;
@@ -14,6 +15,8 @@ public class PlayerFreeLookState : PlayerBaseState
     {
         stateMachine.InputReader.TargetEvent += OnTarget;
         stateMachine.InputReader.JumpEvent += OnJump;
+        stateMachine.InputReader.InteractEvent += OnInteract;
+        stateMachine.InputReader.PauseEvent += OnPause;
         stateMachine.Animator.CrossFadeInFixedTime(FreeLookBlendTreeHash, CrossFadeDuration);
     }
 
@@ -42,6 +45,8 @@ public class PlayerFreeLookState : PlayerBaseState
     {
         stateMachine.InputReader.TargetEvent -= OnTarget;
         stateMachine.InputReader.JumpEvent -= OnJump;
+        stateMachine.InputReader.InteractEvent -= OnInteract;
+        stateMachine.InputReader.PauseEvent -= OnPause;
     }
     
     void OnTarget()
@@ -51,6 +56,24 @@ public class PlayerFreeLookState : PlayerBaseState
     }
     
     void OnJump() => stateMachine.SwitchState(new PlayerJumpingState(stateMachine));
+    void OnPause() => stateMachine.SwitchState(new PlayerPausedState(stateMachine));
+
+    void OnInteract()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(stateMachine.transform.position, 1.5f);
+    
+        foreach (Collider hitCollider in hitColliders)
+        {
+            Interactable interactable = hitCollider.GetComponent<Interactable>();
+
+            if (interactable != null)
+            {
+                interactable.TryInteract();
+                stateMachine.SwitchState(new PlayerInteractState(stateMachine)); // Enter interaction state
+                return;
+            }
+        }
+    }
 
     Vector3 CalculateMovement()
     {

@@ -11,6 +11,7 @@ public class PressurePlate : MonoBehaviour
     [SerializeField] UnityEvent offMagnetEvent;
 
     public HashSet<GameObject> objectsOnPlate = new HashSet<GameObject>();
+    private int previousObjectCount = 0; // Track previous frame's count
 
     void Awake() => animator = GetComponentInChildren<Animator>();
 
@@ -18,7 +19,7 @@ public class PressurePlate : MonoBehaviour
     {
         if (IsValidObject(other))
         {
-            objectsOnPlate.Add(other.gameObject); // Add object
+            objectsOnPlate.Add(other.gameObject);
             PrintObjectsOnPlate();
             animator.SetBool(PressedHash, true);
             magnetEvent.Invoke();
@@ -29,22 +30,28 @@ public class PressurePlate : MonoBehaviour
     {
         if (IsValidObject(other))
         {
-            objectsOnPlate.Remove(other.gameObject); // Remove object
+            objectsOnPlate.Remove(other.gameObject);
             PrintObjectsOnPlate();
         }
     }
 
     void FixedUpdate()
     {
+        // Store the previous object count before updating the set
+        int currentObjectCount = objectsOnPlate.Count;
+
         // Remove objects that are no longer valid (destroyed or moved)
         objectsOnPlate.RemoveWhere(obj => obj == null || !obj.activeInHierarchy || !IsStillInTrigger(obj));
 
-        // Update plate state
-        if (objectsOnPlate.Count == 0)
+        // Check for transition from occupied to empty
+        if (previousObjectCount > 0 && objectsOnPlate.Count == 0)
         {
             animator.SetBool(PressedHash, false);
             offMagnetEvent.Invoke();
         }
+
+        // Update previous count for the next frame
+        previousObjectCount = objectsOnPlate.Count;
     }
 
     bool IsValidObject(Collider other)

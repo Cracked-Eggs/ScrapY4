@@ -1,4 +1,6 @@
+using Cinemachine;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerStateMachine : StateMachine
 {
@@ -13,16 +15,25 @@ public class PlayerStateMachine : StateMachine
     [field: SerializeField] public float FreeLookMovementSpeed { get; private set; }
     [field: SerializeField] public float TargetingMovementSpeed { get; private set; }
     [field: SerializeField] public float RotationDamping { get; private set; }
+    [field: SerializeField] public float DodgeDuration { get; private set; }
+    [field: SerializeField] public float DodgeLength { get; private set; }
     [field: SerializeField] public float JumpForce { get; private set; }
+    [field: SerializeField] public CinemachineInputProvider FreeLookInput { get; private set; }
+    [field: SerializeField] public GameObject PauseMenu { get; private set; }
     [field: SerializeField] public Attack[] Attacks { get; private set; }
+    [field: SerializeField] public TooltipManager TooltipManager { get; private set; }
+    
 
+    public float PreviousDodgeTime { get; private set; } = Mathf.NegativeInfinity;
     public Transform MainCameraTransform { get; private set; }
+    public bool Resume;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         MainCameraTransform = Camera.main.transform;
+        TooltipManager.StartTooltip("Move");
 
         SwitchState(new PlayerFreeLookState(this));
     }
@@ -42,4 +53,6 @@ public class PlayerStateMachine : StateMachine
     void HandleTakeDamage() => SwitchState(new PlayerImpactState(this));
 
     void HandleDie() => SwitchState(new PlayerDeadState(this));
+
+    public void Unpause() => Resume = true;
 }
