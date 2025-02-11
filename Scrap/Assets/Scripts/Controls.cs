@@ -206,6 +206,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""fef3cda6-9797-41e9-bf68-b6477edb5cfc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -725,6 +734,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""RecallRightArm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""21babd6d-ea9a-4c20-82a0-862b70c32287"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -781,6 +801,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_RecallBothArms = m_Player.FindAction("RecallBothArms", throwIfNotFound: true);
         m_Player_RecallLeftArm = m_Player.FindAction("RecallLeftArm", throwIfNotFound: true);
         m_Player_RecallRightArm = m_Player.FindAction("RecallRightArm", throwIfNotFound: true);
+        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -867,6 +888,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_RecallBothArms;
     private readonly InputAction m_Player_RecallLeftArm;
     private readonly InputAction m_Player_RecallRightArm;
+    private readonly InputAction m_Player_Interact;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -891,6 +913,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @RecallBothArms => m_Wrapper.m_Player_RecallBothArms;
         public InputAction @RecallLeftArm => m_Wrapper.m_Player_RecallLeftArm;
         public InputAction @RecallRightArm => m_Wrapper.m_Player_RecallRightArm;
+        public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -960,6 +983,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @RecallRightArm.started += instance.OnRecallRightArm;
             @RecallRightArm.performed += instance.OnRecallRightArm;
             @RecallRightArm.canceled += instance.OnRecallRightArm;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1024,6 +1050,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @RecallRightArm.started -= instance.OnRecallRightArm;
             @RecallRightArm.performed -= instance.OnRecallRightArm;
             @RecallRightArm.canceled -= instance.OnRecallRightArm;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1081,5 +1110,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnRecallBothArms(InputAction.CallbackContext context);
         void OnRecallLeftArm(InputAction.CallbackContext context);
         void OnRecallRightArm(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
 }
