@@ -42,11 +42,19 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
+<<<<<<< Updated upstream:Scrap/Assets/Models/Robot Red/Robot_Body_Red/RedPlayerBody.mat
         m_Texture: {fileID: 2800000, guid: 8d8555b2a6d69f24f8f9606963c9a5eb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 2800000, guid: 46175ebfb5be89e4aa19a2df0aed9c0e, type: 3}
+=======
+        m_Texture: {fileID: 2800000, guid: 6c04eb25c675e5443a2e36b6a8b1e0cc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 285c5e03deae0cd448f0aa699e6c5af1, type: 3}
+>>>>>>> Stashed changes:Scrap/Assets/Models/Menu Objects/Dumpster.mat
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -62,6 +70,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
+<<<<<<< Updated upstream:Scrap/Assets/Models/Robot Red/Robot_Body_Red/RedPlayerBody.mat
         m_Texture: {fileID: 2800000, guid: 19edbca51b38bee43a090687f66e9341, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -71,6 +80,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 2800000, guid: 6b88757ad665fcc4f841ba6d408af86c, type: 3}
+=======
+        m_Texture: {fileID: 2800000, guid: 20696da613d87754e8069c2cacccad98, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 6c04eb25c675e5443a2e36b6a8b1e0cc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 2800000, guid: 5a00df0e1e40d7842baeab49df63726f, type: 3}
+>>>>>>> Stashed changes:Scrap/Assets/Models/Menu Objects/Dumpster.mat
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -132,7 +152,11 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+<<<<<<< Updated upstream:Scrap/Assets/Models/Robot Red/Robot_Body_Red/RedPlayerBody.mat
     - _EmissionColor: {r: 32, g: 32, b: 32, a: 1}
+=======
+    - _EmissionColor: {r: 1367.1202, g: 1367.1202, b: 1367.1202, a: 0}
+>>>>>>> Stashed changes:Scrap/Assets/Models/Menu Objects/Dumpster.mat
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
