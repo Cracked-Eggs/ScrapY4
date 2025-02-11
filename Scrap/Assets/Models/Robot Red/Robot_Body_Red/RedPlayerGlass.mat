@@ -33,7 +33,11 @@ Material:
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
+<<<<<<< Updated upstream:Scrap/Assets/Models/Robot Red/Robot_Body_Red/RedPlayerGlass.mat
   m_CustomRenderQueue: 3000
+=======
+  m_CustomRenderQueue: -1
+>>>>>>> Stashed changes:Scrap/Assets/Models/Menu Objects/Dumpster.mat
   stringTagMap:
     RenderType: Transparent
   disabledShaderPasses:
@@ -45,11 +49,19 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
+<<<<<<< Updated upstream:Scrap/Assets/Models/Robot Red/Robot_Body_Red/RedPlayerGlass.mat
         m_Texture: {fileID: 2800000, guid: f90d04aa78667d04cad90ec37801ac1a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 2800000, guid: b6f4a84c7ecc8f1448bf8b50323c4bc8, type: 3}
+=======
+        m_Texture: {fileID: 2800000, guid: 6c04eb25c675e5443a2e36b6a8b1e0cc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 285c5e03deae0cd448f0aa699e6c5af1, type: 3}
+>>>>>>> Stashed changes:Scrap/Assets/Models/Menu Objects/Dumpster.mat
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -65,6 +77,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
+<<<<<<< Updated upstream:Scrap/Assets/Models/Robot Red/Robot_Body_Red/RedPlayerGlass.mat
         m_Texture: {fileID: 2800000, guid: 0320810c4fb198245a2dc76e6bb4bc38, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -74,6 +87,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 2800000, guid: c80ca5da24b205d4cb5e938731953867, type: 3}
+=======
+        m_Texture: {fileID: 2800000, guid: 20696da613d87754e8069c2cacccad98, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 6c04eb25c675e5443a2e36b6a8b1e0cc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 2800000, guid: 5a00df0e1e40d7842baeab49df63726f, type: 3}
+>>>>>>> Stashed changes:Scrap/Assets/Models/Menu Objects/Dumpster.mat
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -135,7 +159,11 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+<<<<<<< Updated upstream:Scrap/Assets/Models/Robot Red/Robot_Body_Red/RedPlayerGlass.mat
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+=======
+    - _EmissionColor: {r: 1367.1202, g: 1367.1202, b: 1367.1202, a: 0}
+>>>>>>> Stashed changes:Scrap/Assets/Models/Menu Objects/Dumpster.mat
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
