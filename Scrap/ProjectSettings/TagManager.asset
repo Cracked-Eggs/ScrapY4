@@ -16,11 +16,13 @@ TagManager:
   - Head2
   - RedPlayer
   - Ground
+  - parts
+  - R_Leg
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Parts
   - Water
   - UI
   - Ground
