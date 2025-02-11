@@ -5938,9 +5938,17 @@ MonoBehaviour:
     m_ParentHash: 756556552
   - m_Hash: 1914514016
     m_ParentHash: 756556552
-  - m_Hash: 136247983
+  - m_Hash: 1983519550
     m_ParentHash: 756556552
-  - m_Hash: -233715764
+  - m_Hash: -635317990
+    m_ParentHash: 1983519550
+  - m_Hash: 1856820996
+    m_ParentHash: 1983519550
+  - m_Hash: 907123611
+    m_ParentHash: 1983519550
+  - m_Hash: 851006374
+    m_ParentHash: 756556552
+  - m_Hash: 143958477
     m_ParentHash: 756556552
 --- !u!1 &2963742038386578170
 GameObject:
@@ -12989,7 +12997,7 @@ MonoBehaviour:
     <Knockback>k__BackingField: 5
   - <AnimationName>k__BackingField: Attack2
     <TransitionDuration>k__BackingField: 0.1
-    <ComboStateIndex>k__BackingField: 1
+    <ComboStateIndex>k__BackingField: 2
     <ComboAttackTime>k__BackingField: 0.8
     <ForceTime>k__BackingField: 0.35
     <Force>k__BackingField: 15
