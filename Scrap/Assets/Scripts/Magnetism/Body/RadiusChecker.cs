@@ -225,4 +225,14 @@ public class RadiusChecker : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, secondaryRadius); // Secondary radius
     }
+
+    public void AddStrength()
+    {
+        forceStrength = 1000f;
+    }
+
+    public void DecreaseStrength()
+    {
+        forceStrength = 10f;
+    }
 }

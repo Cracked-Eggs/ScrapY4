@@ -513,7 +513,7 @@ public class Attach : MonoBehaviour
     }
     private IEnumerator WaitForRetractComplete(GameObject bodyPart)
     {
-        float timeout = 10f; // Adjust based on your needs
+        float timeout = 100f; // Adjust based on your needs
         float startTime = Time.time;
         if (bodyPart.CompareTag("L_Arm"))
         {
