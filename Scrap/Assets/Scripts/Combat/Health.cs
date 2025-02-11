@@ -1,11 +1,13 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
     [SerializeField] int maxHealth = 100;
     [SerializeField] Healthbar healthBar;
     [SerializeField] GameObject damagePrefab;
+    [SerializeField] UnityEvent DieEvent;
 
     int health;
     bool isInvulnerable;
@@ -45,7 +47,11 @@ public class Health : MonoBehaviour
         healthBar.UpdateHeathBar(maxHealth, health);
 
         if (health == 0)
+        {
             OnDie?.Invoke();
+            DieEvent.Invoke();
+
+        }
 
         Debug.Log(health);
     }
