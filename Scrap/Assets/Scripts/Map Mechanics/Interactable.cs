@@ -5,16 +5,16 @@ public class Interactable : MonoBehaviour
 {
     [SerializeField] UnityEvent onUp;
     [SerializeField] UnityEvent onDown;
-    Outline outline;
+    Outline[] outlines; // Renamed to plural for clarity
     Animator animator;
     bool leverDown;
     bool playerInRange;
 
     void Start()
     {
-        outline = GetComponent<Outline>();
+        outlines = GetComponentsInChildren<Outline>(); // Get all Outline components in children
         animator = GetComponent<Animator>();
-        outline.enabled = false;
+        SetOutlinesEnabled(false); // Disable all outlines at start
         leverDown = false;
         playerInRange = false;
     }
@@ -23,7 +23,7 @@ public class Interactable : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            outline.enabled = true;
+            SetOutlinesEnabled(true); // Enable all outlines
             playerInRange = true;
         }
     }
@@ -32,7 +32,7 @@ public class Interactable : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            outline.enabled = false;
+            SetOutlinesEnabled(false); // Disable all outlines
             playerInRange = false;
         }
     }
@@ -47,14 +47,31 @@ public class Interactable : MonoBehaviour
     {
         if (leverDown)
         {
-            Debug.Log("lever up" + this.gameObject.name);
+            Debug.Log("lever up " + this.gameObject.name);
             onUp.Invoke();
+            animator.SetTrigger("Up");
         }
         else
         {
-            Debug.Log("lever down" + this.gameObject.name);
+            Debug.Log("lever down " + this.gameObject.name);
             onDown.Invoke();
+            animator.SetTrigger("Down");
         }
         leverDown = !leverDown;
+    }
+
+    // Helper method to enable/disable all outlines
+    void SetOutlinesEnabled(bool enabled)
+    {
+        if (outlines != null)
+        {
+            foreach (Outline outline in outlines)
+            {
+                if (outline != null)
+                {
+                    outline.enabled = enabled;
+                }
+            }
+        }
     }
 }
