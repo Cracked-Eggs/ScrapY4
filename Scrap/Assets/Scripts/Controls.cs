@@ -93,7 +93,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""DetachPart"",
                     ""type"": ""Button"",
-                    ""id"": ""282b95a2-606e-47c4-af67-685ae8914b18"",
+                    ""id"": ""124e3a7d-5fa8-4874-976b-433609ae545a"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -102,7 +102,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""ReattachPart"",
                     ""type"": ""Button"",
-                    ""id"": ""987de83e-2c5e-4348-8ae4-f59183bb2cbf"",
+                    ""id"": ""53f18129-8efa-4316-b9c7-bf2c97e05fc9"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -111,7 +111,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""ShootR"",
                     ""type"": ""Button"",
-                    ""id"": ""5a710079-c22c-469c-8828-7296a02a2edf"",
+                    ""id"": ""6f849afc-a52a-435c-ad9d-ccd21a5e3df5"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -120,7 +120,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""ShootL"",
                     ""type"": ""Button"",
-                    ""id"": ""e73a36ad-600a-46b2-92ce-4cee62e05b1a"",
+                    ""id"": ""31eae7bc-0ac9-47a3-a52b-c296573e71e8"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -129,7 +129,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""DropEverything"",
                     ""type"": ""Button"",
-                    ""id"": ""0432ae67-7023-4efa-ac5a-28e4e15adac7"",
+                    ""id"": ""c08f4d23-08b4-42f8-9dd2-811ad333e15f"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -138,7 +138,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""DropLeftArm"",
                     ""type"": ""Button"",
-                    ""id"": ""e1f9262c-70fc-4c66-8d8a-e0085221db19"",
+                    ""id"": ""247aea5f-4013-4542-a2e3-f57ef7f6a471"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -147,7 +147,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""DropRightArm"",
                     ""type"": ""Button"",
-                    ""id"": ""b1bbfd64-399e-4e97-a345-a2f3b5bc9fad"",
+                    ""id"": ""2ab0b7f1-46e1-41c1-aaeb-03c5e1d152b4"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -156,7 +156,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""DropRightLeg"",
                     ""type"": ""Button"",
-                    ""id"": ""21e51ac1-c31f-4bad-8c13-37b318e32e8c"",
+                    ""id"": ""689dd30b-159b-4e2e-a8fa-ce9c5a58e011"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -165,7 +165,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""DropLeftLeg"",
                     ""type"": ""Button"",
-                    ""id"": ""4d69600f-d550-4d47-bed2-0d867996d4fb"",
+                    ""id"": ""98872a10-9f48-40e4-adb1-836cd3772eb2"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -174,7 +174,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""DropBothLegs"",
                     ""type"": ""Button"",
-                    ""id"": ""c62bdf3f-352d-4981-a947-1a500ac2eae4"",
+                    ""id"": ""8e243c7c-f5dc-4103-8fbe-0ef9dc451e61"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -183,7 +183,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""RecallBothArms"",
                     ""type"": ""Button"",
-                    ""id"": ""ed17773d-0b53-4431-a92a-357e50e53e2d"",
+                    ""id"": ""cf02c858-c701-4056-bf57-793bdc945252"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -192,7 +192,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""RecallLeftArm"",
                     ""type"": ""Button"",
-                    ""id"": ""0aa8114f-1297-43d3-a0d5-de72985d4cd9"",
+                    ""id"": ""ba31818a-56d3-40cd-a041-aa540b08ff11"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -201,16 +201,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""RecallRightArm"",
                     ""type"": ""Button"",
-                    ""id"": ""8722e63d-851e-465b-94f6-5637e6125bab"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""PauseMenu"",
-                    ""type"": ""Button"",
-                    ""id"": ""2ab1e113-87ef-4c8b-a0b8-eaffb6c05028"",
+                    ""id"": ""d8db479a-a042-435a-96d4-dff55d89267a"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -219,7 +210,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Interact"",
                     ""type"": ""Button"",
-                    ""id"": ""c2a332f1-9302-45f0-9331-fac271169846"",
+                    ""id"": ""fef3cda6-9797-41e9-bf68-b6477edb5cfc"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -263,7 +254,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""6389042d-439e-47fb-bc0c-57c9ea5dd5e0"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -428,7 +419,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""b6efa3a1-c9dd-4cf5-871f-ecd89dac53d7"",
-                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -482,40 +473,51 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""dd3dd1c5-749a-46da-bdd8-6ca927c9c389"",
+                    ""id"": ""95c83228-9dee-491b-88b6-83b1f22595e6"",
                     ""path"": ""<Keyboard>/h"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Mouse & Keyboard"",
+                    ""groups"": """",
                     ""action"": ""DetachPart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""194776cf-88cc-442a-96b7-3ce3b1a49d58"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""ReattachPart"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""bd92314a-89c6-442d-a881-b4b7cfe42701"",
+                    ""id"": ""04ad30f6-d959-4220-97c1-8976c5cc6a1e"",
                     ""path"": ""<Keyboard>/g"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Mouse & Keyboard"",
+                    ""groups"": """",
                     ""action"": ""ReattachPart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""e51fa3ab-9a38-442d-9a74-de2398fcb9d4"",
+                    ""id"": ""7aaa717d-0645-4d0f-9636-a0ab7e0ab1fd"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ReattachPart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""98bb21e0-252c-4ad7-a384-c984567d5921"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShootR"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3c695b6-1c04-4390-bf23-65de625ab82e"",
                     ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -526,18 +528,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c2c51032-5cd0-45f1-8751-f5fae1d26ab5"",
-                    ""path"": ""<Keyboard>/1"",
+                    ""id"": ""9b37cd96-cabd-493e-8c6c-2aa8ea62d2b2"",
+                    ""path"": ""<Keyboard>/2"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Mouse & Keyboard"",
-                    ""action"": ""ShootR"",
+                    ""groups"": """",
+                    ""action"": ""ShootL"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""7ce41617-b93d-42aa-b36a-4e92b7c24c93"",
+                    ""id"": ""ac677564-e9c9-4e5f-850a-90f9735fcf5a"",
                     ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -548,41 +550,30 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c5b8d6e0-6c51-4af6-9d83-72f8a9629944"",
-                    ""path"": ""<Keyboard>/2"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Mouse & Keyboard"",
-                    ""action"": ""ShootL"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""415a062b-3097-4baf-adfb-88cde75fd3ff"",
+                    ""id"": ""97fdca3f-8a29-488a-ab0d-2bd5740dad41"",
                     ""path"": ""<Gamepad>/dpad/up"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": """",
                     ""action"": ""DropEverything"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""e3804fb3-ab4d-4a40-914e-3c415432fa81"",
-                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""id"": ""04f90b53-28c0-4c20-8372-5974bb07f95b"",
+                    ""path"": ""<Keyboard>/o"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""DropLeftArm"",
+                    ""groups"": """",
+                    ""action"": ""DropEverything"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f6c14f3e-cf03-4f87-a7f8-f7bc86eae9bd"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""id"": ""f93079da-9f10-4296-b43b-ae8837d19a0e"",
+                    ""path"": ""<Gamepad>/dpad/left"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -592,106 +583,161 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""531a3387-c424-4c4c-a439-b58a16098af1"",
+                    ""id"": ""964987f7-dd00-47e3-b3ed-8b60c0110888"",
+                    ""path"": ""<Keyboard>/leftBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DropLeftArm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5a25d5fc-7912-4ec8-b8cd-1146ffea6960"",
                     ""path"": ""<Gamepad>/dpad/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": """",
                     ""action"": ""DropRightArm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3cfc40fe-df6a-4d97-909c-d18c040cfdf1"",
+                    ""id"": ""6f076b8e-04c4-4c32-8a4e-bcdb2779e42a"",
+                    ""path"": ""<Keyboard>/rightBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DropRightArm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2b5d8309-cf20-4d1b-b72a-ef7d54c8328d"",
                     ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": """",
                     ""action"": ""DropRightLeg"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""2f500aa0-f455-4e03-ba01-279c864441b4"",
+                    ""id"": ""212d4f86-db7d-4dfb-89d2-701400fcfaf7"",
+                    ""path"": ""<Keyboard>/semicolon"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DropRightLeg"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""73f8d61c-6d9a-4561-ab01-75972422af3d"",
                     ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": ""MultiTap"",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": """",
                     ""action"": ""DropLeftLeg"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""47e869cd-b6e9-4e54-aca8-6dd452bf012b"",
+                    ""id"": ""ab8663a5-7815-4b47-9646-b1eef0fd9dbb"",
+                    ""path"": ""<Keyboard>/quote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DropLeftLeg"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e51351b8-b58f-429a-8e1e-6f130a1d5b2b"",
                     ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": ""Hold"",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": """",
                     ""action"": ""DropBothLegs"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""4c31bbaa-8a24-4c80-8055-949644310ba6"",
+                    ""id"": ""9bba299a-41ef-4b34-9cf3-700bebf71ef6"",
+                    ""path"": ""<Keyboard>/period"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DropBothLegs"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""567a685a-bb39-4351-a57f-389a226ba064"",
                     ""path"": ""<Keyboard>/4"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Mouse & Keyboard"",
+                    ""groups"": """",
                     ""action"": ""RecallBothArms"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a0e5971b-88ea-4dc8-a181-e96eb90a8453"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""id"": ""d7c72937-0315-41a2-894c-d4e8956c0d1d"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": """",
+                    ""action"": ""RecallBothArms"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dde36e41-fcd2-41fe-9422-8a5e2e64f79a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
                     ""action"": ""RecallLeftArm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""8c955ccd-cdb0-4dd2-b968-6d079a923f26"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""id"": ""45b8b63d-616e-4cd2-84c6-1ef0341b6116"",
+                    ""path"": ""<Keyboard>/6"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": """",
                     ""action"": ""RecallRightArm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""39ff91b3-c444-4479-bc27-e77f36efc96e"",
-                    ""path"": ""<Keyboard>/escape"",
+                    ""id"": ""41625378-5893-4ccf-854a-8d2f60fb7217"",
+                    ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Mouse & Keyboard"",
-                    ""action"": ""PauseMenu"",
+                    ""groups"": """",
+                    ""action"": ""RecallRightArm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a6cb07f0-6bef-4aa8-9d06-42848988a7b1"",
-                    ""path"": ""<Gamepad>/start"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""PauseMenu"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""27a60595-0f0e-4db8-8a7e-ad375a489a86"",
+                    ""id"": ""21babd6d-ea9a-4c20-82a0-862b70c32287"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -755,7 +801,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_RecallBothArms = m_Player.FindAction("RecallBothArms", throwIfNotFound: true);
         m_Player_RecallLeftArm = m_Player.FindAction("RecallLeftArm", throwIfNotFound: true);
         m_Player_RecallRightArm = m_Player.FindAction("RecallRightArm", throwIfNotFound: true);
-        m_Player_PauseMenu = m_Player.FindAction("PauseMenu", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
     }
 
@@ -843,7 +888,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_RecallBothArms;
     private readonly InputAction m_Player_RecallLeftArm;
     private readonly InputAction m_Player_RecallRightArm;
-    private readonly InputAction m_Player_PauseMenu;
     private readonly InputAction m_Player_Interact;
     public struct PlayerActions
     {
@@ -869,7 +913,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @RecallBothArms => m_Wrapper.m_Player_RecallBothArms;
         public InputAction @RecallLeftArm => m_Wrapper.m_Player_RecallLeftArm;
         public InputAction @RecallRightArm => m_Wrapper.m_Player_RecallRightArm;
-        public InputAction @PauseMenu => m_Wrapper.m_Player_PauseMenu;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -940,9 +983,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @RecallRightArm.started += instance.OnRecallRightArm;
             @RecallRightArm.performed += instance.OnRecallRightArm;
             @RecallRightArm.canceled += instance.OnRecallRightArm;
-            @PauseMenu.started += instance.OnPauseMenu;
-            @PauseMenu.performed += instance.OnPauseMenu;
-            @PauseMenu.canceled += instance.OnPauseMenu;
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
@@ -1010,9 +1050,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @RecallRightArm.started -= instance.OnRecallRightArm;
             @RecallRightArm.performed -= instance.OnRecallRightArm;
             @RecallRightArm.canceled -= instance.OnRecallRightArm;
-            @PauseMenu.started -= instance.OnPauseMenu;
-            @PauseMenu.performed -= instance.OnPauseMenu;
-            @PauseMenu.canceled -= instance.OnPauseMenu;
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
@@ -1073,7 +1110,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnRecallBothArms(InputAction.CallbackContext context);
         void OnRecallLeftArm(InputAction.CallbackContext context);
         void OnRecallRightArm(InputAction.CallbackContext context);
-        void OnPauseMenu(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
     }
 }

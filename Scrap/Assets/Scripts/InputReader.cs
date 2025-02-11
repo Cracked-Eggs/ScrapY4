@@ -26,8 +26,6 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public event Action RecallBothArmsEvent;
     public event Action RecallLeftArmEvent;
     public event Action RecallRightArmEvent;
-    
-    public event Action PauseEvent;
     public event Action InteractEvent;
 
     Controls controls;
@@ -43,13 +41,13 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (!context.performed) { return; }
+        if (!context.performed) return;
         JumpEvent?.Invoke();
     }
 
     public void OnDodge(InputAction.CallbackContext context)
     {
-        if (!context.performed) { return; }
+        if (!context.performed) return;
         DodgeEvent?.Invoke();
     }
 
@@ -59,7 +57,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
 
     public void OnTarget(InputAction.CallbackContext context)
     {
-        if (!context.performed) { return; }
+        if (!context.performed) return;
         TargetEvent?.Invoke();
     }
 
@@ -70,7 +68,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
         else if (context.canceled)
             IsAttacking = false;
     }
-    
+
     public void OnBlock(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -78,7 +76,8 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
         else if (context.canceled)
             IsBlocking = false;
     }
- public void OnDetachPart(InputAction.CallbackContext context)
+
+    public void OnDetachPart(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
         DetachPartEvent?.Invoke();
@@ -151,21 +150,15 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
 
     }
 
-    public void OnPauseMenu(InputAction.CallbackContext context)
+    public void OnInteract(InputAction.CallbackContext context)
     {
-        if (!context.performed) { return; }
-        PauseEvent?.Invoke();
+        if (!context.performed) return;
+        InteractEvent?.Invoke();
     }
 
     public void OnRecallLeftArm(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
         RecallLeftArmEvent?.Invoke();
-    }
-    
-    public void OnInteract(InputAction.CallbackContext context)
-    {
-        if (!context.performed) return;
-        InteractEvent?.Invoke();
     }
 }

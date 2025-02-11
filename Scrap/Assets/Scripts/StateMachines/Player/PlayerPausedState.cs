@@ -12,7 +12,6 @@ public class PlayerPausedState : PlayerBaseState
         stateMachine.FreeLookInput.enabled = false;
         stateMachine.PauseMenu.SetActive(true);
         stateMachine.Resume = false;
-        stateMachine.InputReader.PauseEvent += OnPause;
     }
 
     public override void Tick(float deltaTime)
