@@ -44,6 +44,23 @@ public class TooltipManager : MonoBehaviour
         }
     }
     
+    public void ShowAttackTooltip(string id)
+    {
+        Tooltips tooltip = tooltips.Find(t => t.id == id);
+        if (tooltip != null && !tooltip.hasBeenShown)
+        {
+            // Activate the tooltip
+            tooltip.gameObject.SetActive(true);
+            tooltip.Animator.SetBool("CanShow", true);
+
+            // Mark the tooltip as shown
+            tooltip.hasBeenShown = true;
+
+            // Start a coroutine to hide the tooltip after 1 second
+            StartCoroutine(AttackCoroutine(tooltip, tooltip.duration));
+        }
+    }
+    
     public void ShowTooltip(string id)
     {
         Tooltips tooltip = tooltips.Find(t => t.id == id);
@@ -82,5 +99,12 @@ public class TooltipManager : MonoBehaviour
         yield return new WaitForSeconds(delay); // Wait for the specified duration
         tooltip.Animator.SetBool("CanShow", false);
         ShowTooltipCoroutine("Recall");
+    }
+    
+    private IEnumerator AttackCoroutine(Tooltips tooltip, float delay)
+    {
+        yield return new WaitForSeconds(delay); // Wait for the specified duration
+        tooltip.Animator.SetBool("CanShow", false);
+        ShowTooltipCoroutine("Attack");
     }
 }
