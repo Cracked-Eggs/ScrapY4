@@ -93,8 +93,6 @@ namespace Menu.UI
             // Add event to the input system, to check for the joystick
             InputSystem.onActionChange += InputActionChangeCallback;
 
-            // Fade out transition
-            TransitionManager.Instance.PlayEndHalfTransition(0.50f);
 
             // SET UP SETTINGS
             // Populate the resolution dropdown list with available resolutions.
@@ -270,24 +268,17 @@ namespace Menu.UI
         {
             // EDIT THIS METHOD LATER BASED ON YOUR GAME
             // ..
-            StartCoroutine(LoadGameLevel());
+            LoadGameLevel();
         }
 
-        private IEnumerator LoadGameLevel()
+        private void LoadGameLevel()
         {
-            Debug.Log("Loading game scene with transition");
-
             // Fade music (musicAudioSource)
             FadeOut(musicAudioSource, 0.5f);
 
-            // Transition with asset
-            // ..
-            TransitionManager.Instance.PlayStartHalfTransition(0.5f);
-
-            yield return new WaitForSeconds(0.6f);
+            yield return new WaitForSeconds(0f);
 
             SceneManager.LoadScene("Main"); // Enter your scene name
-            TransitionManager.Instance.PlayEndHalfTransition(0.5f);
         }
 
         private IEnumerator SetDefaultSelected(GameObject newDefaultButton)
