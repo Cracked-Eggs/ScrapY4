@@ -268,17 +268,16 @@ namespace Menu.UI
         {
             // EDIT THIS METHOD LATER BASED ON YOUR GAME
             // ..
-            LoadGameLevel();
+            FadeOut(musicAudioSource, 0.5f);
+            SceneManager.LoadScene("Main"); // Enter your scene name
         }
 
-        private void LoadGameLevel()
+        private IEnumerator LoadGameLevel()
         {
             // Fade music (musicAudioSource)
-            FadeOut(musicAudioSource, 0.5f);
 
             yield return new WaitForSeconds(0f);
 
-            SceneManager.LoadScene("Main"); // Enter your scene name
         }
 
         private IEnumerator SetDefaultSelected(GameObject newDefaultButton)
