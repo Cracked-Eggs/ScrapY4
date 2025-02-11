@@ -32,6 +32,7 @@ public class PlayerStateMachine : StateMachine
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        TooltipManager.StartTooltip("Move");
         MainCameraTransform = Camera.main.transform;
 
         SwitchState(new PlayerFreeLookState(this));
