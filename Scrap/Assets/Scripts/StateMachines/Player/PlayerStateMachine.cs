@@ -18,6 +18,7 @@ public class PlayerStateMachine : StateMachine
     [field: SerializeField] public float DodgeDuration { get; private set; }
     [field: SerializeField] public float DodgeLength { get; private set; }
     [field: SerializeField] public float JumpForce { get; private set; }
+    [field: SerializeField] public bool Attacked;
     [field: SerializeField] public CinemachineInputProvider FreeLookInput { get; private set; }
     [field: SerializeField] public GameObject PauseMenu { get; private set; }
     [field: SerializeField] public Attack[] Attacks { get; private set; }

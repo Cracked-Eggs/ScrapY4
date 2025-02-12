@@ -132,7 +132,6 @@ public class TooltipManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay); // Wait for the specified duration
         tooltip.Animator.SetBool("CanShow", false);
-        ShowTooltipCoroutine("Recall");
     }
     
     private IEnumerator HideAttack(Tooltips tooltip, float delay)

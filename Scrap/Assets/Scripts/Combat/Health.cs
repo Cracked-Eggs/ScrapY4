@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour
 {
@@ -54,5 +55,10 @@ public class Health : MonoBehaviour
         }
 
         Debug.Log(health);
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(1);
     }
 }
