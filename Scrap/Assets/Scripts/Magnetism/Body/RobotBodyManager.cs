@@ -416,30 +416,64 @@ public class Attach : MonoBehaviour
     }
     public void DropLeftArm(InputAction.CallbackContext context)
     {
-        if (!_isL_ArmDetached && Time.time >= lastDetachLeftArmTime + detachLeftArmCooldown)
+        if (Time.time < lastDetachLeftArmTime + detachLeftArmCooldown) return;
+
+        lastDetachLeftArmTime = Time.time;
+
+        if (_isL_ArmDetached)
+        {
+            
+            RecallLeftArm();
+        }
+        else
+        {
+            
+            DroppingLeftArm();
+        }
+    }
+    public void DroppingLeftArm()
+    {
+        if (partManager.isReattaching) return;
+        if (!_isL_ArmDetached)
         {
             lastDetachLeftArmTime = Time.time;
             partManager.DetachPart(partManager.l_Arm);
             _isL_ArmDetached = true;
             //leftArmMagnetScript.enabled = true;
             //leftArmSphereColl.enabled = true;
-           
-
         }
     }
+
     public void DropRightArm(InputAction.CallbackContext context)
     {
-        if (!_isR_ArmDetached && Time.time >= lastDetachRightArmTime + detachRightArmCooldown)
+        if (Time.time < lastDetachRightArmTime + detachRightArmCooldown) return;
+
+        lastDetachRightArmTime = Time.time;
+
+        if (_isR_ArmDetached)
+        {
+            // The arm is out, recall it
+            RecallRightArm();
+        }
+        else
+        {
+            // The arm is not out, drop it
+            DroppingRightArm();
+        }
+    }
+    public void DroppingRightArm()
+    {
+        if (partManager.isReattaching) return;
+        if (!_isR_ArmDetached)
         {
             lastDetachRightArmTime = Time.time;
             partManager.DetachPart(partManager.r_Arm);
             _isR_ArmDetached = true;
-
             //rightArmMagnetScript.enabled = true;
-
             //rightArmSphereColl.enabled = true;
         }
     }
+
     public void RecallBothArms(InputAction.CallbackContext context)
     {
         if (Time.time >= lastDetachRightArmTime + detachRightArmCooldown)
