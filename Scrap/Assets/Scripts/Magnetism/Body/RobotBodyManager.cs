@@ -34,8 +34,12 @@ public class Attach : MonoBehaviour
     AudioSource _audioSource;
     Animator _animator;
 
-    public float detachCooldown = 2.0f;
-    private float lastDetachTime = -2.0f;
+    public float detachLeftArmCooldown = 2.0f;
+    public float detachRightArmCooldown = 2.0f;
+    public float detachAllCooldown = 2.0f;
+    private float lastDetachLeftArmTime = -2.0f;
+    private float lastDetachRightArmTime = -2.0f;
+    private float lastDetachAllTime = -2.0f;
   
 
     public bool isDetached = false;
@@ -95,37 +99,7 @@ public class Attach : MonoBehaviour
 
 
     }
-    public void On_Detach(InputAction.CallbackContext context)
-    {   
-        
-        if (!isDetached && Time.time >= lastDetachTime + detachCooldown)
-        {
-            lastDetachTime = Time.time;
-
-            // Detach the body parts
-            partManager.DetachPart(partManager.head);
-            partManager.DetachPart(partManager.head2);
-            partManager.DetachPart(partManager.head3);
-            partManager.DetachPart(partManager.head4);
-            partManager.DetachPart(partManager.head5);
-            partManager.DetachPart(partManager.torso);
-            partManager.DetachPart(partManager.r_Leg);
-            partManager.DetachPart(partManager.l_Leg);
-            partManager.DetachPart(partManager.r_Arm);
-            partManager.DetachPart(partManager.l_Arm);
-
-            // Disable the Magnet scripts for the arms when they are detached
-            //leftArmMagnetScript.enabled = true;
-            //rightArmMagnetScript.enabled = true;
-            //leftArmSphereColl.enabled = true;
-            //rightArmSphereColl.enabled = true;
     
-
-            playerCollider.enabled = true;
-            
-            isDetached = true;
-        }
-    }
     public void ToggleDetachReattach(InputAction.CallbackContext context)
     {
         if (partManager.isReattaching) return;
@@ -150,9 +124,9 @@ public class Attach : MonoBehaviour
     private void AttemptReattach()
     {
         if (secondaryRadiusChecker.currentBodyParts >= secondaryRadiusChecker.totalBodyParts) return;
-        if (Time.time < lastDetachTime + detachCooldown) return;
+        if (Time.time < lastDetachAllTime + detachAllCooldown) return;
 
-        lastDetachTime = Time.time;
+        lastDetachAllTime = Time.time;
 
         List<(GameObject part, Action resetFlag, bool isDetached)> bodyParts = new()
     {
@@ -230,16 +204,15 @@ public class Attach : MonoBehaviour
         CheckIfFullyReattached();
     }
 
-    // Check if all parts are retrieved
+    
     private void CheckIfFullyReattached()
     {
         isDetached = _isL_ArmDetached || _isR_ArmDetached || _isL_LegDetached || _isR_LegDetached || _isTorsoDetached;
     }
 
-    // Modified DetachAll method
     private void DetachAll()
     {
-        if (Time.time < lastDetachTime + detachCooldown) return;
+        if (Time.time < lastDetachAllTime + detachAllCooldown) return;
 
         // Ensure detaching is only possible when all parts are retrieved OR if permanently lost
         if (!CanDetach())
@@ -248,7 +221,7 @@ public class Attach : MonoBehaviour
             return;
         }
 
-        lastDetachTime = Time.time;
+        lastDetachAllTime = Time.time;
 
         partManager.DetachPart(partManager.torso);
         partManager.DetachPart(partManager.r_Leg);
@@ -272,8 +245,6 @@ public class Attach : MonoBehaviour
         //leftArmSphereColl.enabled = true;
         //rightArmSphereColl.enabled = true;
     }
-
-    // Check if detaching is possible
     private bool CanDetach()
     {
         int missingParts = 0;
@@ -286,8 +257,6 @@ public class Attach : MonoBehaviour
         // Allow detaching if no parts are missing OR if too many parts are lost
         return missingParts == 0 || missingParts >= 2;
     }
-
-
     private IEnumerator SmoothRise(float riseAmount)
     {
         Vector3 start = transform.position;
@@ -328,9 +297,9 @@ public class Attach : MonoBehaviour
     }
     public void ShootOrRecallRightArm(InputAction.CallbackContext context)
     {
-        if (Time.time < lastDetachTime + detachCooldown) return;
+        if (Time.time < lastDetachLeftArmTime + detachLeftArmCooldown) return;
 
-        lastDetachTime = Time.time;
+        lastDetachLeftArmTime = Time.time;
 
         if (_isR_ArmDetached)
         {
@@ -345,9 +314,9 @@ public class Attach : MonoBehaviour
     }
     public void ShootOrRecallLeftArm(InputAction.CallbackContext context)
     {
-        if (Time.time < lastDetachTime + detachCooldown) return;
+        if (Time.time < lastDetachLeftArmTime + detachLeftArmCooldown) return;
 
-        lastDetachTime = Time.time;
+        lastDetachLeftArmTime = Time.time;
 
         if (_isL_ArmDetached)
         {
@@ -447,9 +416,9 @@ public class Attach : MonoBehaviour
     }
     public void DropLeftArm(InputAction.CallbackContext context)
     {
-        if (!_isL_ArmDetached && Time.time >= lastDetachTime + detachCooldown)
+        if (!_isL_ArmDetached && Time.time >= lastDetachLeftArmTime + detachLeftArmCooldown)
         {
-            lastDetachTime = Time.time;
+            lastDetachLeftArmTime = Time.time;
             partManager.DetachPart(partManager.l_Arm);
             _isL_ArmDetached = true;
             //leftArmMagnetScript.enabled = true;
@@ -460,9 +429,9 @@ public class Attach : MonoBehaviour
     }
     public void DropRightArm(InputAction.CallbackContext context)
     {
-        if (!_isR_ArmDetached && Time.time >= lastDetachTime + detachCooldown)
+        if (!_isR_ArmDetached && Time.time >= lastDetachRightArmTime + detachRightArmCooldown)
         {
-            lastDetachTime = Time.time;
+            lastDetachRightArmTime = Time.time;
             partManager.DetachPart(partManager.r_Arm);
             _isR_ArmDetached = true;
 
@@ -473,7 +442,7 @@ public class Attach : MonoBehaviour
     }
     public void RecallBothArms(InputAction.CallbackContext context)
     {
-        if (Time.time >= lastDetachTime + detachCooldown)
+        if (Time.time >= lastDetachRightArmTime + detachRightArmCooldown)
         {
             if (secondaryRadiusChecker.currentBodyParts < secondaryRadiusChecker.totalBodyParts)
             {
@@ -505,7 +474,7 @@ public class Attach : MonoBehaviour
                 {
                     Debug.Log("One or both arms are not in range for reattachment.");
                 }
-                lastDetachTime = Time.time;
+                lastDetachRightArmTime = Time.time;
             }
 
 

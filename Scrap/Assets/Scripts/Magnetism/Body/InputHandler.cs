@@ -14,11 +14,7 @@ public class InputHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        inputSystem.Player.DetachPart.performed += attachScript.On_Detach;
-        inputSystem.Player.DetachPart.Enable();
-
-      
-
+     
         inputSystem.Player.ShootR.performed += attachScript.ShootOrRecallRightArm;
         inputSystem.Player.ShootR.Enable();
 
