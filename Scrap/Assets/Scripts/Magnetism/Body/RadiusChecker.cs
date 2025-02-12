@@ -228,7 +228,7 @@ public class RadiusChecker : MonoBehaviour
 
     public void AddStrength()
     {
-        forceStrength = 1000f;
+        forceStrength = 30f;
     }
 
     public void DecreaseStrength()

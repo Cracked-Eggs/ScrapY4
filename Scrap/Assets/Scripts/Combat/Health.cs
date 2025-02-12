@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -57,8 +58,10 @@ public class Health : MonoBehaviour
         Debug.Log(health);
     }
 
-    public void Restart()
+
+    public IEnumerator Restart()
     {
+        yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(1);
     }
 }
