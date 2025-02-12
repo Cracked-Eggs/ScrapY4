@@ -1,5 +1,6 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class PartManager : MonoBehaviour
@@ -12,6 +13,7 @@ public class PartManager : MonoBehaviour
     private Dictionary<GameObject, Transform> originalRootBones = new Dictionary<GameObject, Transform>();
     private Dictionary<GameObject, Mesh> originalMeshes = new Dictionary<GameObject, Mesh>();
     private Dictionary<GameObject, ColliderData> originalCollidersData = new Dictionary<GameObject, ColliderData>();
+    private Dictionary<GameObject, Mesh> preBakedMeshes = new Dictionary<GameObject, Mesh>();
     [SerializeField] private RadiusChecker secondaryRadiusChecker;
     [SerializeField] private Attach attach;
     public float reattachSpeed = 10f;
@@ -45,6 +47,47 @@ public class PartManager : MonoBehaviour
         StoreOriginalTransforms(l_Leg);
         StoreOriginalTransforms(r_Arm);
         StoreOriginalTransforms(l_Arm);
+        GameObject[] bodyParts = { head, head2, head3, head4, head5, torso, r_Leg, l_Leg, r_Arm, l_Arm };
+        foreach (GameObject part in bodyParts)
+        {
+            SkinnedMeshRenderer skinnedMesh = part.GetComponent<SkinnedMeshRenderer>();
+            if (skinnedMesh)
+            {
+                Mesh bakedMesh = new Mesh();
+                skinnedMesh.BakeMesh(bakedMesh);
+                preBakedMeshes[part] = bakedMesh;
+
+                // 🔹 Pre-add and disable MeshCollider
+                MeshCollider meshCollider = part.AddComponent<MeshCollider>();
+                meshCollider.sharedMesh = bakedMesh;
+                meshCollider.convex = true;
+                meshCollider.enabled = false; // Disabled until detachment
+
+                // 🔹 Pre-add MeshFilter and MeshRenderer but disable them
+                MeshFilter meshFilter = part.GetComponent<MeshFilter>();
+                if (meshFilter == null)
+                {
+                    meshFilter = part.AddComponent<MeshFilter>();
+                }
+                meshFilter.mesh = bakedMesh;
+
+                MeshRenderer meshRenderer = part.GetComponent<MeshRenderer>();
+                if (meshRenderer == null)
+                {
+                    meshRenderer = part.AddComponent<MeshRenderer>();
+                }
+                meshRenderer.materials = skinnedMesh.materials;
+                meshRenderer.enabled = false; // Keep it disabled until detachment
+
+
+              
+            }
+        }
+    
+    }
+    private void Update()
+    {
+        
     }
 
     private void StoreOriginalTransforms(GameObject part)
@@ -80,10 +123,11 @@ public class PartManager : MonoBehaviour
         Rigidbody partRb = part.GetComponent<Rigidbody>();
         if (partRb != null)
         {
-            Destroy(partRb);
+            partRb.isKinematic = true;
         }
 
-        part.transform.SetParent(parent.transform);
+        part.transform.SetParent(parent.transform); 
+        part.transform.position = part.transform.position;
 
         while (Vector3.Distance(part.transform.localPosition, originalPositions[part]) > reattachDistanceThreshold)
         {
@@ -118,30 +162,27 @@ public class PartManager : MonoBehaviour
         MeshRenderer meshRenderer = part.GetComponent<MeshRenderer>();
         if (meshRenderer != null)
         {
-            Destroy(meshRenderer);
-        }
-
-        MeshFilter meshFilter = part.GetComponent<MeshFilter>();
-        if (meshFilter != null)
-        {
-            Destroy(meshFilter);
+            meshRenderer.enabled = false;
         }
 
         // Clean up MeshCollider if present
         MeshCollider meshCollider = part.GetComponent<MeshCollider>();
         if (meshCollider != null)
         {
-            Destroy(meshCollider);
+            meshCollider.enabled = false;
         }
 
         // Add SkinnedMeshRenderer
-        SkinnedMeshRenderer skinnedMeshRenderer = part.AddComponent<SkinnedMeshRenderer>();
-        if (skinnedMeshRenderer != null && originalMeshes.ContainsKey(part))
+        SkinnedMeshRenderer skinnedMesh = part.GetComponent<SkinnedMeshRenderer>();
+        if (skinnedMesh != null)
         {
-            skinnedMeshRenderer.sharedMesh = originalMeshes[part];
-            skinnedMeshRenderer.bones = originalBones[part];
-            skinnedMeshRenderer.rootBone = originalRootBones[part];
+            skinnedMesh.enabled = enabled;
+            skinnedMesh.sharedMesh = originalMeshes[part];
+            skinnedMesh.bones = originalBones[part];
+            skinnedMesh.rootBone = originalRootBones[part];
         }
+          
+        
 
         isReattaching = false;  // Reattachment is complete
         attach.leftArmVFX.Stop();
@@ -154,82 +195,75 @@ public class PartManager : MonoBehaviour
         attach.headARCVFX.SetActive(false);
         attach.LeftLegARCVFX.SetActive(false);
         attach.RightLegARCVFX .SetActive(false);
+       
     }
 
     public void DetachPart(GameObject part)
     {
-        // Prevent detaching if reattaching is in progress
-        if (isReattaching)
-        {
-            return;  // Exit early if reattaching
-        }
+        if (isReattaching || part == null || attach.IsBodyPartDetached(part)) return;
 
-        if (part == null || attach.IsBodyPartDetached(part)) return; // Skip if already detached
         secondaryRadiusChecker.UpdateBodyPartCount(-1);
-
         part.transform.SetParent(null, true);
         part.transform.localScale = originalScales[part];
 
-        // Slightly adjust position to avoid physics overlap issues
-        part.transform.position += new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(0.05f, 0.15f), Random.Range(-0.1f, 0.1f));
+        SkinnedMeshRenderer skinnedMesh = part.GetComponent<SkinnedMeshRenderer>();
+        if (skinnedMesh != null)
+        {
+            skinnedMesh.enabled = false;
+        }
 
-        // Remove any existing collider
         Collider existingCollider = part.GetComponent<BoxCollider>();
         if (existingCollider != null)
         {
-            Destroy(existingCollider);
+            existingCollider.enabled = false;
         }
 
-        // Ensure there is a MeshFilter before adding a MeshCollider
+        // Enable mesh collider
+        MeshCollider meshCollider = part.GetComponent<MeshCollider>();
+        if (meshCollider != null)
+        {
+            meshCollider.enabled = true;
+        }
+
+        // Assign the baked mesh to MeshFilter
         MeshFilter meshFilter = part.GetComponent<MeshFilter>();
-        if (meshFilter == null)
+        if (meshFilter != null)
         {
-            SkinnedMeshRenderer skinnedMesh = part.GetComponent<SkinnedMeshRenderer>();
-            if (skinnedMesh != null)
-            {
-                meshFilter = part.AddComponent<MeshFilter>();
-                Mesh bakedMesh = new Mesh();
-                skinnedMesh.BakeMesh(bakedMesh);
-                meshFilter.mesh = bakedMesh;
-
-                // Also add a MeshRenderer since SkinnedMeshRenderer is being removed
-                MeshRenderer meshRenderer = part.AddComponent<MeshRenderer>();
-                meshRenderer.materials = skinnedMesh.materials;
-
-                Destroy(skinnedMesh); // Remove SkinnedMeshRenderer to avoid conflicts
-            }
-            else
-            {
-                Debug.LogWarning("No SkinnedMeshRenderer or MeshFilter found on " + part.name);
-            }
+            meshFilter.mesh = preBakedMeshes[part];
         }
 
-        // Add a new MeshCollider and assign the baked/shared mesh
-        MeshCollider newCollider = part.AddComponent<MeshCollider>();
-        if (meshFilter != null && meshFilter.mesh != null)
+        // Enable MeshRenderer
+        MeshRenderer meshRenderer = part.GetComponent<MeshRenderer>();
+        if (meshRenderer != null)
         {
-            newCollider.sharedMesh = meshFilter.mesh;
-            newCollider.convex = true;  // Must be convex for physics interactions
-        }
-        else
-        {
-            Debug.LogWarning("MeshFilter missing or has no mesh on " + part.name + ", can't assign MeshCollider.");
+            meshRenderer.enabled = true;
         }
 
-        // Temporarily disable collider to prevent immediate physics conflicts
-       
-       
-
-        // Ensure Rigidbody is present and enabled
+        
         Rigidbody partRb = part.GetComponent<Rigidbody>();
-        if (partRb == null)
+        if (partRb != null)
         {
-            partRb = part.AddComponent<Rigidbody>();
+            
+            partRb.isKinematic = false; Debug.Log("Rigidbody mass before detachment: " + partRb.mass);
             partRb.mass = 1f;
+            Debug.Log("Rigidbody mass after detachment: " + partRb.mass);
+
+            partRb.WakeUp(); // Ensure the Rigidbody is awake
+
+
+            Physics.SyncTransforms();
+
+
+            Debug.Log("yo");
         }
-        partRb.isKinematic = false;
-     
-      
+       
+
     }
+
+
+
+
+
+
 
 }

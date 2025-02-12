@@ -11,13 +11,13 @@ public class Magnet : MonoBehaviour
     public float maxVelocity = 5f;  // Max velocity to limit the speed of the magnet
 
     protected Rigidbody rb;
-    protected SphereCollider field;
+    public  SphereCollider field;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         field = GetComponent<SphereCollider>();
-        rb.mass = CalculateMass(transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        //rb.mass = CalculateMass(transform.localScale.x, transform.localScale.y, transform.localScale.z);
     }
 
     void FixedUpdate()

@@ -48,10 +48,10 @@ public class Attach : MonoBehaviour
     public bool _isBothLegsDetached = false;
     public bool _isEverythingDetached = false;
 
-    public Magnet leftArmMagnetScript;
-    public Magnet rightArmMagnetScript;
-    public SphereCollider leftArmSphereColl;
-    public SphereCollider rightArmSphereColl;
+    //public Magnet leftArmMagnetScript;
+    //public Magnet rightArmMagnetScript;
+    //public SphereCollider leftArmSphereColl;
+    //public SphereCollider rightArmSphereColl;
     public PartManager partManager;
 
     // Reference to the second radius checker script
@@ -78,8 +78,8 @@ public class Attach : MonoBehaviour
 
     private void Start()
     {
-        if (leftArmMagnetScript != null && _isL_ArmDetached == false) leftArmMagnetScript.enabled = false;
-        if (rightArmMagnetScript != null && _isR_ArmDetached == false) rightArmMagnetScript.enabled = false;
+        //if (leftArmMagnetScript != null && _isL_ArmDetached == false) leftArmMagnetScript.enabled = false;
+        //if (rightArmMagnetScript != null && _isR_ArmDetached == false) rightArmMagnetScript.enabled = false;
         leftArmVFX.Stop();
         rightArmVFX.Stop();
         RightLegVFX.Stop();
@@ -115,14 +115,14 @@ public class Attach : MonoBehaviour
             partManager.DetachPart(partManager.l_Arm);
 
             // Disable the Magnet scripts for the arms when they are detached
-            leftArmMagnetScript.enabled = true;
-            rightArmMagnetScript.enabled = true;
-            leftArmSphereColl.enabled = true;
-            rightArmSphereColl.enabled = true;
+            //leftArmMagnetScript.enabled = true;
+            //rightArmMagnetScript.enabled = true;
+            //leftArmSphereColl.enabled = true;
+            //rightArmSphereColl.enabled = true;
     
 
             playerCollider.enabled = true;
-            _rb.constraints = RigidbodyConstraints.FreezeAll;
+            
             isDetached = true;
         }
     }
@@ -222,10 +222,10 @@ public class Attach : MonoBehaviour
             StartCoroutine(WaitForRetractComplete(bodyPart));
         }
 
-        leftArmMagnetScript.enabled = !_isL_ArmDetached;
-        rightArmMagnetScript.enabled = !_isR_ArmDetached;
-        leftArmSphereColl.enabled = false;
-        rightArmSphereColl.enabled = false;
+        //leftArmMagnetScript.enabled = !_isL_ArmDetached;
+        //rightArmMagnetScript.enabled = !_isR_ArmDetached;
+        //leftArmSphereColl.enabled = false;
+        //rightArmSphereColl.enabled = false;
 
         CheckIfFullyReattached();
     }
@@ -267,10 +267,10 @@ public class Attach : MonoBehaviour
         _isR_LegDetached = true;
         _isTorsoDetached = true;
 
-        leftArmMagnetScript.enabled = true;
-        rightArmMagnetScript.enabled = true;
-        leftArmSphereColl.enabled = true;
-        rightArmSphereColl.enabled = true;
+        //leftArmMagnetScript.enabled = true;
+        //rightArmMagnetScript.enabled = true;
+        //leftArmSphereColl.enabled = true;
+        //rightArmSphereColl.enabled = true;
     }
 
     // Check if detaching is possible
@@ -379,8 +379,8 @@ public class Attach : MonoBehaviour
             }
 
             _isR_ArmDetached = true;
-            rightArmMagnetScript.enabled = true;
-            rightArmSphereColl.enabled = true;
+            //rightArmMagnetScript.enabled = true;
+            //rightArmSphereColl.enabled = true;
         }
     }
     public void RecallRightArm()
@@ -394,8 +394,8 @@ public class Attach : MonoBehaviour
                 secondaryRadiusChecker.isRetracting = true;
                 StartCoroutine(WaitForRetractComplete(partManager.r_Arm));
                 _isR_ArmDetached = false;
-                rightArmMagnetScript.enabled = false;
-                rightArmSphereColl.enabled = false;
+                //rightArmMagnetScript.enabled = false;
+                //rightArmSphereColl.enabled = false;
             }
             else
             {
@@ -414,13 +414,14 @@ public class Attach : MonoBehaviour
             Rigidbody rb = partManager.l_Arm.GetComponent<Rigidbody>();
             if (rb != null)
             {
+                Debug.Log("Skipped it!");
                 Vector3 repulsionDirection = transform.forward; // Push the arm forward
                 rb.AddForce(repulsionDirection * shootingForce, ForceMode.Impulse);
             }
 
             _isL_ArmDetached = true;
-            leftArmMagnetScript.enabled = true;
-            leftArmSphereColl.enabled = true;
+            //leftArmMagnetScript.enabled = true;
+            //leftArmSphereColl.enabled = true;
         }
     }
     public void RecallLeftArm()
@@ -435,8 +436,8 @@ public class Attach : MonoBehaviour
                 secondaryRadiusChecker.isRetracting = true;
                 StartCoroutine(WaitForRetractComplete(partManager.l_Arm));
                 _isL_ArmDetached = false;
-                leftArmMagnetScript.enabled = false;
-                leftArmSphereColl.enabled = false;
+                //leftArmMagnetScript.enabled = false;
+                //leftArmSphereColl.enabled = false;
             }
             else
             {
@@ -451,8 +452,8 @@ public class Attach : MonoBehaviour
             lastDetachTime = Time.time;
             partManager.DetachPart(partManager.l_Arm);
             _isL_ArmDetached = true;
-            leftArmMagnetScript.enabled = true;
-            leftArmSphereColl.enabled = true;
+            //leftArmMagnetScript.enabled = true;
+            //leftArmSphereColl.enabled = true;
            
 
         }
@@ -465,9 +466,9 @@ public class Attach : MonoBehaviour
             partManager.DetachPart(partManager.r_Arm);
             _isR_ArmDetached = true;
 
-            rightArmMagnetScript.enabled = true;
+            //rightArmMagnetScript.enabled = true;
 
-            rightArmSphereColl.enabled = true;
+            //rightArmSphereColl.enabled = true;
         }
     }
     public void RecallBothArms(InputAction.CallbackContext context)
@@ -493,10 +494,10 @@ public class Attach : MonoBehaviour
 
                     _isR_ArmDetached = false;
                     _isL_ArmDetached = false;
-                    leftArmMagnetScript.enabled = false;
-                    rightArmMagnetScript.enabled = false;
-                    leftArmSphereColl.enabled = false;
-                    rightArmSphereColl.enabled = false;
+                    //leftArmMagnetScript.enabled = false;
+                    //rightArmMagnetScript.enabled = false;
+                    //leftArmSphereColl.enabled = false;
+                    //rightArmSphereColl.enabled = false;
                     secondaryRadiusChecker.isRightArmInRange = false;
                     secondaryRadiusChecker.isLeftArmInRange = false;
                 }
