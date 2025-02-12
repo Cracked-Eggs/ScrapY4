@@ -116,9 +116,22 @@ public class PartManager : MonoBehaviour
 
     public IEnumerator ShakeAndReattach(GameObject part)
     {
+    
         isReattaching = true;
 
         secondaryRadiusChecker.UpdateBodyPartCount(1);
+        
+        attach.rightArmARCVFX.SetActive(false);
+        attach.leftArmARCVFX.SetActive(false);
+        attach.headARCVFX.SetActive(false);
+        attach.LeftLegARCVFX.SetActive(false);
+        attach.RightLegARCVFX.SetActive(false);
+        attach.leftArmVFX.Stop();
+        attach.rightArmVFX.Stop();
+        attach.RightLegVFX.Stop();
+        attach.LeftLegVFX.Stop();
+        attach.HeadVFX.Stop();
+      
 
         Rigidbody partRb = part.GetComponent<Rigidbody>();
         if (partRb != null)
@@ -185,17 +198,9 @@ public class PartManager : MonoBehaviour
         
 
         isReattaching = false;  // Reattachment is complete
-        attach.leftArmVFX.Stop();
-        attach.rightArmVFX.Stop();
-        attach.RightLegVFX.Stop();
-        attach.LeftLegVFX.Stop();
-        attach.HeadVFX.Stop();
-        attach.rightArmARCVFX.SetActive(false);
-        attach.leftArmARCVFX.SetActive(false);
-        attach.headARCVFX.SetActive(false);
-        attach.LeftLegARCVFX.SetActive(false);
-        attach.RightLegARCVFX .SetActive(false);
        
+        
+
     }
 
     public void DetachPart(GameObject part)

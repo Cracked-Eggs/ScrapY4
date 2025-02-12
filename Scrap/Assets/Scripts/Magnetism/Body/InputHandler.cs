@@ -12,7 +12,7 @@ public class InputHandler : MonoBehaviour
         attachScript = GetComponent<Attach>();
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
      
         inputSystem.Player.ShootR.performed += attachScript.ShootOrRecallRightArm;
@@ -36,7 +36,7 @@ public class InputHandler : MonoBehaviour
      
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
         inputSystem.Player.DetachPart.Disable();
         

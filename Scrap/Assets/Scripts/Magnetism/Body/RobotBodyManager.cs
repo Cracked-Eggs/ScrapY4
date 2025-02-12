@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.VFX;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 public class Attach : MonoBehaviour
 {
     private Rigidbody _rb;
@@ -22,11 +23,6 @@ public class Attach : MonoBehaviour
     [SerializeField] public GameObject RightLegARCVFX;
     [SerializeField] public GameObject rightArmBurstVFX; // Assign in Inspector
     [SerializeField] public GameObject leftArmBurstVFX;
-
-
-    private Vector3 resetPos1Original;
-    private Vector3 resetPos2Original;
-
 
     [SerializeField] public float customGravity = -9.81f;
     [SerializeField] AudioClip magnetRepel;
@@ -121,7 +117,7 @@ public class Attach : MonoBehaviour
         }
     }
 
-    private void AttemptReattach()
+    public void AttemptReattach()
     {
         if (secondaryRadiusChecker.currentBodyParts >= secondaryRadiusChecker.totalBodyParts) return;
         if (Time.time < lastDetachAllTime + detachAllCooldown) return;
@@ -210,7 +206,7 @@ public class Attach : MonoBehaviour
         isDetached = _isL_ArmDetached || _isR_ArmDetached || _isL_LegDetached || _isR_LegDetached || _isTorsoDetached;
     }
 
-    private void DetachAll()
+    public void DetachAll()
     {
         if (Time.time < lastDetachAllTime + detachAllCooldown) return;
 
@@ -560,7 +556,7 @@ public class Attach : MonoBehaviour
             yield return null;
         }
 
-        // Ensure we complete the reattachment process
+       
         yield return StartCoroutine(partManager.ShakeAndReattach(bodyPart));
 
         Debug.Log(bodyPart.name + " has been reattached.");
@@ -572,5 +568,6 @@ public class Attach : MonoBehaviour
             Debug.Log(bodyPart.name + " removed from targetBodyParts.");
         }
     }
+
 
 }
