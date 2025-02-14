@@ -19,6 +19,7 @@ public class PartManager : MonoBehaviour
     public float reattachSpeed = 10f;
     public float rotationSpeed = 2f;
     public float reattachDistanceThreshold = 0.1f;
+    private VFXManager vfxManager;  
 
     [System.Serializable]
     public struct ColliderData
@@ -37,6 +38,7 @@ public class PartManager : MonoBehaviour
 
     private void Start()
     {
+        vfxManager = GetComponent<VFXManager>();
         StoreOriginalTransforms(head);
         StoreOriginalTransforms(head2);
         StoreOriginalTransforms(head3);
@@ -64,15 +66,24 @@ public class PartManager : MonoBehaviour
                 meshCollider.enabled = false; // Disabled until detachment
 
                 // 🔹 Pre-add MeshFilter and MeshRenderer but disable them
-                MeshFilter meshFilter = part.GetComponent<MeshFilter>();
-                if (meshFilter == null)
+
+             
+                if (part.TryGetComponent<MeshFilter>(out MeshFilter meshFilter))
+                {
+                    Debug.Log("MeshFilter already added");
+                }
+                else
                 {
                     meshFilter = part.AddComponent<MeshFilter>();
                 }
                 meshFilter.mesh = bakedMesh;
 
-                MeshRenderer meshRenderer = part.GetComponent<MeshRenderer>();
-                if (meshRenderer == null)
+                
+                if (part.TryGetComponent<MeshRenderer>(out MeshRenderer meshRenderer))
+                {
+                    Debug.Log("MeshRenderer already added");
+                }
+                else
                 {
                     meshRenderer = part.AddComponent<MeshRenderer>();
                 }
@@ -96,14 +107,14 @@ public class PartManager : MonoBehaviour
         originalRotations[part] = part.transform.localRotation;
         originalScales[part] = part.transform.localScale;
 
-        BoxCollider collider = part.GetComponent<BoxCollider>();
-        if (collider != null)
+        
+        if (part.TryGetComponent<BoxCollider>(out BoxCollider collider))
         {
             originalCollidersData[part] = new ColliderData(collider);
         }
 
-        SkinnedMeshRenderer renderer = part.GetComponent<SkinnedMeshRenderer>();
-        if (renderer != null)
+      
+        if (part.TryGetComponent<SkinnedMeshRenderer>(out SkinnedMeshRenderer renderer))
         {
             originalBones[part] = renderer.bones;
             originalRootBones[part] = renderer.rootBone;
@@ -120,21 +131,11 @@ public class PartManager : MonoBehaviour
         isReattaching = true;
 
         secondaryRadiusChecker.UpdateBodyPartCount(1);
-        
-        attach.rightArmARCVFX.SetActive(false);
-        attach.leftArmARCVFX.SetActive(false);
-        attach.headARCVFX.SetActive(false);
-        attach.LeftLegARCVFX.SetActive(false);
-        attach.RightLegARCVFX.SetActive(false);
-        attach.leftArmVFX.Stop();
-        attach.rightArmVFX.Stop();
-        attach.RightLegVFX.Stop();
-        attach.LeftLegVFX.Stop();
-        attach.HeadVFX.Stop();
+
+        vfxManager.StopAllVFX();
       
 
-        Rigidbody partRb = part.GetComponent<Rigidbody>();
-        if (partRb != null)
+        if (part.TryGetComponent<Rigidbody>(out Rigidbody partRb))
         {
             partRb.isKinematic = true;
         }
@@ -154,8 +155,8 @@ public class PartManager : MonoBehaviour
         part.transform.localScale = originalScales[part];
 
         // Reattach BoxCollider if it exists
-        BoxCollider partCollider = part.GetComponent<BoxCollider>();
-        if (partCollider != null)
+       
+        if (part.TryGetComponent<BoxCollider>(out BoxCollider partCollider))
         {
             // Restore original collider size and center
             partCollider.size = originalCollidersData[part].size;
@@ -172,22 +173,22 @@ public class PartManager : MonoBehaviour
         }
 
         // Clean up the MeshRenderer and MeshFilter if necessary
-        MeshRenderer meshRenderer = part.GetComponent<MeshRenderer>();
-        if (meshRenderer != null)
+       
+        if (part.TryGetComponent<MeshRenderer>(out MeshRenderer meshRenderer))
         {
             meshRenderer.enabled = false;
         }
 
         // Clean up MeshCollider if present
-        MeshCollider meshCollider = part.GetComponent<MeshCollider>();
-        if (meshCollider != null)
+        
+        if (part.TryGetComponent<MeshCollider>(out MeshCollider meshCollider))
         {
             meshCollider.enabled = false;
         }
 
         // Add SkinnedMeshRenderer
-        SkinnedMeshRenderer skinnedMesh = part.GetComponent<SkinnedMeshRenderer>();
-        if (skinnedMesh != null)
+       
+        if (part.TryGetComponent<SkinnedMeshRenderer>(out SkinnedMeshRenderer skinnedMesh))
         {
             skinnedMesh.enabled = enabled;
             skinnedMesh.sharedMesh = originalMeshes[part];
@@ -211,42 +212,38 @@ public class PartManager : MonoBehaviour
         part.transform.SetParent(null, true);
         part.transform.localScale = originalScales[part];
 
-        SkinnedMeshRenderer skinnedMesh = part.GetComponent<SkinnedMeshRenderer>();
-        if (skinnedMesh != null)
+       
+        if (part.TryGetComponent<SkinnedMeshRenderer>(out SkinnedMeshRenderer skinnedMesh))
         {
             skinnedMesh.enabled = false;
         }
 
-        Collider existingCollider = part.GetComponent<BoxCollider>();
-        if (existingCollider != null)
+       
+        if (part.TryGetComponent<BoxCollider>(out BoxCollider existingCollider))
         {
             existingCollider.enabled = false;
         }
 
         // Enable mesh collider
-        MeshCollider meshCollider = part.GetComponent<MeshCollider>();
-        if (meshCollider != null)
+       
+        if (part.TryGetComponent<MeshCollider>(out MeshCollider meshCollider))
         {
             meshCollider.enabled = true;
         }
 
-        // Assign the baked mesh to MeshFilter
-        MeshFilter meshFilter = part.GetComponent<MeshFilter>();
-        if (meshFilter != null)
+     
+        if (part.TryGetComponent<MeshFilter>(out MeshFilter meshFilter))
         {
             meshFilter.mesh = preBakedMeshes[part];
         }
 
-        // Enable MeshRenderer
-        MeshRenderer meshRenderer = part.GetComponent<MeshRenderer>();
-        if (meshRenderer != null)
+       
+        if (part.TryGetComponent<MeshRenderer>(out MeshRenderer meshRenderer))
         {
             meshRenderer.enabled = true;
         }
 
-        
-        Rigidbody partRb = part.GetComponent<Rigidbody>();
-        if (partRb != null)
+        if (part.TryGetComponent<Rigidbody>(out Rigidbody partRb))
         {
             
             partRb.isKinematic = false; Debug.Log("Rigidbody mass before detachment: " + partRb.mass);

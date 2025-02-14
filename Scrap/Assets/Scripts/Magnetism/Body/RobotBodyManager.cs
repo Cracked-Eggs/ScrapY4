@@ -10,18 +10,7 @@ public class Attach : MonoBehaviour
     private Rigidbody _rb;
     private Collider playerCollider;
     public bool canRetach;
-    [SerializeField] public VisualEffect leftArmVFX;
-    [SerializeField] public VisualEffect rightArmVFX;
-    [SerializeField] public VisualEffect HeadVFX;
-    [SerializeField] public VisualEffect LeftLegVFX;
-    [SerializeField] public VisualEffect RightLegVFX;
-    [SerializeField] public GameObject leftArmARCVFX;
-    [SerializeField] public GameObject rightArmARCVFX;
-    [SerializeField] public GameObject headARCVFX;
-    [SerializeField] public GameObject LeftLegARCVFX;
-    [SerializeField] public GameObject RightLegARCVFX;
-    [SerializeField] public GameObject rightArmBurstVFX; // Assign in Inspector
-    [SerializeField] public GameObject leftArmBurstVFX;
+    private VFXManager vfxManager;
 
     [SerializeField] public float customGravity = -9.81f;
     [SerializeField] AudioClip magnetRepel;
@@ -43,6 +32,7 @@ public class Attach : MonoBehaviour
     public bool _isL_LegDetached = false;
     public bool _isR_LegDetached = false;
     public bool _isTorsoDetached = false;
+    public bool canShoot = true;
 
     public bool _isBothLegsDetached = false;
     public bool _isEverythingDetached = false;
@@ -63,38 +53,15 @@ public class Attach : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
         partManager = GetComponent<PartManager>();
+        vfxManager = GetComponent<VFXManager>();
 
     }
-    private IEnumerator PlayAndDisableVFX(GameObject vfx, float duration)
-    {
-        if (vfx != null)
-        {
-            vfx.SetActive(true);
-            yield return new WaitForSeconds(duration);
-            vfx.SetActive(false);
-        }
-    }
+   
 
     private void Start()
     {
-        //if (leftArmMagnetScript != null && _isL_ArmDetached == false) leftArmMagnetScript.enabled = false;
-        //if (rightArmMagnetScript != null && _isR_ArmDetached == false) rightArmMagnetScript.enabled = false;
-        leftArmVFX.Stop();
-        rightArmVFX.Stop();
-        RightLegVFX.Stop();
-        LeftLegVFX.Stop();
-        HeadVFX.Stop();
-     
-        rightArmARCVFX.SetActive(false);
-        leftArmARCVFX.SetActive(false);
-        headARCVFX.SetActive(false);
-        LeftLegARCVFX.SetActive(false);
-        RightLegARCVFX.SetActive(false);
-     
-
-
+      vfxManager.StopAllVFX();
     }
-    
     public void ToggleDetachReattach(InputAction.CallbackContext context)
     {
         if (partManager.isReattaching) return;
@@ -115,7 +82,6 @@ public class Attach : MonoBehaviour
             }
         }
     }
-
     public void AttemptReattach()
     {
         if (secondaryRadiusChecker.currentBodyParts >= secondaryRadiusChecker.totalBodyParts) return;
@@ -134,6 +100,7 @@ public class Attach : MonoBehaviour
 
         bool bodyPartInRange = false;
         secondaryRadiusChecker.targetBodyParts.Clear();
+        canShoot = true;
 
         foreach (var (bodyPart, resetFlag, isDetached) in bodyParts)
         {
@@ -146,28 +113,24 @@ public class Attach : MonoBehaviour
                 // Play VFX for reattaching
                 if (bodyPart.CompareTag("R_Arm"))
                 {
-                    rightArmVFX.Play();
-                    rightArmARCVFX.SetActive(true);
+                    vfxManager.PlayVFX("R_Arm");
+                    
                 }
                 else if (bodyPart.CompareTag("L_Arm"))
                 {
-                    leftArmVFX.Play();
-                    leftArmARCVFX.SetActive(true);
+                    vfxManager.PlayVFX("L_Arm");
                 }
                 else if (bodyPart.CompareTag("Torso"))
                 {
-                    HeadVFX.Play();
-                    headARCVFX.SetActive(true);
+                    vfxManager.PlayVFX("Torso");
                 }
                 else if (bodyPart.CompareTag("R_Leg"))
                 {
-                    RightLegVFX.Play();
-                    RightLegARCVFX.SetActive(true);
+                    vfxManager.PlayVFX("R_Leg");
                 }
                 else if (bodyPart.CompareTag("L_Leg"))
                 {
-                    LeftLegVFX.Play();
-                    LeftLegARCVFX.SetActive(true);
+                    vfxManager.PlayVFX("L_Leg");
                 }
             }
         }
@@ -179,16 +142,19 @@ public class Attach : MonoBehaviour
         }
 
         // Smooth rise and controller adjustments happen only if at least one part was reattached
-        CharacterController controller = GetComponent<CharacterController>();
-        controller.center = new Vector3(0, -2.46f, 0);
-        controller.height = 5.61f;
-        StartCoroutine(SmoothRise(playerCollider.bounds.extents.y));
+        if (TryGetComponent<CharacterController>(out CharacterController controller))
+        {
+            controller.center = new Vector3(0, -2.46f, 0);
+            controller.height = 5.61f;
+            StartCoroutine(SmoothRise(playerCollider.bounds.extents.y));
+        }
 
         secondaryRadiusChecker.isRetracting = true;
 
         foreach (GameObject bodyPart in secondaryRadiusChecker.targetBodyParts)
         {
             StartCoroutine(WaitForRetractComplete(bodyPart));
+
         }
 
         //leftArmMagnetScript.enabled = !_isL_ArmDetached;
@@ -198,13 +164,10 @@ public class Attach : MonoBehaviour
 
         CheckIfFullyReattached();
     }
-
-    
     private void CheckIfFullyReattached()
     {
         isDetached = _isL_ArmDetached || _isR_ArmDetached || _isL_LegDetached || _isR_LegDetached || _isTorsoDetached;
     }
-
     public void DetachAll()
     {
         if (Time.time < lastDetachAllTime + detachAllCooldown) return;
@@ -239,6 +202,7 @@ public class Attach : MonoBehaviour
         //rightArmMagnetScript.enabled = true;
         //leftArmSphereColl.enabled = true;
         //rightArmSphereColl.enabled = true;
+        canShoot = false;
     }
     private bool CanDetach()
     {
@@ -292,41 +256,48 @@ public class Attach : MonoBehaviour
     }
     public void ShootOrRecallRightArm(InputAction.CallbackContext context)
     {
-        if (Time.time < lastDetachLeftArmTime + detachLeftArmCooldown) return;
-
-        lastDetachLeftArmTime = Time.time;
-
-        if (_isR_ArmDetached)
+        if(canShoot)
         {
-            // The arm is out, recall it
-            RecallRightArm();
+            if (Time.time < lastDetachLeftArmTime + detachLeftArmCooldown) return;
+
+            lastDetachLeftArmTime = Time.time;
+
+            if (_isR_ArmDetached)
+            {
+                // The arm is out, recall it
+                RecallRightArm();
+            }
+            else
+            {
+                // The arm is not out, shoot it
+                ShootRightArm();
+            }
         }
-        else
-        {
-            // The arm is not out, shoot it
-            ShootRightArm();
-        }
+        
     }
     public void ShootOrRecallLeftArm(InputAction.CallbackContext context)
     {
-        if (Time.time < lastDetachLeftArmTime + detachLeftArmCooldown) return;
+        if (canShoot) {
+            if (Time.time < lastDetachLeftArmTime + detachLeftArmCooldown) return;
 
-        lastDetachLeftArmTime = Time.time;
+            lastDetachLeftArmTime = Time.time;
 
-        if (_isL_ArmDetached)
-        {
-            // The arm is out, recall it
-            RecallLeftArm();
+            if (_isL_ArmDetached)
+            {
+                // The arm is out, recall it
+                RecallLeftArm();
+            }
+            else
+            {
+                // The arm is not out, shoot it
+                ShootLeftArm();
+            }
         }
-        else
-        {
-            // The arm is not out, shoot it
-            ShootLeftArm();
-        }
+       
     }
     public void ShootRightArm()
     {
-        StartCoroutine(PlayAndDisableVFX(rightArmBurstVFX, 0.6f));
+        vfxManager.PlayBurstVFX("R_Arm");
 
         if (partManager.isReattaching) return;
 
@@ -335,8 +306,9 @@ public class Attach : MonoBehaviour
 
             // Detach and shoot right arm
             partManager.DetachPart(partManager.r_Arm);
-            Rigidbody rb = partManager.r_Arm.GetComponent<Rigidbody>();
-            if (rb != null)
+            
+
+            if (partManager.r_Arm.TryGetComponent<Rigidbody>(out Rigidbody rb))
             {
                 Vector3 repulsionDirection = transform.forward; // Push the arm forward
                 rb.AddForce(repulsionDirection * shootingForce, ForceMode.Impulse);
@@ -370,13 +342,13 @@ public class Attach : MonoBehaviour
     public void ShootLeftArm()
     {
         if (partManager.isReattaching) return;
-        StartCoroutine(PlayAndDisableVFX(leftArmBurstVFX, 0.6f));
+        vfxManager.PlayBurstVFX("L_Arm");
         if (!_isL_ArmDetached)
         {
             // Detach and shoot left arm
             partManager.DetachPart(partManager.l_Arm);
-            Rigidbody rb = partManager.l_Arm.GetComponent<Rigidbody>();
-            if (rb != null)
+            
+            if (partManager.l_Arm.TryGetComponent<Rigidbody>(out Rigidbody rb))
             {
                 Debug.Log("Skipped it!");
                 Vector3 repulsionDirection = transform.forward; // Push the arm forward
@@ -411,6 +383,7 @@ public class Attach : MonoBehaviour
     }
     public void DropLeftArm(InputAction.CallbackContext context)
     {
+        if (!canShoot) return;
         if (Time.time < lastDetachLeftArmTime + detachLeftArmCooldown) return;
 
         lastDetachLeftArmTime = Time.time;
@@ -438,23 +411,24 @@ public class Attach : MonoBehaviour
             //leftArmSphereColl.enabled = true;
         }
     }
-
     public void DropRightArm(InputAction.CallbackContext context)
     {
+        if (!canShoot) return;
         if (Time.time < lastDetachRightArmTime + detachRightArmCooldown) return;
 
         lastDetachRightArmTime = Time.time;
 
         if (_isR_ArmDetached)
         {
-            // The arm is out, recall it
-            RecallRightArm();
+                // The arm is out, recall it
+          RecallRightArm();
         }
         else
         {
-            // The arm is not out, drop it
-            DroppingRightArm();
+                // The arm is not out, drop it
+          DroppingRightArm();
         }
+        
     }
     public void DroppingRightArm()
     {
@@ -468,7 +442,6 @@ public class Attach : MonoBehaviour
             //rightArmSphereColl.enabled = true;
         }
     }
-
     public void RecallBothArms(InputAction.CallbackContext context)
     {
         if (Time.time >= lastDetachRightArmTime + detachRightArmCooldown)
@@ -516,32 +489,25 @@ public class Attach : MonoBehaviour
         float startTime = Time.time;
         if (bodyPart.CompareTag("L_Arm"))
         {
-            
-            leftArmVFX.Play();
-            leftArmARCVFX.SetActive(true);
+            vfxManager.PlayVFX("L_Arm");
            
-            
         }
         else if (bodyPart.CompareTag("R_Arm"))
         {
-            rightArmVFX.Play();
-            rightArmARCVFX.SetActive(true);
+            vfxManager.PlayVFX("R_Arm");
             
         }
         else if(bodyPart.CompareTag("Torso"))
         {
-            HeadVFX.Play();
-            headARCVFX.SetActive(true);
+            vfxManager.PlayVFX("Torso");
         }
         else if(bodyPart.CompareTag("L_Leg"))
         {
-            LeftLegVFX.Play();
-            LeftLegARCVFX.SetActive(true) ;
+            vfxManager.PlayVFX("L_Leg");
         }
         else if (bodyPart.CompareTag("R_Leg"))
         {
-            RightLegVFX.Play();
-            RightLegARCVFX.SetActive(true);
+            vfxManager.PlayVFX("R_Leg");
         }
 
 
@@ -555,7 +521,6 @@ public class Attach : MonoBehaviour
             yield return null;
         }
 
-       
         yield return StartCoroutine(partManager.ShakeAndReattach(bodyPart));
 
         Debug.Log(bodyPart.name + " has been reattached.");
