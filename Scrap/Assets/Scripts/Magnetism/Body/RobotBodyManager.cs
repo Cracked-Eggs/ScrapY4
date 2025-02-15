@@ -7,10 +7,14 @@ using UnityEngine.VFX;
 using System.Linq;
 public class Attach : MonoBehaviour
 {
-    private Rigidbody _rb;
+    private CharacterController characterController;
     private Collider playerCollider;
     public bool canRetach;
     private VFXManager vfxManager;
+    private PlayerStateMachine playerStateMachine;
+    public Rigidbody rb_head;
+    public SphereCollider playerCollider_head;
+    
 
     [SerializeField] public float customGravity = -9.81f;
     [SerializeField] AudioClip magnetRepel;
@@ -24,7 +28,9 @@ public class Attach : MonoBehaviour
     private float lastDetachLeftArmTime = -2.0f;
     private float lastDetachRightArmTime = -2.0f;
     private float lastDetachAllTime = -2.0f;
-  
+    Vector3 currentRotation;
+
+
 
     public bool isDetached = false;
     public bool _isL_ArmDetached = false;
@@ -37,10 +43,7 @@ public class Attach : MonoBehaviour
     public bool _isBothLegsDetached = false;
     public bool _isEverythingDetached = false;
 
-    //public Magnet leftArmMagnetScript;
-    //public Magnet rightArmMagnetScript;
-    //public SphereCollider leftArmSphereColl;
-    //public SphereCollider rightArmSphereColl;
+   
     public PartManager partManager;
 
     // Reference to the second radius checker script
@@ -48,16 +51,21 @@ public class Attach : MonoBehaviour
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
+        characterController = GetComponent<CharacterController>();
         playerCollider = GetComponent<Collider>();
         _audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
         partManager = GetComponent<PartManager>();
         vfxManager = GetComponent<VFXManager>();
-
+        playerStateMachine = GetComponent<PlayerStateMachine>();
+        rb_head = GetComponent<Rigidbody>();
+       
     }
-   
 
+    private void Update()
+    {
+        currentRotation = transform.rotation.eulerAngles;
+    }
     private void Start()
     {
       vfxManager.StopAllVFX();
@@ -88,7 +96,13 @@ public class Attach : MonoBehaviour
         if (Time.time < lastDetachAllTime + detachAllCooldown) return;
 
         lastDetachAllTime = Time.time;
+        _animator.enabled = true;
 
+        characterController.enabled = true;
+        Vector3 initialEulerAngles = playerStateMachine.initalRotation.eulerAngles;
+
+        transform.rotation = Quaternion.Euler(initialEulerAngles.x, currentRotation.y,initialEulerAngles.z);
+      
         List<(GameObject part, Action resetFlag, bool isDetached)> bodyParts = new()
     {
         (partManager.r_Arm, () => _isR_ArmDetached = false, _isR_ArmDetached),
@@ -100,7 +114,7 @@ public class Attach : MonoBehaviour
 
         bool bodyPartInRange = false;
         secondaryRadiusChecker.targetBodyParts.Clear();
-        canShoot = true;
+        canShoot = true; // Allow shooting again
 
         foreach (var (bodyPart, resetFlag, isDetached) in bodyParts)
         {
@@ -111,27 +125,7 @@ public class Attach : MonoBehaviour
                 bodyPartInRange = true;
 
                 // Play VFX for reattaching
-                if (bodyPart.CompareTag("R_Arm"))
-                {
-                    vfxManager.PlayVFX("R_Arm");
-                    
-                }
-                else if (bodyPart.CompareTag("L_Arm"))
-                {
-                    vfxManager.PlayVFX("L_Arm");
-                }
-                else if (bodyPart.CompareTag("Torso"))
-                {
-                    vfxManager.PlayVFX("Torso");
-                }
-                else if (bodyPart.CompareTag("R_Leg"))
-                {
-                    vfxManager.PlayVFX("R_Leg");
-                }
-                else if (bodyPart.CompareTag("L_Leg"))
-                {
-                    vfxManager.PlayVFX("L_Leg");
-                }
+                vfxManager.PlayVFX(bodyPart.tag);
             }
         }
 
@@ -141,7 +135,7 @@ public class Attach : MonoBehaviour
             return; // Exit early if no parts are available
         }
 
-        // Smooth rise and controller adjustments happen only if at least one part was reattached
+        // Adjust character controller only if reattachment happened
         if (TryGetComponent<CharacterController>(out CharacterController controller))
         {
             controller.center = new Vector3(0, -2.46f, 0);
@@ -149,21 +143,28 @@ public class Attach : MonoBehaviour
             StartCoroutine(SmoothRise(playerCollider.bounds.extents.y));
         }
 
+        if(TryGetComponent<SphereCollider>(out SphereCollider sphereCollider))
+        {
+            sphereCollider.enabled = false;
+        }
+
         secondaryRadiusChecker.isRetracting = true;
 
         foreach (GameObject bodyPart in secondaryRadiusChecker.targetBodyParts)
         {
             StartCoroutine(WaitForRetractComplete(bodyPart));
-
         }
 
-        //leftArmMagnetScript.enabled = !_isL_ArmDetached;
-        //rightArmMagnetScript.enabled = !_isR_ArmDetached;
-        //leftArmSphereColl.enabled = false;
-        //rightArmSphereColl.enabled = false;
+        // Finally, switch back to normal movement state
+        playerStateMachine.SwitchState(new PlayerFreeLookState(playerStateMachine));
+        if(TryGetComponent<Rigidbody>(out rb_head))
+        {
+            rb_head.isKinematic = true;
+        }
 
         CheckIfFullyReattached();
     }
+
     private void CheckIfFullyReattached()
     {
         isDetached = _isL_ArmDetached || _isR_ArmDetached || _isL_LegDetached || _isR_LegDetached || _isTorsoDetached;
@@ -180,6 +181,10 @@ public class Attach : MonoBehaviour
         }
 
         lastDetachAllTime = Time.time;
+      
+        playerStateMachine.HandleLoseBody();
+        characterController.enabled = false;
+        _animator.enabled = false;
 
         partManager.DetachPart(partManager.torso);
         partManager.DetachPart(partManager.r_Leg);
@@ -190,7 +195,10 @@ public class Attach : MonoBehaviour
         CharacterController controller = GetComponent<CharacterController>();
         controller.center = new Vector3(0, 0.77f, 0);
         controller.height = 0f;
-
+        if (TryGetComponent<SphereCollider>(out SphereCollider sphereCollider))
+        {
+            sphereCollider.enabled = true;
+        }
         isDetached = true;
         _isL_ArmDetached = true;
         _isR_ArmDetached = true;

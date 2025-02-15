@@ -56,7 +56,7 @@ public class PressurePlate : MonoBehaviour
 
     bool IsValidObject(Collider other)
     {
-        return other.CompareTag("Player") || other.CompareTag("R_Arm") || other.CompareTag("L_Arm");
+        return other.CompareTag("Player") || other.CompareTag("R_Arm") || other.CompareTag("L_Arm") || other.CompareTag("Head");
     }
 
     bool IsStillInTrigger(GameObject obj)
