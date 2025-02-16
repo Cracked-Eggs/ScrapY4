@@ -25,11 +25,13 @@ public class PlayerStateMachine : StateMachine
     [field: SerializeField] public GameObject PauseMenu { get; private set; }
     [field: SerializeField] public Attack[] Attacks { get; private set; }
     [field: SerializeField] public TooltipManager TooltipManager { get; private set; }
+    [field: SerializeField] public LayerMask aimColliderLayerMask = new LayerMask();
+    [field: SerializeField] public Transform debugTransform { get; private set; }
+    [field: SerializeField] public GameObject Crosshair { get; private set; }
 
     public Quaternion initalRotation;
     public float PreviousDodgeTime { get; private set; } = Mathf.NegativeInfinity;
     public Transform MainCameraTransform { get; private set; }
-    public bool Resume;
 
 
     void Start()
@@ -65,5 +67,4 @@ public class PlayerStateMachine : StateMachine
        
     }
 
-    public void Unpause() => Resume = true;
 }
