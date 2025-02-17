@@ -12,6 +12,7 @@ public class Attach : MonoBehaviour
     public bool canRetach;
     private VFXManager vfxManager;
     private PlayerStateMachine playerStateMachine;
+    InputReader _inputReader;
     public Rigidbody rb_head;
     public SphereCollider playerCollider_head;
     
@@ -19,6 +20,9 @@ public class Attach : MonoBehaviour
     [SerializeField] public float customGravity = -9.81f;
     [SerializeField] AudioClip magnetRepel;
     [SerializeField] public float shootingForce = 500f;
+    [SerializeField] LayerMask aimColliderLayerMask = new LayerMask();
+    [SerializeField] Transform debugTransform;
+    
     AudioSource _audioSource;
     Animator _animator;
 
@@ -29,6 +33,7 @@ public class Attach : MonoBehaviour
     private float lastDetachRightArmTime = -2.0f;
     private float lastDetachAllTime = -2.0f;
     Vector3 currentRotation;
+    Vector3 mouseWorldPosition;
 
 
 
@@ -59,12 +64,21 @@ public class Attach : MonoBehaviour
         vfxManager = GetComponent<VFXManager>();
         playerStateMachine = GetComponent<PlayerStateMachine>();
         rb_head = GetComponent<Rigidbody>();
-       
+        _inputReader = GetComponent<InputReader>();
     }
 
     private void Update()
     {
         currentRotation = transform.rotation.eulerAngles;
+        
+        Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
+        {
+            debugTransform.position = raycastHit.point; // Optional: Visualize the aim point
+        }
+        mouseWorldPosition = raycastHit.point; 
     }
     private void Start()
     {
@@ -303,23 +317,33 @@ public class Attach : MonoBehaviour
         }
        
     }
+    
+    IEnumerator MovePartToTarget(GameObject part, Vector3 targetPosition, float speed)
+    {
+        while (Vector3.Distance(part.transform.position, targetPosition) > 0.1f)
+        {
+            part.transform.position = Vector3.MoveTowards(part.transform.position, targetPosition, speed * Time.deltaTime);
+            yield return null;
+        }
+    }
+    
     public void ShootRightArm()
     {
-        vfxManager.PlayBurstVFX("R_Arm");
-
         if (partManager.isReattaching) return;
+        if (_inputReader.IsAiming == false) return;
+        
+        vfxManager.PlayBurstVFX("R_Arm");
 
         if (!_isR_ArmDetached)
         {
 
             // Detach and shoot right arm
             partManager.DetachPart(partManager.r_Arm);
-            
+            Vector3 aimDirection = (mouseWorldPosition - partManager.r_Arm.transform.position).normalized;
 
             if (partManager.r_Arm.TryGetComponent<Rigidbody>(out Rigidbody rb))
             {
-                Vector3 repulsionDirection = transform.forward; // Push the arm forward
-                rb.AddForce(repulsionDirection * shootingForce, ForceMode.Impulse);
+                StartCoroutine(MovePartToTarget(partManager.r_Arm, mouseWorldPosition, shootingForce));
             }
 
             _isR_ArmDetached = true;
@@ -350,17 +374,17 @@ public class Attach : MonoBehaviour
     public void ShootLeftArm()
     {
         if (partManager.isReattaching) return;
+        if (_inputReader.IsAiming == false) return;
         vfxManager.PlayBurstVFX("L_Arm");
         if (!_isL_ArmDetached)
         {
             // Detach and shoot left arm
             partManager.DetachPart(partManager.l_Arm);
+            Vector3 aimDirection = (mouseWorldPosition - partManager.l_Arm.transform.position).normalized;
             
             if (partManager.l_Arm.TryGetComponent<Rigidbody>(out Rigidbody rb))
             {
-                Debug.Log("Skipped it!");
-                Vector3 repulsionDirection = transform.forward; // Push the arm forward
-                rb.AddForce(repulsionDirection * shootingForce, ForceMode.Impulse);
+                StartCoroutine(MovePartToTarget(partManager.l_Arm, mouseWorldPosition, shootingForce));
             }
 
             _isL_ArmDetached = true;

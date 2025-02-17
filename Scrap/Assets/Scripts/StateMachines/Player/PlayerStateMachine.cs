@@ -32,6 +32,7 @@ public class PlayerStateMachine : StateMachine
     public Quaternion initalRotation;
     public float PreviousDodgeTime { get; private set; } = Mathf.NegativeInfinity;
     public Transform MainCameraTransform { get; private set; }
+    public bool Resume;
 
 
     void Start()
