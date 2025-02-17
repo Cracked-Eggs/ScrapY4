@@ -91,24 +91,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""DetachPart"",
-                    ""type"": ""Button"",
-                    ""id"": ""124e3a7d-5fa8-4874-976b-433609ae545a"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ReattachPart"",
-                    ""type"": ""Button"",
-                    ""id"": ""53f18129-8efa-4316-b9c7-bf2c97e05fc9"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""ShootR"",
                     ""type"": ""Button"",
                     ""id"": ""6f849afc-a52a-435c-ad9d-ccd21a5e3df5"",
@@ -184,24 +166,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""name"": ""RecallBothArms"",
                     ""type"": ""Button"",
                     ""id"": ""cf02c858-c701-4056-bf57-793bdc945252"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""RecallLeftArm"",
-                    ""type"": ""Button"",
-                    ""id"": ""ba31818a-56d3-40cd-a041-aa540b08ff11"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""RecallRightArm"",
-                    ""type"": ""Button"",
-                    ""id"": ""d8db479a-a042-435a-96d4-dff55d89267a"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -482,39 +446,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""95c83228-9dee-491b-88b6-83b1f22595e6"",
-                    ""path"": ""<Keyboard>/h"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""DetachPart"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""04ad30f6-d959-4220-97c1-8976c5cc6a1e"",
-                    ""path"": ""<Keyboard>/g"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ReattachPart"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7aaa717d-0645-4d0f-9636-a0ab7e0ab1fd"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ReattachPart"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""98bb21e0-252c-4ad7-a384-c984567d5921"",
                     ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
@@ -713,39 +644,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""dde36e41-fcd2-41fe-9422-8a5e2e64f79a"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RecallLeftArm"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""45b8b63d-616e-4cd2-84c6-1ef0341b6116"",
-                    ""path"": ""<Keyboard>/6"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RecallRightArm"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""41625378-5893-4ccf-854a-8d2f60fb7217"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RecallRightArm"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""21babd6d-ea9a-4c20-82a0-862b70c32287"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
@@ -780,7 +678,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ccec70ee-4417-480c-bb6d-3e2f6b04c036"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -830,8 +728,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_Target = m_Player.FindAction("Target", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
-        m_Player_DetachPart = m_Player.FindAction("DetachPart", throwIfNotFound: true);
-        m_Player_ReattachPart = m_Player.FindAction("ReattachPart", throwIfNotFound: true);
         m_Player_ShootR = m_Player.FindAction("ShootR", throwIfNotFound: true);
         m_Player_ShootL = m_Player.FindAction("ShootL", throwIfNotFound: true);
         m_Player_DropEverything = m_Player.FindAction("DropEverything", throwIfNotFound: true);
@@ -841,8 +737,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_DropLeftLeg = m_Player.FindAction("DropLeftLeg", throwIfNotFound: true);
         m_Player_DropBothLegs = m_Player.FindAction("DropBothLegs", throwIfNotFound: true);
         m_Player_RecallBothArms = m_Player.FindAction("RecallBothArms", throwIfNotFound: true);
-        m_Player_RecallLeftArm = m_Player.FindAction("RecallLeftArm", throwIfNotFound: true);
-        m_Player_RecallRightArm = m_Player.FindAction("RecallRightArm", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Aiming = m_Player.FindAction("Aiming", throwIfNotFound: true);
     }
@@ -918,8 +812,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Target;
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Block;
-    private readonly InputAction m_Player_DetachPart;
-    private readonly InputAction m_Player_ReattachPart;
     private readonly InputAction m_Player_ShootR;
     private readonly InputAction m_Player_ShootL;
     private readonly InputAction m_Player_DropEverything;
@@ -929,8 +821,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_DropLeftLeg;
     private readonly InputAction m_Player_DropBothLegs;
     private readonly InputAction m_Player_RecallBothArms;
-    private readonly InputAction m_Player_RecallLeftArm;
-    private readonly InputAction m_Player_RecallRightArm;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Aiming;
     public struct PlayerActions
@@ -944,8 +834,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Target => m_Wrapper.m_Player_Target;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @Block => m_Wrapper.m_Player_Block;
-        public InputAction @DetachPart => m_Wrapper.m_Player_DetachPart;
-        public InputAction @ReattachPart => m_Wrapper.m_Player_ReattachPart;
         public InputAction @ShootR => m_Wrapper.m_Player_ShootR;
         public InputAction @ShootL => m_Wrapper.m_Player_ShootL;
         public InputAction @DropEverything => m_Wrapper.m_Player_DropEverything;
@@ -955,8 +843,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @DropLeftLeg => m_Wrapper.m_Player_DropLeftLeg;
         public InputAction @DropBothLegs => m_Wrapper.m_Player_DropBothLegs;
         public InputAction @RecallBothArms => m_Wrapper.m_Player_RecallBothArms;
-        public InputAction @RecallLeftArm => m_Wrapper.m_Player_RecallLeftArm;
-        public InputAction @RecallRightArm => m_Wrapper.m_Player_RecallRightArm;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Aiming => m_Wrapper.m_Player_Aiming;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -989,12 +875,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Block.started += instance.OnBlock;
             @Block.performed += instance.OnBlock;
             @Block.canceled += instance.OnBlock;
-            @DetachPart.started += instance.OnDetachPart;
-            @DetachPart.performed += instance.OnDetachPart;
-            @DetachPart.canceled += instance.OnDetachPart;
-            @ReattachPart.started += instance.OnReattachPart;
-            @ReattachPart.performed += instance.OnReattachPart;
-            @ReattachPart.canceled += instance.OnReattachPart;
             @ShootR.started += instance.OnShootR;
             @ShootR.performed += instance.OnShootR;
             @ShootR.canceled += instance.OnShootR;
@@ -1022,12 +902,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @RecallBothArms.started += instance.OnRecallBothArms;
             @RecallBothArms.performed += instance.OnRecallBothArms;
             @RecallBothArms.canceled += instance.OnRecallBothArms;
-            @RecallLeftArm.started += instance.OnRecallLeftArm;
-            @RecallLeftArm.performed += instance.OnRecallLeftArm;
-            @RecallLeftArm.canceled += instance.OnRecallLeftArm;
-            @RecallRightArm.started += instance.OnRecallRightArm;
-            @RecallRightArm.performed += instance.OnRecallRightArm;
-            @RecallRightArm.canceled += instance.OnRecallRightArm;
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
@@ -1059,12 +933,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Block.started -= instance.OnBlock;
             @Block.performed -= instance.OnBlock;
             @Block.canceled -= instance.OnBlock;
-            @DetachPart.started -= instance.OnDetachPart;
-            @DetachPart.performed -= instance.OnDetachPart;
-            @DetachPart.canceled -= instance.OnDetachPart;
-            @ReattachPart.started -= instance.OnReattachPart;
-            @ReattachPart.performed -= instance.OnReattachPart;
-            @ReattachPart.canceled -= instance.OnReattachPart;
             @ShootR.started -= instance.OnShootR;
             @ShootR.performed -= instance.OnShootR;
             @ShootR.canceled -= instance.OnShootR;
@@ -1092,12 +960,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @RecallBothArms.started -= instance.OnRecallBothArms;
             @RecallBothArms.performed -= instance.OnRecallBothArms;
             @RecallBothArms.canceled -= instance.OnRecallBothArms;
-            @RecallLeftArm.started -= instance.OnRecallLeftArm;
-            @RecallLeftArm.performed -= instance.OnRecallLeftArm;
-            @RecallLeftArm.canceled -= instance.OnRecallLeftArm;
-            @RecallRightArm.started -= instance.OnRecallRightArm;
-            @RecallRightArm.performed -= instance.OnRecallRightArm;
-            @RecallRightArm.canceled -= instance.OnRecallRightArm;
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
@@ -1148,8 +1010,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnTarget(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
-        void OnDetachPart(InputAction.CallbackContext context);
-        void OnReattachPart(InputAction.CallbackContext context);
         void OnShootR(InputAction.CallbackContext context);
         void OnShootL(InputAction.CallbackContext context);
         void OnDropEverything(InputAction.CallbackContext context);
@@ -1159,8 +1019,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnDropLeftLeg(InputAction.CallbackContext context);
         void OnDropBothLegs(InputAction.CallbackContext context);
         void OnRecallBothArms(InputAction.CallbackContext context);
-        void OnRecallLeftArm(InputAction.CallbackContext context);
-        void OnRecallRightArm(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnAiming(InputAction.CallbackContext context);
     }

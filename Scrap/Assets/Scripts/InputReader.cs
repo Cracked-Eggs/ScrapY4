@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,6 +8,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public bool IsAttacking { get; private set; }
     public bool IsBlocking { get; private set; }
     public bool IsAiming { get; private set; }
+    public bool IsArm = true;
     public bool IsInCombat;
     public Vector2 MovementValue { get; private set; }
 
@@ -32,10 +34,12 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public event Action AimEvent;
 
     Controls controls;
+    Attach attach;
 
     void Start()
     {
         controls = new Controls();
+        attach = GetComponent<Attach>();
         controls.Player.SetCallbacks(this);
         controls.Player.Enable();
     }
@@ -80,23 +84,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
             IsBlocking = false;
     }
 
-    public void OnDetachPart(InputAction.CallbackContext context)
-    {
-        if (!context.performed) return;
-        DetachPartEvent?.Invoke();
-    }
-
-    public void OnReattachPart(InputAction.CallbackContext context)
-    {
-        if (!context.performed) return;
-        ReattachPartEvent?.Invoke();
-    }
-
-    public void OnShootR(InputAction.CallbackContext context)
-    {
-        if (!context.performed) return;
-        ShootRightEvent?.Invoke();
-    }
+    public void OnShootR(InputAction.CallbackContext context) { }
 
     public void OnShootL(InputAction.CallbackContext context)
     {
@@ -146,12 +134,6 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
         if(!context.performed) return;
         RecallBothArmsEvent?.Invoke();
     }
-    public void OnRecallRightArm(InputAction.CallbackContext context)
-    {
-        if (!context.performed) return;
-        RecallRightArmEvent?.Invoke();
-
-    }
 
     public void OnInteract(InputAction.CallbackContext context)
     {
@@ -159,18 +141,23 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
         InteractEvent?.Invoke();
     }
 
-    public void OnRecallLeftArm(InputAction.CallbackContext context)
-    {
-        if (!context.performed) return;
-        RecallLeftArmEvent?.Invoke();
-    }
-    
     public void OnAiming(InputAction.CallbackContext context)
     {
-        if (context.performed && !IsInCombat)
-            IsAiming = true; 
+        if (context.performed && !IsInCombat && IsArm)
+        {
+            IsAiming = true;
+        }
         else if (context.canceled)
+        {
+            ShootRightEvent?.Invoke();
+            IsArm = false;
             IsAiming = false;
+        }
         AimEvent?.Invoke();
+    }
+
+    IEnumerator AimDelay()
+    {
+        yield return new WaitForSeconds(2f);
     }
 }

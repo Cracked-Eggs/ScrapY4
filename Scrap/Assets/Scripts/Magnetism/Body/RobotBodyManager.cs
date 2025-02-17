@@ -362,6 +362,10 @@ public class Attach : MonoBehaviour
                 secondaryRadiusChecker.isRetracting = true;
                 StartCoroutine(WaitForRetractComplete(partManager.r_Arm));
                 _isR_ArmDetached = false;
+                if (_inputReader != null)
+                {
+                    Debug.Log("isarm true");
+                }
                 //rightArmMagnetScript.enabled = false;
                 //rightArmSphereColl.enabled = false;
             }

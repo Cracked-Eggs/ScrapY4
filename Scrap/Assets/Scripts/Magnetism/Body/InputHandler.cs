@@ -14,7 +14,9 @@ public class InputHandler : MonoBehaviour
 
     public void OnEnable()
     {
-     
+        inputSystem.Player.Aiming.canceled += OnAimingCanceled;
+        inputSystem.Player.Aiming.Enable();
+
         inputSystem.Player.ShootR.performed += attachScript.ShootOrRecallRightArm;
         inputSystem.Player.ShootR.Enable();
 
@@ -32,25 +34,26 @@ public class InputHandler : MonoBehaviour
 
         inputSystem.Player.DropRightArm.performed += attachScript.DropRightArm;
         inputSystem.Player.DropRightArm.Enable();
-
-     
     }
 
     public void OnDisable()
     {
-        inputSystem.Player.DetachPart.Disable();
-        
+        inputSystem.Player.Aiming.canceled -= OnAimingCanceled;
+        inputSystem.Player.Aiming.Disable();
 
         inputSystem.Player.ShootR.Disable();
         inputSystem.Player.ShootL.Disable();
 
         inputSystem.Player.RecallBothArms.Disable();
-        inputSystem.Player.RecallLeftArm.Disable();
-        inputSystem.Player.RecallRightArm.Disable();
 
         inputSystem.Player.DropEverything.Disable();
         inputSystem.Player.DropLeftArm.Disable();
         inputSystem.Player.DropRightArm.Disable();
-     
+    }
+
+    private void OnAimingCanceled(InputAction.CallbackContext context)
+    {
+        Debug.Log("Aiming released. Shooting right arm.");
+        attachScript.ShootOrRecallRightArm(context);
     }
 }
