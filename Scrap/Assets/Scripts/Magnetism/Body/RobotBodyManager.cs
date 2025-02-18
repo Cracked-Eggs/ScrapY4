@@ -319,7 +319,14 @@ public class Attach : MonoBehaviour
        
     }
     
-   
+    IEnumerator MovePartToTarget(GameObject part, Vector3 targetPosition, float speed)
+    {
+        while (Vector3.Distance(part.transform.position, targetPosition) > 0.1f)
+        {
+            part.transform.position = Vector3.MoveTowards(part.transform.position, targetPosition, speed * Time.deltaTime);
+            yield return null;
+        }
+    }
 
     public void ShootRightArm()
     {
@@ -345,8 +352,7 @@ public class Attach : MonoBehaviour
                 rb.angularDrag = 0.5f;  
 
                 // Apply force to shoot the arm toward the mouse
-                Vector3 direction = (mouseWorldPosition - partManager.r_Arm.transform.position).normalized;
-                rb.AddForce(direction * shootingForce, ForceMode.Impulse);
+                StartCoroutine(MovePartToTarget(partManager.r_Arm, mouseWorldPosition, shootingForce));
 
                 _isR_ArmDetached = true;
             }
@@ -400,8 +406,7 @@ public class Attach : MonoBehaviour
                 rb.angularDrag = 0.5f;  // Adjust angular drag if rotation is needed
 
                 // Apply force to shoot the arm toward the mouse
-                Vector3 direction = (mouseWorldPosition - partManager.l_Arm.transform.position).normalized;
-                rb.AddForce(direction * shootingForce, ForceMode.Impulse);
+                StartCoroutine(MovePartToTarget(partManager.l_Arm, mouseWorldPosition, shootingForce));
 
                 _isL_ArmDetached = true;
             }

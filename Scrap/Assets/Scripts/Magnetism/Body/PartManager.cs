@@ -24,7 +24,7 @@ public class PartManager : MonoBehaviour
     public float rotationSpeed = 2f;
     public float reattachDistanceThreshold = 0.1f;
     private VFXManager vfxManager;  
-    private InputReader inputReader;
+    private InputReader _inputReader;
 
     [System.Serializable]
     public struct ColliderData
@@ -44,7 +44,7 @@ public class PartManager : MonoBehaviour
     private void Start()
     {
         vfxManager = GetComponent<VFXManager>();
-        inputReader = GetComponent<InputReader>();
+        _inputReader = GetComponent<InputReader>();
         StoreOriginalTransforms(head);
         StoreOriginalTransforms(head2);
         StoreOriginalTransforms(head3);
@@ -243,7 +243,9 @@ public class PartManager : MonoBehaviour
         }
         part.transform.localScale = originalScales[part];
 
-        
+        _inputReader.IsArm = true;
+
+
     }
 
 
