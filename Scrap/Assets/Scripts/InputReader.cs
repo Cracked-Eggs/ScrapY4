@@ -33,6 +33,9 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public event Action InteractEvent;
     public event Action AimEvent;
 
+    public event Action GrappleEvent;
+   
+
     Controls controls;
     Attach attach;
 
@@ -154,6 +157,12 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
             IsAiming = false;
         }
         AimEvent?.Invoke();
+    }
+
+    public void OnActivateGrappleAndReattach(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        GrappleEvent?.Invoke();  // Trigger the grapple event or any associated reattachment logic
     }
 
     IEnumerator AimDelay()

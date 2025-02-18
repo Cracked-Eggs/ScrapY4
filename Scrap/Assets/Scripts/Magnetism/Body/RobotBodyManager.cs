@@ -15,7 +15,7 @@ public class Attach : MonoBehaviour
     InputReader _inputReader;
     public Rigidbody rb_head;
     public SphereCollider playerCollider_head;
-    
+    public MagneticManager magneticManager;
 
     [SerializeField] public float customGravity = -9.81f;
     [SerializeField] AudioClip magnetRepel;
@@ -563,6 +563,200 @@ public class Attach : MonoBehaviour
             Debug.Log(bodyPart.name + " removed from targetBodyParts.");
         }
     }
+    public void ActivateGrappleAndReattach(InputAction.CallbackContext context)
+    {
+        if (partManager.isReattaching) return;
+        if (!magneticManager.canGrapple) return;
+
+        GameObject targetArm = null;
+
+        // Check which arm is currently detached and assign the target arm accordingly
+        if (_isR_ArmDetached)
+        {
+            targetArm = partManager.r_Arm;
+        }
+        else if (_isL_ArmDetached)
+        {
+            targetArm = partManager.l_Arm;
+        }
+        else
+        {
+            Debug.Log("No arm is currently detached.");
+            return; // Exit if no arm is detached
+        }
+
+        // Get the position of the arm that's activating the grapple
+        Vector3 armPosition = targetArm.transform.position;
+        Debug.Log("Target arm position: " + armPosition);
+
+        // Call the method to drop all body parts
+        DetachAllG();
+
+        // Attempt to reattach everything to the position of the arm
+        AttemptReattachToPosition(armPosition);
+    }
+
+    public void AttemptReattachToPosition(Vector3 targetPosition)
+    {
+        // First, teleport the player to the arm's position
+        TeleportPlayerToArmPosition(targetPosition);
+
+        // Ensure the cooldowns allow reattachment
+        if (Time.time >= lastDetachLeftArmTime + detachLeftArmCooldown && Time.time >= lastDetachRightArmTime + detachRightArmCooldown)
+        {
+            StartCoroutine(HandleReattachProcess());
+        }
+        else
+        {
+            Debug.Log("Cooldown active, reattachment not allowed yet.");
+        }
+
+        lastDetachLeftArmTime = Time.time;
+        lastDetachRightArmTime = Time.time;
+    }
+
+    private IEnumerator HandleReattachProcess()
+    {
+        // Wait for the teleportation to finish (you could adjust this depending on your teleport duration)
+        yield return new WaitForSeconds(1.0f); // Assuming 1 second for teleportation
+
+        // Now that the player has arrived at the arm's position, attempt reattachment
+        AttemptReattachG();
+    }
+    private void TeleportPlayerToArmPosition(Vector3 targetPosition, float teleportDuration = 1.0f)
+    {
+        StartCoroutine(LerpTeleport(targetPosition, teleportDuration));
+    }
+
+    private IEnumerator LerpTeleport(Vector3 targetPosition, float duration)
+    {
+        Vector3 startPosition = transform.position;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the final position is exactly the target position
+        transform.position = targetPosition;
+
+        // Optionally, rotate the player to face the direction of the arm
+        transform.rotation = Quaternion.LookRotation(targetPosition - transform.position);
+    }
+
+    public void AttemptReattachG()
+    {
+        if (secondaryRadiusChecker.currentBodyParts >= secondaryRadiusChecker.totalBodyParts) return;
+        
+
+        lastDetachAllTime = Time.time;
+        _animator.enabled = true;
+
+        characterController.enabled = true;
+        Vector3 initialEulerAngles = playerStateMachine.initalRotation.eulerAngles;
+        transform.rotation = Quaternion.Euler(initialEulerAngles.x, currentRotation.y, initialEulerAngles.z);
+
+        List<(GameObject part, Action resetFlag, bool isDetached)> bodyParts = new()
+    {
+        (partManager.r_Arm, () => _isR_ArmDetached = false, _isR_ArmDetached),
+        (partManager.l_Arm, () => _isL_ArmDetached = false, _isL_ArmDetached),
+        (partManager.r_Leg, () => _isR_LegDetached = false, _isR_LegDetached),
+        (partManager.l_Leg, () => _isL_LegDetached = false, _isL_LegDetached),
+        (partManager.torso, () => _isTorsoDetached = false, _isTorsoDetached)
+    };
+
+        bool bodyPartInRange = false;
+        secondaryRadiusChecker.targetBodyParts.Clear();
+        canShoot = true; // Allow shooting again
+
+        foreach (var (bodyPart, resetFlag, isDetached) in bodyParts)
+        {
+            if (isDetached && IsBodyPartInSecondaryRadius(bodyPart))
+            {
+                secondaryRadiusChecker.targetBodyParts.Add(bodyPart);
+                resetFlag();
+                bodyPartInRange = true;
+
+                // Optionally, play VFX for reattaching
+            }
+        }
+
+        if (!bodyPartInRange)
+        {
+            Debug.Log("No body parts in range to reattach. Canceling reattachment.");
+            return; // Exit early if no parts are available
+        }
+
+        // Adjust character controller only if reattachment happened
+        if (TryGetComponent<CharacterController>(out CharacterController controller))
+        {
+            controller.center = new Vector3(0, -2.46f, 0);
+            controller.height = 5.61f;
+            StartCoroutine(SmoothRise(1f));
+        }
+
+        if (TryGetComponent<SphereCollider>(out SphereCollider sphereCollider))
+        {
+            sphereCollider.enabled = false;
+        }
+
+        secondaryRadiusChecker.isRetracting = true;
+
+        foreach (GameObject bodyPart in secondaryRadiusChecker.targetBodyParts)
+        {
+            StartCoroutine(WaitForRetractComplete(bodyPart));
+        }
+
+        // Finally, switch back to normal movement state
+        playerStateMachine.SwitchState(new PlayerFreeLookState(playerStateMachine));
+        if (TryGetComponent<Rigidbody>(out Rigidbody rb_head))
+        {
+            rb_head.isKinematic = true;
+        }
+
+        CheckIfFullyReattached();
+    }
+    public void DetachAllG()
+    {
+        if (Time.time < lastDetachAllTime + detachAllCooldown) return;
+        if (partManager.isReattaching) return;
+
+        lastDetachAllTime = Time.time;
+
+        playerStateMachine.HandleLoseBody();
+        characterController.enabled = false;
+        _animator.enabled = false;
+
+        partManager.DetachPart(partManager.torso);
+        partManager.DetachPart(partManager.r_Leg);
+        partManager.DetachPart(partManager.l_Leg);
+        partManager.DetachPart(partManager.r_Arm);
+        partManager.DetachPart(partManager.l_Arm);
+
+        CharacterController controller = GetComponent<CharacterController>();
+        controller.center = new Vector3(0, 0.77f, 0);
+        controller.height = 0f;
+        if (TryGetComponent<SphereCollider>(out SphereCollider sphereCollider))
+        {
+            sphereCollider.enabled = true;
+        }
+        isDetached = true;
+        _isL_ArmDetached = true;
+        _isR_ArmDetached = true;
+        _isL_LegDetached = true;
+        _isR_LegDetached = true;
+        _isTorsoDetached = true;
+
+        //leftArmMagnetScript.enabled = true;
+        //rightArmMagnetScript.enabled = true;
+        //leftArmSphereColl.enabled = true;
+        //rightArmSphereColl.enabled = true;
+        canShoot = false;
+    }
+
 
 
 }

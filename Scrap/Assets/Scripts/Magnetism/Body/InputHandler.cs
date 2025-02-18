@@ -34,6 +34,9 @@ public class InputHandler : MonoBehaviour
 
         inputSystem.Player.DropRightArm.performed += attachScript.DropRightArm;
         inputSystem.Player.DropRightArm.Enable();
+
+        inputSystem.Player.ActivateGrappleAndReattach.performed += attachScript.ActivateGrappleAndReattach;
+        inputSystem.Player.ActivateGrappleAndReattach.Enable();
     }
 
     public void OnDisable()
@@ -49,6 +52,8 @@ public class InputHandler : MonoBehaviour
         inputSystem.Player.DropEverything.Disable();
         inputSystem.Player.DropLeftArm.Disable();
         inputSystem.Player.DropRightArm.Disable();
+
+        inputSystem.Player.ActivateGrappleAndReattach.Disable();
     }
 
     private void OnAimingCanceled(InputAction.CallbackContext context)

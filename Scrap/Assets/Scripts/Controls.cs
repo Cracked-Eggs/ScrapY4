@@ -188,6 +188,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ActivateGrappleAndReattach"",
+                    ""type"": ""Button"",
+                    ""id"": ""738b8339-4ccd-4d9f-891a-fd2707134c34"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -685,6 +694,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Aiming"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""061a963a-4458-40f2-b3ae-ca22972d212d"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ActivateGrappleAndReattach"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -739,6 +759,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_RecallBothArms = m_Player.FindAction("RecallBothArms", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Aiming = m_Player.FindAction("Aiming", throwIfNotFound: true);
+        m_Player_ActivateGrappleAndReattach = m_Player.FindAction("ActivateGrappleAndReattach", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -823,6 +844,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_RecallBothArms;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Aiming;
+    private readonly InputAction m_Player_ActivateGrappleAndReattach;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -845,6 +867,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @RecallBothArms => m_Wrapper.m_Player_RecallBothArms;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Aiming => m_Wrapper.m_Player_Aiming;
+        public InputAction @ActivateGrappleAndReattach => m_Wrapper.m_Player_ActivateGrappleAndReattach;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -908,6 +931,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Aiming.started += instance.OnAiming;
             @Aiming.performed += instance.OnAiming;
             @Aiming.canceled += instance.OnAiming;
+            @ActivateGrappleAndReattach.started += instance.OnActivateGrappleAndReattach;
+            @ActivateGrappleAndReattach.performed += instance.OnActivateGrappleAndReattach;
+            @ActivateGrappleAndReattach.canceled += instance.OnActivateGrappleAndReattach;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -966,6 +992,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Aiming.started -= instance.OnAiming;
             @Aiming.performed -= instance.OnAiming;
             @Aiming.canceled -= instance.OnAiming;
+            @ActivateGrappleAndReattach.started -= instance.OnActivateGrappleAndReattach;
+            @ActivateGrappleAndReattach.performed -= instance.OnActivateGrappleAndReattach;
+            @ActivateGrappleAndReattach.canceled -= instance.OnActivateGrappleAndReattach;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1021,5 +1050,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnRecallBothArms(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnAiming(InputAction.CallbackContext context);
+        void OnActivateGrappleAndReattach(InputAction.CallbackContext context);
     }
 }

@@ -8,16 +8,21 @@ public class MagneticField : MonoBehaviour
     public float fieldRadius = 10f;         // Magnetic field range
     public float stickThreshold = 0.5f;     // Distance at which objects stick together
     public float slowDownFactor = 5f;       // Controls how much attraction force decelerates
+
+    
     private SphereCollider sphereCollider;
 
     void Start()
     {
-        // Set up the Sphere Collider as a trigger
+        MagneticManager.Instance.RegisterMagneticObject(this);
         sphereCollider = gameObject.AddComponent<SphereCollider>();
         sphereCollider.isTrigger = true;
         sphereCollider.radius = fieldRadius;  // Adjust the field radius
     }
-
+    void OnDestroy()
+    {
+        MagneticManager.Instance.UnregisterMagneticObject(this);
+    }
     void OnTriggerStay(Collider other)
     {
         // If the other object has a Rigidbody and a MagneticField component
@@ -48,12 +53,12 @@ public class MagneticField : MonoBehaviour
                 // Apply forces
                 if (shouldAttract)
                 {
-                    // If they are very close, make them stick together
-                   
+                    
                     {
                         // Opposite polarities: Attract (slowing down as they get closer)
                         otherRb.AddForce(direction * baseForce * otherWeightFactor);
                         this.GetComponent<Rigidbody>().AddForce(-direction * baseForce * thisWeightFactor);
+
                     }
                 }
                 else

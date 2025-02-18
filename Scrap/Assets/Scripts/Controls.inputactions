@@ -166,6 +166,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ActivateGrappleAndReattach",
+                    "type": "Button",
+                    "id": "738b8339-4ccd-4d9f-891a-fd2707134c34",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -661,6 +670,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Aiming",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "061a963a-4458-40f2-b3ae-ca22972d212d",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ActivateGrappleAndReattach",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
