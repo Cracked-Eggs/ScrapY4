@@ -208,15 +208,9 @@ public class PartManager : MonoBehaviour
         {
             partCollider.size = originalCollidersData[part].size;
             partCollider.center = originalCollidersData[part].center;
-            partCollider.enabled = true;
+            partCollider.enabled = false;
         }
-        else
-        {
-            partCollider = part.AddComponent<BoxCollider>();
-            partCollider.size = originalCollidersData[part].size;
-            partCollider.center = originalCollidersData[part].center;
-            partCollider.enabled = true;
-        }
+        
 
         // Clean up the MeshRenderer and MeshFilter if necessary
         
