@@ -2,43 +2,69 @@ using UnityEngine;
 
 public class MagneticField : MonoBehaviour
 {
-    public float magneticFieldRadius = 5f; // Radius of the magnetic field
-    private SphereCollider fieldCollider;
+    public bool isPositivePolarity = true;  // True for positive, false for negative
+    public float weight = 10f;              // Custom weight (NOT Rigidbody mass)
+    public float maxForce = 50f;            // Maximum force applied
+    public float fieldRadius = 10f;         // Magnetic field range
+    public float stickThreshold = 0.5f;     // Distance at which objects stick together
+    public float slowDownFactor = 5f;       // Controls how much attraction force decelerates
+    private SphereCollider sphereCollider;
 
     void Start()
     {
-        // Add a sphere collider to represent the magnetic field
-        fieldCollider = gameObject.AddComponent<SphereCollider>();
-        fieldCollider.radius = magneticFieldRadius;
-        fieldCollider.isTrigger = true; // Make it a trigger for detection
+        // Set up the Sphere Collider as a trigger
+        sphereCollider = gameObject.AddComponent<SphereCollider>();
+        sphereCollider.isTrigger = true;
+        sphereCollider.radius = fieldRadius;  // Adjust the field radius
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerStay(Collider other)
     {
-        // Check if the object is a MagneticObject and within the range
-        MagneticObject magneticObject = other.GetComponent<MagneticObject>();
-        if (magneticObject != null)
+        // If the other object has a Rigidbody and a MagneticField component
+        MagneticField otherMagneticField = other.GetComponent<MagneticField>();
+        Rigidbody otherRb = other.attachedRigidbody;
+
+        if (otherRb && otherMagneticField)
         {
-            // Change the color of the object when it enters the magnetic field
-            magneticObject.OnEnterMagneticField(true);
+            Vector3 direction = transform.position - other.transform.position;
+            float distance = direction.magnitude;
+
+            // Ensure the object is within the field radius and has a valid distance
+            if (distance < sphereCollider.radius && distance > 0.01f) // Avoid division by zero
+            {
+                direction.Normalize();  // Normalize the direction vector
+
+                // Determine if they should attract or repel
+                bool shouldAttract = isPositivePolarity != otherMagneticField.isPositivePolarity;
+
+                // Calculate force based on weight difference
+                float totalWeight = weight + otherMagneticField.weight;
+                float baseForce = Mathf.Clamp(weight / (distance * slowDownFactor), 0, maxForce); // Decrease force as distance decreases
+
+                // The heavier object resists movement more
+                float thisWeightFactor = otherMagneticField.weight / totalWeight;
+                float otherWeightFactor = weight / totalWeight;
+
+                // Apply forces
+                if (shouldAttract)
+                {
+                    // If they are very close, make them stick together
+                   
+                    {
+                        // Opposite polarities: Attract (slowing down as they get closer)
+                        otherRb.AddForce(direction * baseForce * otherWeightFactor);
+                        this.GetComponent<Rigidbody>().AddForce(-direction * baseForce * thisWeightFactor);
+                    }
+                }
+                else
+                {
+                    // Same polarities: Repel (normal repulsion behavior)
+                    otherRb.AddForce(-direction * baseForce * otherWeightFactor);
+                    this.GetComponent<Rigidbody>().AddForce(direction * baseForce * thisWeightFactor);
+                }
+            }
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        // Check if the object is a MagneticObject and has left the field
-        MagneticObject magneticObject = other.GetComponent<MagneticObject>();
-        if (magneticObject != null)
-        {
-            // Revert the color when the object exits the magnetic field
-            magneticObject.OnEnterMagneticField(false);
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        // Visualize the magnetic field radius with a wire sphere
-        Gizmos.color = Color.green; // Color for the field radius
-        Gizmos.DrawWireSphere(transform.position, magneticFieldRadius);
-    }
+  
 }

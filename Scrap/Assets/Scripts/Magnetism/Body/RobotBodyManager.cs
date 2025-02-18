@@ -318,99 +318,76 @@ public class Attach : MonoBehaviour
         }
        
     }
-    
+
     IEnumerator MovePartToTarget(GameObject part, Vector3 targetPosition, float speed)
     {
+        Rigidbody rb = part.GetComponent<Rigidbody>();
+
+        // Ensure Rigidbody is disabled for smooth movement
+        if (rb)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.isKinematic = true; // Disable physics while moving
+        }
+
         while (Vector3.Distance(part.transform.position, targetPosition) > 0.1f)
         {
             part.transform.position = Vector3.MoveTowards(part.transform.position, targetPosition, speed * Time.deltaTime);
             yield return null;
         }
+
+        // Reactivate Rigidbody after reaching the target
+        if (rb) rb.isKinematic = false;
     }
 
     public void ShootRightArm()
     {
         if (partManager.isReattaching) return;
         if (_inputReader.IsAiming == false) return;
+        if (_isR_ArmDetached) return; // Prevent double shooting
 
         vfxManager.PlayBurstVFX("R_Arm");
 
-        if (!_isR_ArmDetached)
-        {
-            // Detach and shoot left arm
-            partManager.DetachPart(partManager.r_Arm);
+        partManager.DetachPart(partManager.r_Arm);
 
-            // Ensure the arm has a Rigidbody
-            if (partManager.r_Arm.TryGetComponent<Rigidbody>(out Rigidbody rb))
-            {
-                // Ensure Rigidbody is not kinematic for realistic physics interaction
-                rb.isKinematic = false;
+        StopAllCoroutines(); // Stop any ongoing movement
+        StartCoroutine(MovePartToTarget(partManager.r_Arm, mouseWorldPosition, shootingForce));
 
-                rb.mass = 1f;  
-                rb.drag = 0.5f; 
-                rb.angularDrag = 0.5f;  
-                rb.angularDrag = 0.5f;  
-
-                // Apply force to shoot the arm toward the mouse
-                StartCoroutine(MovePartToTarget(partManager.r_Arm, mouseWorldPosition, shootingForce));
-
-                _isR_ArmDetached = true;
-            }
-        }
+        _isR_ArmDetached = true;
     }
+
     public void RecallRightArm()
     {
-        if (_isR_ArmDetached)
+        if (!_isR_ArmDetached) return;
+
+        if (secondaryRadiusChecker.isRightArmInRange)
         {
-            // Handle retraction of right arm
-            if (secondaryRadiusChecker.isRightArmInRange)
-            {
-                secondaryRadiusChecker.targetBodyParts.Add(partManager.r_Arm);
-                secondaryRadiusChecker.isRetracting = true;
-                StartCoroutine(WaitForRetractComplete(partManager.r_Arm));
-                _isR_ArmDetached = false;
-                if (_inputReader != null)
-                {
-                    Debug.Log("isarm true");
-                }
-                //rightArmMagnetScript.enabled = false;
-                //rightArmSphereColl.enabled = false;
-            }
-            else
-            {
-                Debug.Log("Right arm is not in range for reattachment.");
-            }
+            secondaryRadiusChecker.targetBodyParts.Add(partManager.r_Arm);
+            secondaryRadiusChecker.isRetracting = true;
+            StartCoroutine(WaitForRetractComplete(partManager.r_Arm));
+            _isR_ArmDetached = false;
+        }
+        else
+        {
+            Debug.Log("Right arm is not in range for reattachment.");
         }
     }
+
     public void ShootLeftArm()
     {
         if (partManager.isReattaching) return;
         if (_inputReader.IsAiming == false) return;
+        if (_isL_ArmDetached) return; // Prevent double shooting
 
         vfxManager.PlayBurstVFX("L_Arm");
 
-        if (!_isL_ArmDetached)
-        {
-            // Detach and shoot left arm
-            partManager.DetachPart(partManager.l_Arm);
+        partManager.DetachPart(partManager.l_Arm);
 
-            // Ensure the arm has a Rigidbody
-            if (partManager.l_Arm.TryGetComponent<Rigidbody>(out Rigidbody rb))
-            {
-                // Ensure Rigidbody is not kinematic for realistic physics interaction
-                rb.isKinematic = false;
+        StopAllCoroutines(); // Stop any ongoing movement
+        StartCoroutine(MovePartToTarget(partManager.l_Arm, mouseWorldPosition, shootingForce));
 
-                // Optionally set mass and drag to simulate the intended motion more naturally
-                rb.mass = 1f;  // Make sure the mass is reasonable for the arm's movement
-                rb.drag = 0.5f; // Adjust the drag for smoother motion
-                rb.angularDrag = 0.5f;  // Adjust angular drag if rotation is needed
-
-                // Apply force to shoot the arm toward the mouse
-                StartCoroutine(MovePartToTarget(partManager.l_Arm, mouseWorldPosition, shootingForce));
-
-                _isL_ArmDetached = true;
-            }
-        }
+        _isL_ArmDetached = true;
     }
 
     public void RecallLeftArm()
