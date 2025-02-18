@@ -1,5 +1,7 @@
- using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
+using UnityEngine.VFX;
 
 public class RadiusChecker : MonoBehaviour
 {
@@ -11,17 +13,19 @@ public class RadiusChecker : MonoBehaviour
     public bool isRetracting = false; // Toggle retracting
     public bool isBodyPartInRange = false; // Flag to check if body part is in secondary radius
     public bool isBodyPartInMainRange = false; // Flag to check if body part is in main radius
+    public Attach attachScript;
+    public VFXManager vfxManager;
+    public PartManager partManager;
+  
 
-    // Public bools for each body part in range
     public bool isHeadInRange = false;
     public bool isTorsoInRange = false;
     public bool isRightLegInRange = false;
     public bool isLeftLegInRange = false;
     public bool isRightArmInRange = false;
     public bool isLeftArmInRange = false;
-
-    // Reference to the Attach script to check the detached status
-    public Attach attachScript;
+    // Priority assignment (higher numbers will be retracted first)
+    public Dictionary<GameObject, int> bodyPartPriorities = new Dictionary<GameObject, int>();
 
     // Store the current body part being recalled
     public List<GameObject> targetBodyParts = new List<GameObject>();
@@ -35,10 +39,34 @@ public class RadiusChecker : MonoBehaviour
         // Initialize body parts count
         totalBodyParts = bodyParts.Count; // This is the total number of body parts
         currentBodyParts = totalBodyParts; // Initially, all parts are attached
+
+        vfxManager = GetComponent<VFXManager>();
+        // Set up body part priorities
+        AssignBodyPartPriorities();
+    }
+
+    void AssignBodyPartPriorities()
+    {
+        // Assign priorities to each body part (lower value = higher priority)
+        // Example:
+        bodyPartPriorities.Add(attachScript.partManager.head, 1); // Highest priority
+        bodyPartPriorities.Add(attachScript.partManager.torso, 2);
+        bodyPartPriorities.Add(attachScript.partManager.r_Arm, 5);
+        bodyPartPriorities.Add(attachScript.partManager.l_Arm, 6);
+        bodyPartPriorities.Add(attachScript.partManager.r_Leg, 4);
+        bodyPartPriorities.Add(attachScript.partManager.l_Leg, 3); // Lowest priority
     }
 
     void Update()
     {
+        if (targetBodyParts.Count > 0)
+        {
+            partManager.isReattaching = true;
+        }
+        else
+        {
+            partManager.isReattaching = false;
+        }
         if (isRepelling)
         {
             RepelObjects(); // Handle repelling logic
@@ -47,7 +75,11 @@ public class RadiusChecker : MonoBehaviour
         // Only retract target body parts if isRetracting is true and there are targets
         if (isRetracting && targetBodyParts.Count > 0)
         {
-            RetractObjects(); // Retract all target body parts
+            // Sort body parts by priority before retracting
+            SortBodyPartsByPriority();
+
+            // Start the coroutine to retract body parts one by one
+            StartCoroutine(RetractBodyPartOneByOne());
         }
 
         // If all body parts are reattached, clear the targets and stop retraction
@@ -67,6 +99,7 @@ public class RadiusChecker : MonoBehaviour
         // Check if any body part is inside the main radius
         CheckBodyPartsInMainRadius();
     }
+
     void ResetInRangeFlags()
     {
         // Reset the in-range flags for all parts when they are reattached
@@ -104,32 +137,57 @@ public class RadiusChecker : MonoBehaviour
         }
     }
 
-    // Method to retract the specific body part
-    void RetractObjects()
+    // Coroutine to retract body parts one by one
+    private IEnumerator RetractBodyPartOneByOne()
     {
         foreach (GameObject bodyPart in targetBodyParts)
         {
             if (bodyPart != null) // Ensure we have a valid target
             {
+                
                 float distance = Vector3.Distance(transform.position, bodyPart.transform.position);
                 if (distance <= radius)
                 {
                     Rigidbody rb = bodyPart.GetComponent<Rigidbody>();
                     if (rb != null) // Ensure the object has a Rigidbody
                     {
+                        
                         Vector3 direction = transform.position - bodyPart.transform.position; // Direction toward center
                         direction.Normalize(); // Normalize force
 
                         rb.AddForce(direction * forceStrength / distance, ForceMode.Impulse);
                         Debug.Log("Retracted: " + bodyPart.name);
+                        vfxManager.PlayVFX(bodyPart.tag);
+                        
+                        // Wait for the next frame before continuing (you can adjust this time as needed)
+                        yield return new WaitForSeconds(0.3f);
                     }
                 }
             }
         }
+
+        // After finishing all retractions, stop the retraction process
+        isRetracting = false;
     }
 
+    void SortBodyPartsByPriority()
+    {
+        // Sort the targetBodyParts list based on the priority defined in bodyPartPriorities
+        targetBodyParts.Sort((part1, part2) =>
+        {
+            // Retrieve the priority for each body part (lower priority number is higher priority)
+            int priority1 = bodyPartPriorities.ContainsKey(part1) ? bodyPartPriorities[part1] : int.MaxValue;
+            int priority2 = bodyPartPriorities.ContainsKey(part2) ? bodyPartPriorities[part2] : int.MaxValue;
 
-    // Method to check if any body part is inside the secondary radius
+            return priority1.CompareTo(priority2); // Compare priorities
+        });
+
+        // Debug log to see the order of body parts
+        foreach (var part in targetBodyParts)
+        {
+            Debug.Log("Body part: " + part.name + " Priority: " + bodyPartPriorities[part]);
+        }
+    }
     void CheckBodyPartsInSecondaryRadius()
     {
         foreach (var bodyPart in bodyParts)
@@ -209,14 +267,13 @@ public class RadiusChecker : MonoBehaviour
             }
         }
     }
+
     public void UpdateBodyPartCount(int change)
     {
         currentBodyParts += change;
         currentBodyParts = Mathf.Clamp(currentBodyParts, 0, totalBodyParts); // Ensure it stays within bounds
         Debug.Log($"Updated body part count: {currentBodyParts}/{totalBodyParts}");
     }
-
-
 
     private void OnDrawGizmosSelected()
     {

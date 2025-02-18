@@ -49,6 +49,32 @@ public class VFXManager : MonoBehaviour
                 break;
         }
     }
+    public void StopVFX(string bodyPart)
+    {
+        switch (bodyPart)
+        {
+            case "L_Arm":
+                leftArmVFX.Stop();
+                leftArmARCVFX.SetActive(false);
+                break;
+            case "R_Arm":
+                rightArmVFX.Stop();
+                rightArmARCVFX.SetActive(false);
+                break;
+            case "Torso":
+                headVFX.Stop();
+                headARCVFX.SetActive(false);
+                break;
+            case "L_Leg":
+                leftLegVFX.Stop();
+                leftLegARCVFX.SetActive(false);
+                break;
+            case "R_Leg":
+                rightLegVFX.Stop();
+                rightLegARCVFX.SetActive(false);
+                break;
+        }
+    }
 
     public void StopAllVFX()
     {

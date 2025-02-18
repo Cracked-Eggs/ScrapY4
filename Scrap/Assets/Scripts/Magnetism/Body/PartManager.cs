@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PartManager : MonoBehaviour
@@ -13,13 +14,17 @@ public class PartManager : MonoBehaviour
     private Dictionary<GameObject, Transform> originalRootBones = new Dictionary<GameObject, Transform>();
     private Dictionary<GameObject, Mesh> originalMeshes = new Dictionary<GameObject, Mesh>();
     private Dictionary<GameObject, ColliderData> originalCollidersData = new Dictionary<GameObject, ColliderData>();
-    private Dictionary<GameObject, Mesh> preBakedMeshes = new Dictionary<GameObject, Mesh>();
+    public Dictionary<GameObject, Mesh> preBakedMeshes = new Dictionary<GameObject, Mesh>();
+    private Dictionary<string, GameObject> gameObjectDictionary = new Dictionary<string, GameObject>();
+    public Transform headParent, torsoParent, r_LegParent, l_LegParent, r_ArmParent, l_ArmParent;
+
     [SerializeField] private RadiusChecker secondaryRadiusChecker;
     [SerializeField] private Attach attach;
     public float reattachSpeed = 10f;
     public float rotationSpeed = 2f;
     public float reattachDistanceThreshold = 0.1f;
     private VFXManager vfxManager;  
+    private InputReader inputReader;
 
     [System.Serializable]
     public struct ColliderData
@@ -39,6 +44,7 @@ public class PartManager : MonoBehaviour
     private void Start()
     {
         vfxManager = GetComponent<VFXManager>();
+        inputReader = GetComponent<InputReader>();
         StoreOriginalTransforms(head);
         StoreOriginalTransforms(head2);
         StoreOriginalTransforms(head3);
@@ -55,10 +61,11 @@ public class PartManager : MonoBehaviour
             SkinnedMeshRenderer skinnedMesh = part.GetComponent<SkinnedMeshRenderer>();
             if (skinnedMesh)
             {
+                
                 Mesh bakedMesh = new Mesh();
                 skinnedMesh.BakeMesh(bakedMesh);
                 preBakedMeshes[part] = bakedMesh;
-
+                
                 // 🔹 Pre-add and disable MeshCollider
                 MeshCollider meshCollider = part.AddComponent<MeshCollider>();
                 meshCollider.sharedMesh = bakedMesh;
@@ -76,6 +83,10 @@ public class PartManager : MonoBehaviour
                 {
                     meshFilter = part.AddComponent<MeshFilter>();
                 }
+                if (!preBakedMeshes.ContainsKey(part))
+                {
+                    Debug.LogError($"Pre-baked mesh for {part.name} not found!");
+                }
                 meshFilter.mesh = bakedMesh;
 
                 
@@ -90,15 +101,32 @@ public class PartManager : MonoBehaviour
                 meshRenderer.materials = skinnedMesh.materials;
                 meshRenderer.enabled = false; // Keep it disabled until detachment
 
-
-              
             }
+            
         }
+
     
     }
     private void Update()
     {
-        
+        GameObject[] bodyParts = { head, head2, head3, head4, head5, torso, r_Leg, l_Leg, r_Arm, l_Arm };
+        foreach (GameObject part in bodyParts)
+            if (!preBakedMeshes.ContainsKey(part))
+            {
+                Debug.LogError($"Pre-baked mesh for {part.name} not found!");
+                part.GetComponent<SkinnedMeshRenderer>().updateWhenOffscreen = true;
+            }
+
+    }
+    private Transform GetParentForPart(GameObject part)
+    {
+        if (part == head) return headParent;
+        if (part == torso) return torsoParent;
+        if (part == r_Leg) return r_LegParent;
+        if (part == l_Leg) return l_LegParent;
+        if (part == r_Arm) return r_ArmParent;
+        if (part == l_Arm) return l_ArmParent;
+        return null; // Fallback if no parent is found
     }
 
     private void StoreOriginalTransforms(GameObject part)
@@ -124,24 +152,47 @@ public class PartManager : MonoBehaviour
 
 
     public bool isReattaching = false;
-
+    
     public IEnumerator ShakeAndReattach(GameObject part)
     {
-    
-        isReattaching = true;
+       
 
         secondaryRadiusChecker.UpdateBodyPartCount(1);
 
-        vfxManager.StopAllVFX();
-      
+        if(part == torso)
+        {
+            vfxManager.StopVFX("Torso");
+            vfxManager.StopVFX("Head");
+        }
+        if (part == r_Leg)
+        {
+            vfxManager.StopVFX("R_Leg");
+        }
+        if (part == l_Leg)
+        {
+            vfxManager.StopVFX("L_Leg");
+        }
+        if (part == r_Arm)
+        {
+            vfxManager.StopVFX("R_Arm");
+        }
+        if (part == l_Arm)
+        {
+            vfxManager.StopVFX("L_Arm");
+        }
 
         if (part.TryGetComponent<Rigidbody>(out Rigidbody partRb))
         {
             partRb.isKinematic = true;
         }
 
-        part.transform.SetParent(parent.transform); 
+
+        part.transform.SetParent(GetParentForPart(part));
+       
         part.transform.position = part.transform.position;
+
+        // Make sure to preserve the part's scale during reattachment
+      
 
         while (Vector3.Distance(part.transform.localPosition, originalPositions[part]) > reattachDistanceThreshold)
         {
@@ -152,67 +203,68 @@ public class PartManager : MonoBehaviour
 
         part.transform.localPosition = originalPositions[part];
         part.transform.localRotation = originalRotations[part];
-        part.transform.localScale = originalScales[part];
-
-        // Reattach BoxCollider if it exists
-       
+        
         if (part.TryGetComponent<BoxCollider>(out BoxCollider partCollider))
         {
-            // Restore original collider size and center
             partCollider.size = originalCollidersData[part].size;
             partCollider.center = originalCollidersData[part].center;
-            partCollider.enabled = true;  // Make sure it's enabled
+            partCollider.enabled = true;
         }
         else
         {
-            // If no BoxCollider exists, you can add one back
             partCollider = part.AddComponent<BoxCollider>();
             partCollider.size = originalCollidersData[part].size;
             partCollider.center = originalCollidersData[part].center;
-            partCollider.enabled = true; // Ensure it's enabled
+            partCollider.enabled = true;
         }
 
         // Clean up the MeshRenderer and MeshFilter if necessary
-       
-        if (part.TryGetComponent<MeshRenderer>(out MeshRenderer meshRenderer))
-        {
-            meshRenderer.enabled = false;
-        }
-
-        // Clean up MeshCollider if present
         
+        // Clean up MeshCollider if present
         if (part.TryGetComponent<MeshCollider>(out MeshCollider meshCollider))
         {
             meshCollider.enabled = false;
         }
 
-        // Add SkinnedMeshRenderer
+
+        if (part.TryGetComponent<MeshRenderer>(out MeshRenderer meshRenderer))
+        {
+            meshRenderer.enabled = false;
+        }
+
        
+        // Finally, enable the SkinnedMeshRenderer
         if (part.TryGetComponent<SkinnedMeshRenderer>(out SkinnedMeshRenderer skinnedMesh))
         {
-            skinnedMesh.enabled = enabled;
+            skinnedMesh.enabled = true;
             skinnedMesh.sharedMesh = originalMeshes[part];
             skinnedMesh.bones = originalBones[part];
             skinnedMesh.rootBone = originalRootBones[part];
         }
-          
-        
+        part.transform.localScale = originalScales[part];
 
-        isReattaching = false;  // Reattachment is complete
-       
         
-
     }
+
 
     public void DetachPart(GameObject part)
     {
         if (isReattaching || part == null || attach.IsBodyPartDetached(part)) return;
 
         secondaryRadiusChecker.UpdateBodyPartCount(-1);
-        part.transform.SetParent(null, true);
-        part.transform.localScale = originalScales[part];
+        Vector3 worldPos = part.transform.position;
+        Quaternion worldRot = part.transform.rotation;
 
-       
+        // Detach from parent
+        part.transform.SetParent(null, true);
+
+        // Apply the world position & rotation back
+        part.transform.position = worldPos;
+        part.transform.rotation = worldRot;
+        part.transform.localScale = Vector3.one;
+
+
+
         if (part.TryGetComponent<SkinnedMeshRenderer>(out SkinnedMeshRenderer skinnedMesh))
         {
             skinnedMesh.enabled = false;
@@ -234,6 +286,7 @@ public class PartManager : MonoBehaviour
      
         if (part.TryGetComponent<MeshFilter>(out MeshFilter meshFilter))
         {
+            meshFilter.mesh = null;
             meshFilter.mesh = preBakedMeshes[part];
         }
 

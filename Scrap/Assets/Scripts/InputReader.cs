@@ -143,7 +143,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
 
     public void OnAiming(InputAction.CallbackContext context)
     {
-        if (context.performed && !IsInCombat && IsArm)
+        if (context.performed && !IsInCombat)
         {
             IsAiming = true;
         }
