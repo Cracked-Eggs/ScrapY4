@@ -564,7 +564,7 @@ public class Attach : MonoBehaviour
         }
 
 
-        while (Vector3.Distance(bodyPart.transform.position, transform.position) > 1f)
+        while (Vector3.Distance(bodyPart.transform.position, transform.position) > secondaryRadiusChecker.secondaryRadius)
         {
             if (Time.time - startTime > timeout)
             {
@@ -573,7 +573,6 @@ public class Attach : MonoBehaviour
             }
             yield return null;
         }
-        
 
         yield return StartCoroutine(partManager.ShakeAndReattach(bodyPart));
 
