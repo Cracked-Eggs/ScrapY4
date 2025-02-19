@@ -17,6 +17,8 @@ public class Attach : MonoBehaviour
     public SphereCollider playerCollider_head;
     public MagneticManager magneticManager;
 
+    public MagneticField magneticField;
+
     [SerializeField] public float customGravity = -9.81f;
     [SerializeField] AudioClip magnetRepel;
     [SerializeField] public float shootingForce = 500f;
@@ -177,6 +179,8 @@ public class Attach : MonoBehaviour
         }
 
         CheckIfFullyReattached();
+        partManager.l_Arm.GetComponent<MagneticField>().enabled = false;
+        partManager.r_Arm.GetComponent<MagneticField>().enabled = false;
     }
 
     private void CheckIfFullyReattached()
@@ -220,7 +224,8 @@ public class Attach : MonoBehaviour
         _isL_LegDetached = true;
         _isR_LegDetached = true;
         _isTorsoDetached = true;
-
+        partManager.l_Arm.GetComponent<MagneticField>().enabled = true;
+        partManager.r_Arm.GetComponent<MagneticField>().enabled = true;
         //leftArmMagnetScript.enabled = true;
         //rightArmMagnetScript.enabled = true;
         //leftArmSphereColl.enabled = true;
@@ -351,10 +356,13 @@ public class Attach : MonoBehaviour
 
         partManager.DetachPart(partManager.r_Arm);
 
+        partManager.r_Arm.GetComponent<MagneticField>().enabled = true;
+
         StopAllCoroutines(); // Stop any ongoing movement
         StartCoroutine(MovePartToTarget(partManager.r_Arm, mouseWorldPosition, shootingForce));
 
         _isR_ArmDetached = true;
+        
     }
 
     public void RecallRightArm()
@@ -367,6 +375,7 @@ public class Attach : MonoBehaviour
             secondaryRadiusChecker.isRetracting = true;
             StartCoroutine(WaitForRetractComplete(partManager.r_Arm));
             _isR_ArmDetached = false;
+            partManager.r_Arm.GetComponent<MagneticField>().enabled = false;
         }
         else
         {
@@ -381,7 +390,7 @@ public class Attach : MonoBehaviour
         if (_isL_ArmDetached) return; // Prevent double shooting
 
         vfxManager.PlayBurstVFX("L_Arm");
-
+        partManager.l_Arm.GetComponent<MagneticField>().enabled = true;
         partManager.DetachPart(partManager.l_Arm);
 
         StopAllCoroutines(); // Stop any ongoing movement
@@ -402,6 +411,7 @@ public class Attach : MonoBehaviour
                 secondaryRadiusChecker.isRetracting = true;
                 StartCoroutine(WaitForRetractComplete(partManager.l_Arm));
                 _isL_ArmDetached = false;
+                partManager.l_Arm.GetComponent<MagneticField>().enabled = true;
                 //leftArmMagnetScript.enabled = false;
                 //leftArmSphereColl.enabled = false;
             }
@@ -437,6 +447,7 @@ public class Attach : MonoBehaviour
             lastDetachLeftArmTime = Time.time;
             partManager.DetachPart(partManager.l_Arm);
             _isL_ArmDetached = true;
+            partManager.l_Arm.GetComponent<MagneticField>().enabled = true;
             //leftArmMagnetScript.enabled = true;
             //leftArmSphereColl.enabled = true;
         }
@@ -468,6 +479,7 @@ public class Attach : MonoBehaviour
             lastDetachRightArmTime = Time.time;
             partManager.DetachPart(partManager.r_Arm);
             _isR_ArmDetached = true;
+            partManager.r_Arm.GetComponent<MagneticField>().enabled = true;
             //rightArmMagnetScript.enabled = true;
             //rightArmSphereColl.enabled = true;
         }
@@ -501,6 +513,8 @@ public class Attach : MonoBehaviour
                     //rightArmSphereColl.enabled = false;
                     secondaryRadiusChecker.isRightArmInRange = false;
                     secondaryRadiusChecker.isLeftArmInRange = false;
+                    partManager.l_Arm.GetComponent<MagneticField>().enabled = false;
+                    partManager.r_Arm.GetComponent<MagneticField>().enabled = false;
                 }
                 else
                 {

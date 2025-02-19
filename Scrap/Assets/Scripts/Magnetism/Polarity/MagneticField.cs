@@ -34,16 +34,7 @@ public class MagneticField : MonoBehaviour
             Vector3 direction = transform.position - other.transform.position;
             float distance = direction.magnitude;
 
-            // If objects are within 0.4f, slow down both linear and angular velocity
-            if (distance <= 1f)
-            {
-                thisRb.velocity *= 0.9f; // Gradually slow movement
-                otherRb.velocity *= 0.9f;
-
-                thisRb.angularVelocity *= 0.9f; // Gradually slow rotation
-                otherRb.angularVelocity *= 0.9f;
-
-                // If they are extremely close and nearly stopped, reduce motion even further
+         
                 if (distance <= 0.1f && thisRb.velocity.magnitude < 0.05f && otherRb.velocity.magnitude < 0.05f)
                 {
                     thisRb.velocity = Vector3.zero;
@@ -53,8 +44,6 @@ public class MagneticField : MonoBehaviour
                     otherRb.angularVelocity = Vector3.zero;
                 }
 
-                return; // Stop applying forces once they are close enough
-            }
 
             direction.Normalize();
             bool shouldAttract = isPositivePolarity != otherMagneticField.isPositivePolarity;
