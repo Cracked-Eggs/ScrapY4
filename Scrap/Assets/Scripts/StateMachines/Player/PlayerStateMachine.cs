@@ -14,16 +14,17 @@ public class PlayerStateMachine : StateMachine
     [field: SerializeField] public Health Health { get; private set; }
     [field: SerializeField] public PlayerRollingHeadState playerRollingHeadState { get; private set; }
     [field: SerializeField] public float FreeLookMovementSpeed { get; private set; }
-    [field: SerializeField] public float maxFuel { get;  set; }
-    [field: SerializeField] public float thrustForce {  get;  set; }
+    [field: SerializeField] public float maxFuel { get; set; }
+    [field: SerializeField] public float thrustForce { get; set; }
 
     [field: SerializeField] public Transform groundedTransform;
-    [field: SerializeField] public float curFuel { get;  set; }
+    [field: SerializeField] public float curFuel { get; set; }
     [field: SerializeField] public float TargetingMovementSpeed { get; private set; }
     [field: SerializeField] public float RotationDamping { get; private set; }
     [field: SerializeField] public float DodgeDuration { get; private set; }
     [field: SerializeField] public float DodgeLength { get; private set; }
     [field: SerializeField] public float JumpForce { get; private set; }
+    [field: SerializeField] public bool isHovering {get;set;}
 
     [field: SerializeField] public bool Attacked;
     [field: SerializeField] public CinemachineInputProvider FreeLookInput { get; private set; }

@@ -5,11 +5,15 @@ public class InputHandler : MonoBehaviour
 {
     private Controls inputSystem;
     public Attach attachScript;
+    public PlayerRollingHeadState headState; 
+    public PlayerStateMachine stateMachine;
 
     private void Awake()
     {
         inputSystem = new Controls();
         attachScript = GetComponent<Attach>();
+        stateMachine = GetComponent<PlayerStateMachine>();  
+
     }
 
     public void OnEnable()
@@ -37,8 +41,11 @@ public class InputHandler : MonoBehaviour
 
         inputSystem.Player.ActivateGrappleAndReattach.performed += attachScript.ActivateGrappleAndReattach;
         inputSystem.Player.ActivateGrappleAndReattach.Enable();
-    }
 
+        inputSystem.Player.Hover.performed += ctx => StartHover();
+        inputSystem.Player.Hover.canceled += ctx => StopHover();
+        inputSystem.Player.Hover.Enable();
+    }
     public void OnDisable()
     {
         inputSystem.Player.Aiming.canceled -= OnAimingCanceled;
@@ -54,11 +61,25 @@ public class InputHandler : MonoBehaviour
         inputSystem.Player.DropRightArm.Disable();
 
         inputSystem.Player.ActivateGrappleAndReattach.Disable();
+        inputSystem.Player.Hover.Disable();
     }
 
     private void OnAimingCanceled(InputAction.CallbackContext context)
     {
         Debug.Log("Aiming released. Shooting right arm.");
         attachScript.ShootOrRecallRightArm(context);
+    }
+    private void StartHover()
+    {
+        Debug.Log("Hover Started");
+        
+            stateMachine.isHovering = true;
+    }
+
+    private void StopHover()
+    {
+        Debug.Log("Hover Stopped");
+      
+            stateMachine.isHovering = false;
     }
 }

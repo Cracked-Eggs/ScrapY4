@@ -34,6 +34,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public event Action AimEvent;
 
     public event Action GrappleEvent;
+    public event Action HoverEvent;
    
 
     Controls controls;
@@ -165,6 +166,11 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
         GrappleEvent?.Invoke();  // Trigger the grapple event or any associated reattachment logic
     }
 
+    public void OnHover(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        HoverEvent?.Invoke();
+    }
     IEnumerator AimDelay()
     {
         yield return new WaitForSeconds(2f);

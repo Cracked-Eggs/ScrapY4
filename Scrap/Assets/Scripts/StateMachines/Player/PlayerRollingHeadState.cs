@@ -7,12 +7,9 @@ public class PlayerRollingHeadState : PlayerBaseState
     [SerializeField] public float rollSpeed = 4f;
     [SerializeField] public float rotationSpeed = 0.000001f;
 
-    // Jetpack-related variables
-    
-   
 
-    // You can add any extra fields to help debugging, such as maxFuel, thrustForce, etc.
-    // These fields will show up in the inspector for easy access and editing.
+    
+    [SerializeField] private float jetpackRotationSpeed =1000f; 
 
     public PlayerRollingHeadState(PlayerStateMachine stateMachine) : base(stateMachine) { }
 
@@ -25,21 +22,19 @@ public class PlayerRollingHeadState : PlayerBaseState
             return;
         }
 
-        rb.isKinematic = false; // Enable physics
+        rb.isKinematic = false; 
     }
 
     public override void Tick(float deltaTime)
     {
         Vector3 movement = CalculateMovement();
         Roll(movement, deltaTime);
-
-        // Jetpack functionality
         HandleJetpack(deltaTime);
     }
 
     public override void Exit()
     {
-        rb.velocity = Vector3.zero; // Stop movement when exiting the state
+        rb.velocity = Vector3.zero; 
     }
 
     private Vector3 CalculateMovement()
@@ -64,14 +59,32 @@ public class PlayerRollingHeadState : PlayerBaseState
 
     private void HandleJetpack(float deltaTime)
     {
-        if (Input.GetKey(KeyCode.Space) && stateMachine.curFuel > 0f)
+        if (stateMachine.isHovering && stateMachine.curFuel > 0f)
         {
-            rb.AddForce(rb.transform.up * stateMachine.thrustForce, ForceMode.Impulse);
-            stateMachine.curFuel -= Time.deltaTime;
+            Debug.Log("Hovering: Applying hover force!");
+
+            // Apply hover force, but limit vertical speed
+           
+                rb.AddForce(rb.transform.up * stateMachine.thrustForce, ForceMode.Impulse);
+                stateMachine.curFuel -= Time.deltaTime;
+          
+            // Call the rotation function here
+            RotateHeadTowardsUpward();
         }
         else if (Physics.Raycast(stateMachine.groundedTransform.position, Vector3.down, 1f, LayerMask.GetMask("Ground")) && stateMachine.curFuel < stateMachine.maxFuel)
         {
+            Debug.Log("Refueling jetpack...");
             stateMachine.curFuel += Time.deltaTime;
         }
+    }
+
+
+    private void RotateHeadTowardsUpward()
+    {
+       
+        Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+
+        
+        stateMachine.transform.rotation = Quaternion.RotateTowards(stateMachine.transform.rotation, targetRotation, jetpackRotationSpeed * Time.deltaTime);
     }
 }

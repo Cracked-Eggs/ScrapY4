@@ -197,6 +197,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Hover"",
+                    ""type"": ""Button"",
+                    ""id"": ""a9d636af-400a-4a41-85a4-8da51cbbdd82"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -705,6 +714,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""ActivateGrappleAndReattach"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7492f67e-6325-4c22-ba5f-cb862adde4ec"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hover"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bb9e5b5b-71ca-4641-8f64-f285ae26a954"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hover"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -760,6 +791,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Aiming = m_Player.FindAction("Aiming", throwIfNotFound: true);
         m_Player_ActivateGrappleAndReattach = m_Player.FindAction("ActivateGrappleAndReattach", throwIfNotFound: true);
+        m_Player_Hover = m_Player.FindAction("Hover", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -845,6 +877,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Aiming;
     private readonly InputAction m_Player_ActivateGrappleAndReattach;
+    private readonly InputAction m_Player_Hover;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -868,6 +901,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Aiming => m_Wrapper.m_Player_Aiming;
         public InputAction @ActivateGrappleAndReattach => m_Wrapper.m_Player_ActivateGrappleAndReattach;
+        public InputAction @Hover => m_Wrapper.m_Player_Hover;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -934,6 +968,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @ActivateGrappleAndReattach.started += instance.OnActivateGrappleAndReattach;
             @ActivateGrappleAndReattach.performed += instance.OnActivateGrappleAndReattach;
             @ActivateGrappleAndReattach.canceled += instance.OnActivateGrappleAndReattach;
+            @Hover.started += instance.OnHover;
+            @Hover.performed += instance.OnHover;
+            @Hover.canceled += instance.OnHover;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -995,6 +1032,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @ActivateGrappleAndReattach.started -= instance.OnActivateGrappleAndReattach;
             @ActivateGrappleAndReattach.performed -= instance.OnActivateGrappleAndReattach;
             @ActivateGrappleAndReattach.canceled -= instance.OnActivateGrappleAndReattach;
+            @Hover.started -= instance.OnHover;
+            @Hover.performed -= instance.OnHover;
+            @Hover.canceled -= instance.OnHover;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1051,5 +1091,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnAiming(InputAction.CallbackContext context);
         void OnActivateGrappleAndReattach(InputAction.CallbackContext context);
+        void OnHover(InputAction.CallbackContext context);
     }
 }
