@@ -206,6 +206,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AimLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""c54b421b-fa59-42a2-9c8b-e6391ff10f15"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -736,6 +745,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Hover"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""faec4d83-af40-4ff4-974b-d61957c443f8"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AimLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -792,6 +812,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_Aiming = m_Player.FindAction("Aiming", throwIfNotFound: true);
         m_Player_ActivateGrappleAndReattach = m_Player.FindAction("ActivateGrappleAndReattach", throwIfNotFound: true);
         m_Player_Hover = m_Player.FindAction("Hover", throwIfNotFound: true);
+        m_Player_AimLeft = m_Player.FindAction("AimLeft", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -878,6 +899,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Aiming;
     private readonly InputAction m_Player_ActivateGrappleAndReattach;
     private readonly InputAction m_Player_Hover;
+    private readonly InputAction m_Player_AimLeft;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -902,6 +924,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Aiming => m_Wrapper.m_Player_Aiming;
         public InputAction @ActivateGrappleAndReattach => m_Wrapper.m_Player_ActivateGrappleAndReattach;
         public InputAction @Hover => m_Wrapper.m_Player_Hover;
+        public InputAction @AimLeft => m_Wrapper.m_Player_AimLeft;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -971,6 +994,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Hover.started += instance.OnHover;
             @Hover.performed += instance.OnHover;
             @Hover.canceled += instance.OnHover;
+            @AimLeft.started += instance.OnAimLeft;
+            @AimLeft.performed += instance.OnAimLeft;
+            @AimLeft.canceled += instance.OnAimLeft;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1035,6 +1061,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Hover.started -= instance.OnHover;
             @Hover.performed -= instance.OnHover;
             @Hover.canceled -= instance.OnHover;
+            @AimLeft.started -= instance.OnAimLeft;
+            @AimLeft.performed -= instance.OnAimLeft;
+            @AimLeft.canceled -= instance.OnAimLeft;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1092,5 +1121,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnAiming(InputAction.CallbackContext context);
         void OnActivateGrappleAndReattach(InputAction.CallbackContext context);
         void OnHover(InputAction.CallbackContext context);
+        void OnAimLeft(InputAction.CallbackContext context);
     }
 }

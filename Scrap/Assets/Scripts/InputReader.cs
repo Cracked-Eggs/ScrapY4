@@ -8,6 +8,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public bool IsAttacking { get; private set; }
     public bool IsBlocking { get; private set; }
     public bool IsAiming { get; private set; }
+    public bool IsLAiming { get; private set; }
     public bool IsArm = true;
     public bool IsInCombat;
     public Vector2 MovementValue { get; private set; }
@@ -32,6 +33,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public event Action RecallRightArmEvent;
     public event Action InteractEvent;
     public event Action AimEvent;
+    public event Action AimLEvent;
 
     public event Action GrappleEvent;
     public event Action HoverEvent;
@@ -171,6 +173,22 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
         if (!context.performed) return;
         HoverEvent?.Invoke();
     }
+
+    public void OnAimLeft(InputAction.CallbackContext context)
+    {
+        if (context.performed && !IsInCombat)
+        {
+            IsLAiming = true;
+        }
+        else if (context.canceled)
+        {
+            ShootLeftEvent?.Invoke();
+            IsArm = false;
+            IsLAiming = false;
+        }
+        AimLEvent?.Invoke();
+    }
+
     IEnumerator AimDelay()
     {
         yield return new WaitForSeconds(2f);

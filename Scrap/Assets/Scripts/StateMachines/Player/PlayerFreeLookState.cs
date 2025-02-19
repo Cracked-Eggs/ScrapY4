@@ -29,6 +29,9 @@ public class PlayerFreeLookState : PlayerBaseState
         
         if (stateMachine.InputReader.IsAiming)
             stateMachine.SwitchState(new PlayerAimingState(stateMachine));
+        
+        if (stateMachine.InputReader.IsLAiming)
+            stateMachine.SwitchState(new PlayerLeftAimingState(stateMachine));
 
         Vector3 movement = CalculateMovement();
         Move(movement * stateMachine.FreeLookMovementSpeed, deltaTime);
