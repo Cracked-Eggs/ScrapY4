@@ -623,7 +623,7 @@ public class Attach : MonoBehaviour
         // Now that the player has arrived at the arm's position, attempt reattachment
         AttemptReattachG();
     }
-    private void TeleportPlayerToArmPosition(Vector3 targetPosition, float teleportDuration = 1.0f)
+    private void TeleportPlayerToArmPosition(Vector3 targetPosition, float teleportDuration = 0.8f)
     {
         StartCoroutine(LerpTeleport(targetPosition, teleportDuration));
     }

@@ -694,7 +694,7 @@
                 {
                     "name": "",
                     "id": "061a963a-4458-40f2-b3ae-ca22972d212d",
-                    "path": "<Keyboard>/k",
+                    "path": "<Gamepad>/dpad/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -728,6 +728,17 @@
                     "name": "",
                     "id": "faec4d83-af40-4ff4-974b-d61957c443f8",
                     "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AimLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f971726a-cfde-493a-b10c-af02a8794e47",
+                    "path": "<Keyboard>/h",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
