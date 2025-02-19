@@ -11,7 +11,6 @@ public class MagneticManager : MonoBehaviour
     // Inspector exposed fields
     public GameObject leftArm; // Reference to the left arm (drag in the Inspector)
     public GameObject rightArm; // Reference to the right arm (drag in the Inspector)
-    public GameObject target; // Specific target object (drag in the Inspector)
 
     // canGrapple flag (will be set to true when attraction happens)
     public bool canGrapple = false;
@@ -36,21 +35,19 @@ public class MagneticManager : MonoBehaviour
 
                 float distance = Vector3.Distance(objA.transform.position, objB.transform.position);
 
-                // Check if they are close enough to interact (e.g., 0.1 distance threshold)
+                // Check if they are close enough to interact
                 if (distance <= 1f)
                 {
                     // Determine if the objects are attracting or repelling
                     bool isAttracting = objA.isPositivePolarity != objB.isPositivePolarity; // Opposite polarity attracts
                     string interactionType = isAttracting ? "Attracting" : "Repelling";
 
-                    // Log or store the interaction
+                    // Log interaction
                     interactionsLog.Add($"Interaction between {objA.gameObject.name} and {objB.gameObject.name}: {interactionType}");
-
-                    // Optionally, you can log it to the console for debugging purposes
                     Debug.Log($"Interaction between {objA.gameObject.name} and {objB.gameObject.name}: {interactionType}");
 
-                    // Check if the attraction is happening between either arm and the target object
-                    if (isAttracting && (objB.gameObject == leftArm || objB.gameObject == rightArm) && objA.gameObject == target)
+                    // Check if attraction is happening between either arm and an object with the target tag
+                    if (isAttracting && (objB.gameObject == leftArm || objB.gameObject == rightArm) && objA.gameObject.CompareTag("MagneticWall"))
                     {
                         canGrapple = true; // Enable canGrapple flag
                         Debug.Log("Can Grapple is now ENABLED!");
@@ -76,13 +73,11 @@ public class MagneticManager : MonoBehaviour
             activeMagneticObjects.Remove(obj);
     }
 
-    // Optionally: Provide a way to get the logged interactions
     public List<string> GetInteractionsLog()
     {
         return interactionsLog;
     }
 
-    // Getter for canGrapple flag
     public bool CanGrapple()
     {
         return canGrapple;
