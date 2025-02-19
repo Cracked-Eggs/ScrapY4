@@ -25,51 +25,61 @@ public class MagneticField : MonoBehaviour
     }
     void OnTriggerStay(Collider other)
     {
-        // If the other object has a Rigidbody and a MagneticField component
         MagneticField otherMagneticField = other.GetComponent<MagneticField>();
         Rigidbody otherRb = other.attachedRigidbody;
+        Rigidbody thisRb = GetComponent<Rigidbody>();
 
         if (otherRb && otherMagneticField)
         {
             Vector3 direction = transform.position - other.transform.position;
             float distance = direction.magnitude;
 
-            // Ensure the object is within the field radius and has a valid distance
-            if (distance < sphereCollider.radius && distance > 0.01f) // Avoid division by zero
+            // If objects are within 0.4f, slow down both linear and angular velocity
+            if (distance <= 1f)
             {
-                direction.Normalize();  // Normalize the direction vector
+                thisRb.velocity *= 0.9f; // Gradually slow movement
+                otherRb.velocity *= 0.9f;
 
-                // Determine if they should attract or repel
-                bool shouldAttract = isPositivePolarity != otherMagneticField.isPositivePolarity;
+                thisRb.angularVelocity *= 0.9f; // Gradually slow rotation
+                otherRb.angularVelocity *= 0.9f;
 
-                // Calculate force based on weight difference
-                float totalWeight = weight + otherMagneticField.weight;
-                float baseForce = Mathf.Clamp(weight / (distance * slowDownFactor), 0, maxForce); // Decrease force as distance decreases
-
-                // The heavier object resists movement more
-                float thisWeightFactor = otherMagneticField.weight / totalWeight;
-                float otherWeightFactor = weight / totalWeight;
-
-                // Apply forces
-                if (shouldAttract)
+                // If they are extremely close and nearly stopped, reduce motion even further
+                if (distance <= 0.1f && thisRb.velocity.magnitude < 0.05f && otherRb.velocity.magnitude < 0.05f)
                 {
-                    
-                    {
-                        // Opposite polarities: Attract (slowing down as they get closer)
-                        otherRb.AddForce(direction * baseForce * otherWeightFactor);
-                        this.GetComponent<Rigidbody>().AddForce(-direction * baseForce * thisWeightFactor);
+                    thisRb.velocity = Vector3.zero;
+                    otherRb.velocity = Vector3.zero;
 
-                    }
+                    thisRb.angularVelocity = Vector3.zero; // Stop rotation gradually
+                    otherRb.angularVelocity = Vector3.zero;
                 }
-                else
-                {
-                    // Same polarities: Repel (normal repulsion behavior)
-                    otherRb.AddForce(-direction * baseForce * otherWeightFactor);
-                    this.GetComponent<Rigidbody>().AddForce(direction * baseForce * thisWeightFactor);
-                }
+
+                return; // Stop applying forces once they are close enough
+            }
+
+            direction.Normalize();
+            bool shouldAttract = isPositivePolarity != otherMagneticField.isPositivePolarity;
+
+            float totalWeight = weight + otherMagneticField.weight;
+            float baseForce = Mathf.Clamp(weight / (distance * slowDownFactor), 0, maxForce);
+
+            float thisWeightFactor = otherMagneticField.weight / totalWeight;
+            float otherWeightFactor = weight / totalWeight;
+
+            if (shouldAttract)
+            {
+                otherRb.AddForce(direction * baseForce * otherWeightFactor);
+                thisRb.AddForce(-direction * baseForce * thisWeightFactor);
+            }
+            else
+            {
+                otherRb.AddForce(-direction * baseForce * otherWeightFactor);
+                thisRb.AddForce(direction * baseForce * thisWeightFactor);
             }
         }
     }
 
-  
+
+
+
+
 }

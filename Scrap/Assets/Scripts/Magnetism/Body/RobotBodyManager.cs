@@ -377,7 +377,7 @@ public class Attach : MonoBehaviour
     public void ShootLeftArm()
     {
         if (partManager.isReattaching) return;
-        if (_inputReader.IsLAiming == false) return;
+        if (_inputReader.IsAiming == false) return;
         if (_isL_ArmDetached) return; // Prevent double shooting
 
         vfxManager.PlayBurstVFX("L_Arm");
@@ -623,7 +623,7 @@ public class Attach : MonoBehaviour
         // Now that the player has arrived at the arm's position, attempt reattachment
         AttemptReattachG();
     }
-    private void TeleportPlayerToArmPosition(Vector3 targetPosition, float teleportDuration = 0.8f)
+    private void TeleportPlayerToArmPosition(Vector3 targetPosition, float teleportDuration = 0.9f)
     {
         StartCoroutine(LerpTeleport(targetPosition, teleportDuration));
     }
