@@ -20,6 +20,9 @@ public class InputHandler : MonoBehaviour
     {
         inputSystem.Player.Aiming.canceled += OnAimingCanceled;
         inputSystem.Player.Aiming.Enable();
+        
+        inputSystem.Player.AimLeft.canceled += OnAimingLeftCanceled;
+        inputSystem.Player.AimLeft.Enable();
 
         inputSystem.Player.ShootR.performed += attachScript.ShootOrRecallRightArm;
         inputSystem.Player.ShootR.Enable();
@@ -50,6 +53,9 @@ public class InputHandler : MonoBehaviour
     {
         inputSystem.Player.Aiming.canceled -= OnAimingCanceled;
         inputSystem.Player.Aiming.Disable();
+        
+        inputSystem.Player.AimLeft.canceled -= OnAimingLeftCanceled;
+        inputSystem.Player.AimLeft.Disable();
 
         inputSystem.Player.ShootR.Disable();
         inputSystem.Player.ShootL.Disable();
@@ -68,6 +74,12 @@ public class InputHandler : MonoBehaviour
     {
         Debug.Log("Aiming released. Shooting right arm.");
         attachScript.ShootOrRecallRightArm(context);
+    }
+    
+    private void OnAimingLeftCanceled(InputAction.CallbackContext context)
+    {
+        Debug.Log("Aiming released. Shooting left arm.");
+        attachScript.ShootOrRecallLeftArm(context);
     }
     private void StartHover()
     {

@@ -155,11 +155,9 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
         }
         else if (context.canceled)
         {
-            ShootRightEvent?.Invoke();
             IsArm = false;
             IsAiming = false;
         }
-        AimEvent?.Invoke();
     }
 
     public void OnActivateGrappleAndReattach(InputAction.CallbackContext context)
@@ -182,11 +180,9 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
         }
         else if (context.canceled)
         {
-            ShootLeftEvent?.Invoke();
             IsArm = false;
             IsLAiming = false;
         }
-        AimLEvent?.Invoke();
     }
 
     IEnumerator AimDelay()
