@@ -386,7 +386,7 @@ public class Attach : MonoBehaviour
     public void ShootLeftArm()
     {
         if (partManager.isReattaching) return;
-        if (_inputReader.IsAiming == false) return;
+        if (_inputReader.IsLAiming == false) return;
         if (_isL_ArmDetached) return; // Prevent double shooting
 
         vfxManager.PlayBurstVFX("L_Arm");
