@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5425201091199616761}
   - component: {fileID: 6435559360059103746}
   - component: {fileID: 715633444817754905}
+  - component: {fileID: 924319963694415263}
   m_Layer: 0
   m_Name: Moving_Platform
   m_TagString: Untagged
@@ -83,6 +84,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &924319963694415263
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6372782834979175595}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.049669456, y: 0.049669456, z: 0.009908612}
+  m_Center: {x: 0, y: 0, z: 0.0026481687}
 --- !u!1 &7267382762778219050
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,6 +197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6006789073284755452}
+  - component: {fileID: 8438160392581283392}
   m_Layer: 0
   m_Name: Moving Platform
   m_TagString: Untagged
@@ -199,3 +222,24 @@ Transform:
   - {fileID: 5425201091199616761}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8438160392581283392
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7851520778550335942}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5.054346, y: 0.88401484, z: 4.987961}
+  m_Center: {x: 0.004216194, y: -0.19774115, z: -0.013198853}
