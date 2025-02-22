@@ -9,6 +9,8 @@ public class WaypointPlatform : MonoBehaviour
     
     int currentWaypointIndex = 0;
     bool isWaiting;
+    bool isReversed = false;
+    const float waypointThreshold = 0.05f; // Increased threshold to prevent tweaking
 
     void Start()
     {
@@ -26,11 +28,13 @@ public class WaypointPlatform : MonoBehaviour
     {
         if (!isWaiting)
         {
-            Vector3 direction = (waypoints[currentWaypointIndex].position - transform.position).normalized;
+            Vector3 targetPosition = waypoints[currentWaypointIndex].position;
+            Vector3 direction = (targetPosition - transform.position).normalized;
             transform.position += direction * speed * Time.fixedDeltaTime;
 
-            if (Vector3.Distance(transform.position, waypoints[currentWaypointIndex].position) <= 0.01f)
+            if (Vector3.Distance(transform.position, targetPosition) <= waypointThreshold)
             {
+                transform.position = targetPosition; // Snap to exact position
                 isWaiting = true;
                 StartCoroutine(ChangeDelay());
             }
@@ -39,7 +43,23 @@ public class WaypointPlatform : MonoBehaviour
 
     void ChangeDestination()
     {
-        currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
+        if (isReversed)
+        {
+            currentWaypointIndex = (currentWaypointIndex - 1 + waypoints.Length) % waypoints.Length;
+        }
+        else
+        {
+            currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
+        }
+    }
+
+    public void SetReversed(bool reversed)
+    {
+        if (isReversed != reversed) // Only change if needed
+        {
+            isReversed = reversed;
+            currentWaypointIndex = (currentWaypointIndex - 1 + waypoints.Length) % waypoints.Length; // Move one step back
+        }
     }
 
     IEnumerator ChangeDelay()
