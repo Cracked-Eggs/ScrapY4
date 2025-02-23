@@ -11,13 +11,14 @@ public class MagneticField : MonoBehaviour
 
     
     private SphereCollider sphereCollider;
-
+    private MagneticManager magneticManager;
     void Start()
     {
         MagneticManager.Instance.RegisterMagneticObject(this);
         sphereCollider = gameObject.AddComponent<SphereCollider>();
         sphereCollider.isTrigger = true;
         sphereCollider.radius = fieldRadius;  // Adjust the field radius
+       
     }
     void OnDestroy()
     {
@@ -58,6 +59,7 @@ public class MagneticField : MonoBehaviour
             {
                 otherRb.AddForce(direction * baseForce * otherWeightFactor);
                 thisRb.AddForce(-direction * baseForce * thisWeightFactor);
+               
             }
             else
             {

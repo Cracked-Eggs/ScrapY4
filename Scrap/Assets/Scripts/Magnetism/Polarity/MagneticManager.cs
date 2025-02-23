@@ -23,6 +23,9 @@ public class MagneticManager : MonoBehaviour
 
     void Update()
     {
+        // Reset canGrapple before checking conditions
+       
+        canGrapple = false;
         // Check interactions between all active magnetic objects
         for (int i = 0; i < activeMagneticObjects.Count; i++)
         {
@@ -33,10 +36,17 @@ public class MagneticManager : MonoBehaviour
 
                 if (objA == null || objB == null) continue;
 
+                // Ensure the arms ignore each other
+                if ((objA.gameObject == leftArm && objB.gameObject == rightArm) ||
+                    (objA.gameObject == rightArm && objB.gameObject == leftArm))
+                {
+                    continue;
+                }
+
                 float distance = Vector3.Distance(objA.transform.position, objB.transform.position);
 
                 // Check if they are close enough to interact
-                if (distance <= 1f)
+                if (distance <= 8f)
                 {
                     // Determine if the objects are attracting or repelling
                     bool isAttracting = objA.isPositivePolarity != objB.isPositivePolarity; // Opposite polarity attracts
@@ -46,15 +56,16 @@ public class MagneticManager : MonoBehaviour
                     interactionsLog.Add($"Interaction between {objA.gameObject.name} and {objB.gameObject.name}: {interactionType}");
                     Debug.Log($"Interaction between {objA.gameObject.name} and {objB.gameObject.name}: {interactionType}");
 
-                    // Check if attraction is happening between either arm and an object with the target tag
-                    if (isAttracting && (objB.gameObject == leftArm || objB.gameObject == rightArm) && objA.gameObject.CompareTag("MagneticWall"))
+                    // Check if either arm is being attracted or repelled by an object with the MagneticWall tag
+                    if ((objA.gameObject == leftArm || objA.gameObject == rightArm) && objB.gameObject.CompareTag("MagneticWall"))
                     {
                         canGrapple = true; // Enable canGrapple flag
                         Debug.Log("Can Grapple is now ENABLED!");
                     }
-                    else
+                    else if ((objB.gameObject == leftArm || objB.gameObject == rightArm) && objA.gameObject.CompareTag("MagneticWall"))
                     {
-                        canGrapple = false; // Disable if attraction does not happen between arms and the target
+                        canGrapple = true; // Enable canGrapple flag
+                        Debug.Log("Can Grapple is now ENABLED!");
                     }
                 }
             }
