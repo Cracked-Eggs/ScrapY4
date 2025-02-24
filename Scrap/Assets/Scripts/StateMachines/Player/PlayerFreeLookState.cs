@@ -22,6 +22,9 @@ public class PlayerFreeLookState : PlayerBaseState
 
     public override void Tick(float deltaTime)
     {
+        if (stateMachine.Targeter.SelectTarget())
+            stateMachine.SwitchState(new PlayerTargetingState(stateMachine));
+            
         if (stateMachine.InputReader.IsAttacking)
         {
             stateMachine.SwitchState(new PlayerAttackingState(stateMachine, 0));
@@ -56,8 +59,6 @@ public class PlayerFreeLookState : PlayerBaseState
     
     void OnTarget()
     {
-        if (!stateMachine.Targeter.SelectTarget()) { return; }
-        stateMachine.SwitchState(new PlayerTargetingState(stateMachine));
     }
     
     void OnJump() => stateMachine.SwitchState(new PlayerJumpingState(stateMachine));
