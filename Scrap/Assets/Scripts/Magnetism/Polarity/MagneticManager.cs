@@ -36,7 +36,7 @@ public class MagneticManager : MonoBehaviour
                 float distance = Vector3.Distance(objA.transform.position, objB.transform.position);
 
                 // Check if they are close enough to interact
-                if (distance <= 2f)
+                if (distance <= 4f)
                 {
                     // Determine if the objects are attracting or repelling
                     bool isAttracting = objA.isPositivePolarity != objB.isPositivePolarity; // Opposite polarity attracts

@@ -47,14 +47,14 @@ public class RadiusChecker : MonoBehaviour
 
     void AssignBodyPartPriorities()
     {
-        // Assign priorities to each body part (lower value = higher priority)
-        // Example:
-        bodyPartPriorities.Add(attachScript.partManager.head, 1); // Highest priority
+       
+       
+        bodyPartPriorities.Add(attachScript.partManager.head, 1);
         bodyPartPriorities.Add(attachScript.partManager.torso, 2);
         bodyPartPriorities.Add(attachScript.partManager.r_Arm, 5);
         bodyPartPriorities.Add(attachScript.partManager.l_Arm, 6);
         bodyPartPriorities.Add(attachScript.partManager.r_Leg, 4);
-        bodyPartPriorities.Add(attachScript.partManager.l_Leg, 3); // Lowest priority
+        bodyPartPriorities.Add(attachScript.partManager.l_Leg, 3); 
     }
 
     void Update()
@@ -159,7 +159,7 @@ public class RadiusChecker : MonoBehaviour
                         vfxManager.PlayVFX(bodyPart.tag);
                         
                         // Wait for the next frame before continuing (you can adjust this time as needed)
-                        yield return new WaitForSeconds(0.3f);
+                        yield return new WaitForSeconds(0.2f);
                     }
                 }
             }
