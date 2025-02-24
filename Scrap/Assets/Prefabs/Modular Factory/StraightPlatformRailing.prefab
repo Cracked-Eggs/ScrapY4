@@ -83,6 +83,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: StraightPlatformRailing
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bf79c9caa7127084a865513907fe50eb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -90,7 +95,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bf79c9caa7127084a865513907fe50eb,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5246721298228673904}
+      addedObject: {fileID: 7253372079199297930}
   m_SourcePrefab: {fileID: 100100000, guid: bf79c9caa7127084a865513907fe50eb, type: 3}
 --- !u!1 &6999788231792053427 stripped
 GameObject:
@@ -98,8 +103,8 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 7918831858448724450}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &5246721298228673904
-MeshCollider:
+--- !u!65 &7253372079199297930
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -116,7 +121,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -8936622394817868014, guid: bf79c9caa7127084a865513907fe50eb, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.02105921, y: 0.022456223, z: 0.07571375}
+  m_Center: {x: 0.00020919807, y: 0.0000000023911546, z: -0.023470165}
