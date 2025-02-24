@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.VFX;
 using System.Linq;
+using Unity.VisualScripting;
+
 public class Attach : MonoBehaviour
 {
     private CharacterController characterController;
@@ -368,7 +370,6 @@ public class Attach : MonoBehaviour
     public void RecallRightArm()
     {
         if (!_isR_ArmDetached) return;
-
         if (secondaryRadiusChecker.isRightArmInRange)
         {
             secondaryRadiusChecker.targetBodyParts.Add(partManager.r_Arm);
@@ -376,7 +377,6 @@ public class Attach : MonoBehaviour
             StartCoroutine(WaitForRetractComplete(partManager.r_Arm));
             _isR_ArmDetached = false;
             partManager.r_Arm.GetComponent<MagneticField>().enabled = false;
-            audioManager.Play("Recall");
         }
         else
         {

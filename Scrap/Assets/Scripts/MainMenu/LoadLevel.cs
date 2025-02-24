@@ -7,10 +7,16 @@ public class LoadLevel : MonoBehaviour
 {
     public static LoadLevel instance;
     [SerializeField] Animator transitionAim;
+    [SerializeField] GameObject transition;
 
     public void NextLevel()
     {
         StartCoroutine(Load());
+    }
+
+    public void LoadCurrent()
+    {
+        SceneManager.LoadScene(1);
     }
 
     IEnumerator Load()
@@ -20,4 +26,5 @@ public class LoadLevel : MonoBehaviour
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
         transitionAim.SetTrigger("Start");
     }
+
 }
