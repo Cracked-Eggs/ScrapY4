@@ -47864,6 +47864,85 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 371659398}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &372434708
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 372434709}
+  - component: {fileID: 372434710}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &372434709
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 372434708}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 64.35526, y: 2.6835454, z: 11.010914}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1597046094}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &372434710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 372434708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ada68607d3422f34c8a6e5bfbf5c033e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Ambience
+    clip: {fileID: 8300000, guid: 2262c62f0bb413f4cacd88011e7c61d5, type: 3}
+    source: {fileID: 0}
+    volume: 0.5
+  - name: Attract
+    clip: {fileID: 8300000, guid: 4d2b68be0a0b355459a121b2d24a78a8, type: 3}
+    source: {fileID: 0}
+    volume: 0.5
+  - name: Detach
+    clip: {fileID: 8300000, guid: e92fe57147380094194cc834483c8be5, type: 3}
+    source: {fileID: 0}
+    volume: 0.5
+  - name: DoorClose
+    clip: {fileID: 8300000, guid: 2a9af8e0e37bc9a46b5e569e9a2bbccf, type: 3}
+    source: {fileID: 0}
+    volume: 0.5
+  - name: DoorOpen
+    clip: {fileID: 8300000, guid: 806a7bbc7b6265b4a8947b3f977aab07, type: 3}
+    source: {fileID: 0}
+    volume: 0.5
+  - name: Electricity
+    clip: {fileID: 8300000, guid: b32e7a51587263a4a95c5355fad4e26c, type: 3}
+    source: {fileID: 0}
+    volume: 0.5
+  - name: PlateClick
+    clip: {fileID: 8300000, guid: fc1a05e60a05c2c4f8f579d1ea304297, type: 3}
+    source: {fileID: 0}
+    volume: 0.5
+  - name: PlateRelease
+    clip: {fileID: 8300000, guid: 81669ea18d37e4447b4995713e4fa4c8, type: 3}
+    source: {fileID: 0}
+    volume: 0.5
+  footstepSounds: []
+  attackSounds: []
 --- !u!1001 &374485747
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -121465,7 +121544,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 947668917}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0015947049, y: -0.088741444, z: 0.00014207714, w: 0.9960534}
+  m_LocalRotation: {x: 0.0015947131, y: -0.088741444, z: 0.00014207816, w: 0.9960534}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -127997,8 +128076,28 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
-      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.size
+      propertyPath: validLayers.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.size
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
@@ -128007,8 +128106,38 @@ PrefabInstance:
       objectReference: {fileID: 1360594030}
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 372434710}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 372434710}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
       propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
@@ -128022,7 +128151,37 @@ PrefabInstance:
       objectReference: {fileID: 438690440}
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 372434710}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 372434710}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
       propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
@@ -128032,8 +128191,48 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: AudioManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: AudioManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
       propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: TooltipManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: AudioManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: AudioManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: PlateClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_StringArgument
+      value: DoorOpen
       objectReference: {fileID: 0}
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
@@ -128042,7 +128241,37 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_StringArgument
+      value: PlateRelease
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_StringArgument
+      value: DoorClose
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
       propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1460064090207964909, guid: c000c3c25a71cdd458251d4b8e112aa8,
@@ -128102,6 +128331,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4604849411546338835, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
+      propertyPath: m_Size.y
+      value: 2.275224
+      objectReference: {fileID: 0}
+    - target: {fileID: 4604849411546338835, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
       propertyPath: m_Size.z
       value: 1.4620719
       objectReference: {fileID: 0}
@@ -128109,6 +128343,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Center.x
       value: -0.0019685924
+      objectReference: {fileID: 0}
+    - target: {fileID: 4604849411546338835, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.905144
       objectReference: {fileID: 0}
     - target: {fileID: 4604849411546338835, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
@@ -128265,7 +128504,8 @@ PrefabInstance:
       propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -258973,6 +259213,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1359220493}
+  - {fileID: 372434709}
   - {fileID: 2108729617}
   - {fileID: 1487143578}
   m_Father: {fileID: 0}
@@ -329432,7 +329673,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 409794202815816061}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0015947049, y: 0.088741444, z: -0.00014207714, w: 0.9960534}
+  m_LocalRotation: {x: 0.0015947131, y: 0.088741444, z: -0.00014207816, w: 0.9960534}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -343051,9 +343292,9 @@ SceneRoots:
   - {fileID: 5401120960118855118}
   - {fileID: 180817783765101914}
   - {fileID: 588838655}
+  - {fileID: 1597046094}
+  - {fileID: 1048039400}
+  - {fileID: 1730697393}
   - {fileID: 1038749514}
   - {fileID: 956943898}
-  - {fileID: 1048039400}
-  - {fileID: 1597046094}
   - {fileID: 451595466}
-  - {fileID: 1730697393}
