@@ -25,6 +25,7 @@ public class PartManager : MonoBehaviour
     public float reattachDistanceThreshold = 0.1f;
     private VFXManager vfxManager;  
     private InputReader inputReader;
+    AudioManager audiomanager;
 
     [System.Serializable]
     public struct ColliderData
@@ -45,6 +46,7 @@ public class PartManager : MonoBehaviour
     {
         vfxManager = GetComponent<VFXManager>();
         inputReader = GetComponent<InputReader>();
+        audiomanager = FindObjectOfType<AudioManager>();;
         StoreOriginalTransforms(head);
         StoreOriginalTransforms(head2);
         StoreOriginalTransforms(head3);
@@ -198,6 +200,7 @@ public class PartManager : MonoBehaviour
         {
             part.transform.localPosition = Vector3.Lerp(part.transform.localPosition, originalPositions[part], reattachSpeed * Time.deltaTime);
             part.transform.localRotation = Quaternion.Slerp(part.transform.localRotation, originalRotations[part], rotationSpeed * Time.deltaTime);
+
             yield return null;
         }
 

@@ -47874,6 +47874,7 @@ GameObject:
   m_Component:
   - component: {fileID: 372434709}
   - component: {fileID: 372434710}
+  - component: {fileID: 372434711}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -47912,15 +47913,15 @@ MonoBehaviour:
   - name: Ambience
     clip: {fileID: 8300000, guid: 2262c62f0bb413f4cacd88011e7c61d5, type: 3}
     source: {fileID: 0}
-    volume: 0.5
-  - name: Attract
+    volume: 0.02
+  - name: Recall
     clip: {fileID: 8300000, guid: 4d2b68be0a0b355459a121b2d24a78a8, type: 3}
     source: {fileID: 0}
     volume: 0.5
   - name: Detach
     clip: {fileID: 8300000, guid: e92fe57147380094194cc834483c8be5, type: 3}
     source: {fileID: 0}
-    volume: 0.5
+    volume: 0.2
   - name: DoorClose
     clip: {fileID: 8300000, guid: 2a9af8e0e37bc9a46b5e569e9a2bbccf, type: 3}
     source: {fileID: 0}
@@ -47936,13 +47937,109 @@ MonoBehaviour:
   - name: PlateClick
     clip: {fileID: 8300000, guid: fc1a05e60a05c2c4f8f579d1ea304297, type: 3}
     source: {fileID: 0}
-    volume: 0.5
+    volume: 0.8
   - name: PlateRelease
     clip: {fileID: 8300000, guid: 81669ea18d37e4447b4995713e4fa4c8, type: 3}
     source: {fileID: 0}
     volume: 0.5
   footstepSounds: []
   attackSounds: []
+--- !u!82 &372434711
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 372434708}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &374485747
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -82783,6 +82880,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 409214833}
     m_Modifications:
+    - target: {fileID: 1233293616397907362, guid: b05b6b49898c8494a95dd2a7d593b158,
+        type: 3}
+      propertyPath: _audioManager
+      value: 
+      objectReference: {fileID: 372434710}
     - target: {fileID: 1622536833609576216, guid: b05b6b49898c8494a95dd2a7d593b158,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -85382,6 +85484,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7653359308165848945, guid: a5d946caa7d91fc47aa3bbe666eeb569,
     type: 3}
   m_PrefabInstance: {fileID: 647195066}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &647862302 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6959293339861828416, guid: b05b6b49898c8494a95dd2a7d593b158,
+    type: 3}
+  m_PrefabInstance: {fileID: 1360594028}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &650984795
 PrefabInstance:
@@ -102425,6 +102533,42 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 803493182}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &804504344 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2645811031019475631, guid: c000c3c25a71cdd458251d4b8e112aa8,
+    type: 3}
+  m_PrefabInstance: {fileID: 996280595}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &804504349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 804504344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14b63f35486ffcf48a287e0c66fd74b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  soundEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 372434710}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: PlateClick
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &806296423
 GameObject:
   m_ObjectHideFlags: 0
@@ -121544,7 +121688,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 947668917}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0015947131, y: -0.088741444, z: 0.00014207816, w: 0.9960534}
+  m_LocalRotation: {x: 0.0015947054, y: -0.088741444, z: 0.0001420772, w: 0.9960534}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -122455,6 +122599,9 @@ MonoBehaviour:
           m_StringArgument: Recall
           m_BoolArgument: 0
         m_CallState: 2
+  soundEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &956943897
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -128082,7 +128229,7 @@ PrefabInstance:
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
       propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
@@ -128508,7 +128655,11 @@ PrefabInstance:
     - {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2645811031019475631, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 804504349}
   m_SourcePrefab: {fileID: 100100000, guid: c000c3c25a71cdd458251d4b8e112aa8, type: 3}
 --- !u!4 &996280596 stripped
 Transform:
@@ -133160,6 +133311,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 409214833}
     m_Modifications:
+    - target: {fileID: 1233293616397907362, guid: b05b6b49898c8494a95dd2a7d593b158,
+        type: 3}
+      propertyPath: _audioManager
+      value: 
+      objectReference: {fileID: 372434710}
     - target: {fileID: 1622536833609576216, guid: b05b6b49898c8494a95dd2a7d593b158,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -134244,6 +134400,9 @@ MonoBehaviour:
           m_StringArgument: Attack
           m_BoolArgument: 0
         m_CallState: 2
+  soundEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &1038749513
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -231244,6 +231403,11 @@ PrefabInstance:
       propertyPath: delay
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1233293616397907362, guid: b05b6b49898c8494a95dd2a7d593b158,
+        type: 3}
+      propertyPath: _audioManager
+      value: 
+      objectReference: {fileID: 372434710}
     - target: {fileID: 1622536833609576216, guid: b05b6b49898c8494a95dd2a7d593b158,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -231312,7 +231476,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6959293339861828416, guid: b05b6b49898c8494a95dd2a7d593b158,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1360594032}
   m_SourcePrefab: {fileID: 100100000, guid: b05b6b49898c8494a95dd2a7d593b158, type: 3}
 --- !u!4 &1360594029 stripped
 Transform:
@@ -231326,12 +231494,42 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1360594028}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 647862302}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a8c84d224ac442c4784832f7aa904b4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1360594032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647862302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14b63f35486ffcf48a287e0c66fd74b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  soundEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 372434710}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: DoorOpen
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1364519365
 GameObject:
   m_ObjectHideFlags: 0
@@ -306058,6 +306256,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 932110668}
     m_Modifications:
+    - target: {fileID: 1233293616397907362, guid: b05b6b49898c8494a95dd2a7d593b158,
+        type: 3}
+      propertyPath: _audioManager
+      value: 
+      objectReference: {fileID: 372434710}
     - target: {fileID: 1622536833609576216, guid: b05b6b49898c8494a95dd2a7d593b158,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -326511,6 +326714,7 @@ MonoBehaviour:
   <Controller>k__BackingField: {fileID: 3150895915043853378}
   <Animator>k__BackingField: {fileID: 6344784866608997292}
   <Targeter>k__BackingField: {fileID: 7642056543513339798}
+  <AudioManager>k__BackingField: {fileID: 372434710}
   <ForceReceiver>k__BackingField: {fileID: 224987249887583171}
   <Weapon>k__BackingField: {fileID: 3938815698587926544}
   <Weapon2>k__BackingField: {fileID: 4026922647877535395}
@@ -329673,7 +329877,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 409794202815816061}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0015947131, y: 0.088741444, z: -0.00014207816, w: 0.9960534}
+  m_LocalRotation: {x: 0.0015947055, y: 0.088741444, z: -0.00014207722, w: 0.9960534}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -340396,7 +340600,7 @@ MonoBehaviour:
   isPositivePolarity: 1
   weight: 10
   maxForce: 9.87
-  fieldRadius: 10
+  fieldRadius: 1
   stickThreshold: 0.5
   slowDownFactor: 90.9
 --- !u!4 &7578809552494522007
@@ -342314,7 +342518,7 @@ MonoBehaviour:
   isPositivePolarity: 1
   weight: 10
   maxForce: 9.87
-  fieldRadius: 10
+  fieldRadius: 1
   stickThreshold: 0.5
   slowDownFactor: 90.9
 --- !u!4 &8637392757185617864

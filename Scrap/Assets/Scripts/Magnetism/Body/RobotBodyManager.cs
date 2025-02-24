@@ -25,7 +25,7 @@ public class Attach : MonoBehaviour
     [SerializeField] LayerMask aimColliderLayerMask = new LayerMask();
     [SerializeField] Transform debugTransform;
     
-    AudioSource _audioSource;
+    AudioManager audioManager;
     Animator _animator;
 
     public float detachLeftArmCooldown = 2.0f;
@@ -60,13 +60,13 @@ public class Attach : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         playerCollider = GetComponent<Collider>();
-        _audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
         partManager = GetComponent<PartManager>();
         vfxManager = GetComponent<VFXManager>();
         playerStateMachine = GetComponent<PlayerStateMachine>();
         rb_head = GetComponent<Rigidbody>();
         _inputReader = GetComponent<InputReader>();
+        audioManager = FindObjectOfType<AudioManager>();
     }
 
     private void Update()
@@ -376,6 +376,7 @@ public class Attach : MonoBehaviour
             StartCoroutine(WaitForRetractComplete(partManager.r_Arm));
             _isR_ArmDetached = false;
             partManager.r_Arm.GetComponent<MagneticField>().enabled = false;
+            audioManager.Play("Recall");
         }
         else
         {
@@ -447,6 +448,7 @@ public class Attach : MonoBehaviour
             lastDetachLeftArmTime = Time.time;
             partManager.DetachPart(partManager.l_Arm);
             _isL_ArmDetached = true;
+            audioManager.Play("Detach");
             partManager.l_Arm.GetComponent<MagneticField>().enabled = true;
             //leftArmMagnetScript.enabled = true;
             //leftArmSphereColl.enabled = true;
@@ -479,6 +481,7 @@ public class Attach : MonoBehaviour
             lastDetachRightArmTime = Time.time;
             partManager.DetachPart(partManager.r_Arm);
             _isR_ArmDetached = true;
+            audioManager.Play("Detach");
             partManager.r_Arm.GetComponent<MagneticField>().enabled = true;
             //rightArmMagnetScript.enabled = true;
             //rightArmSphereColl.enabled = true;
@@ -553,6 +556,7 @@ public class Attach : MonoBehaviour
         {
             vfxManager.PlayVFX("R_Leg");
         }
+
 
 
         while (Vector3.Distance(bodyPart.transform.position, transform.position) > secondaryRadiusChecker.secondaryRadius)

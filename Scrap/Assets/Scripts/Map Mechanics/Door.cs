@@ -4,6 +4,7 @@ using UnityEngine;
 public class Door : MonoBehaviour
 {
     [SerializeField] float delay = 1f;
+    [SerializeField] AudioManager _audioManager;
     
     Animator doorAnimator;
     bool isOpen = false;
@@ -27,8 +28,15 @@ public class Door : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         if (isOpen)
+        {
             doorAnimator.SetBool("IsOpen", true);
+
+        }
         else if (isOpen == false)
+        {
             doorAnimator.SetBool("IsOpen", false);
+            _audioManager.Play("DoorClose");
+
+        }
     }
 }
