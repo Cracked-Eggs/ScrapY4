@@ -47917,19 +47917,19 @@ MonoBehaviour:
   - name: Recall
     clip: {fileID: 8300000, guid: 4d2b68be0a0b355459a121b2d24a78a8, type: 3}
     source: {fileID: 0}
-    volume: 0.4
+    volume: 0.3
   - name: Detach
     clip: {fileID: 8300000, guid: e92fe57147380094194cc834483c8be5, type: 3}
     source: {fileID: 0}
-    volume: 0.3
+    volume: 0.25
   - name: DoorClose
     clip: {fileID: 8300000, guid: 2a9af8e0e37bc9a46b5e569e9a2bbccf, type: 3}
     source: {fileID: 0}
-    volume: 0.4
+    volume: 0.3
   - name: DoorOpen
     clip: {fileID: 8300000, guid: 806a7bbc7b6265b4a8947b3f977aab07, type: 3}
     source: {fileID: 0}
-    volume: 0.4
+    volume: 0.3
   - name: Electricity
     clip: {fileID: 8300000, guid: b32e7a51587263a4a95c5355fad4e26c, type: 3}
     source: {fileID: 0}
@@ -47937,12 +47937,20 @@ MonoBehaviour:
   - name: PlateClick
     clip: {fileID: 8300000, guid: fe34e395e24f9704abd93d2dde6611d1, type: 3}
     source: {fileID: 0}
-    volume: 0.4
+    volume: 0.3
   - name: PlateRelease
     clip: {fileID: 8300000, guid: 8e2ec82103b342647bb27998a1407499, type: 3}
     source: {fileID: 0}
-    volume: 0.4
-  footstepSounds: []
+    volume: 0.3
+  footstepSounds:
+  - name: Footstep1
+    clip: {fileID: 8300000, guid: e8b1cbbc877c5ca4c97d2a9fd97e68c9, type: 3}
+    source: {fileID: 0}
+    volume: 0.1
+  - name: Footstep2
+    clip: {fileID: 8300000, guid: 9d79d1390b93d9a48bbf7931e16ecbfe, type: 3}
+    source: {fileID: 0}
+    volume: 0.1
   attackSounds: []
 --- !u!82 &372434711
 AudioSource:
@@ -121777,7 +121785,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 947668917}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.001594728, y: -0.088741444, z: 0.00014208003, w: 0.9960534}
+  m_LocalRotation: {x: 0.0015947056, y: -0.088741444, z: 0.00014207723, w: 0.9960534}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -330337,7 +330345,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 409794202815816061}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0015947281, y: 0.088741444, z: -0.00014208004, w: 0.9960534}
+  m_LocalRotation: {x: 0.0015947057, y: 0.088741444, z: -0.00014207725, w: 0.9960534}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

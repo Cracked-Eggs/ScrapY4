@@ -5,6 +5,7 @@ public class PlayerFreeLookState : PlayerBaseState
     int FreeLookBlendTreeHash = Animator.StringToHash("FreeLookBlendTree");
     int FreeLookSpeedHash = Animator.StringToHash("FreeLookSpeed");
     bool hasInteracted;
+    float footstepTimer = 0f;
 
     const float AnimatorDampTime = 0.1f;
     const float CrossFadeDuration = 0.1f;
@@ -13,7 +14,6 @@ public class PlayerFreeLookState : PlayerBaseState
 
     public override void Enter()
     {
-        stateMachine.InputReader.TargetEvent += OnTarget;
         stateMachine.InputReader.JumpEvent += OnJump;
         stateMachine.InputReader.InteractEvent += OnInteract;
         stateMachine.InputReader.PauseEvent += OnPause;
@@ -22,6 +22,7 @@ public class PlayerFreeLookState : PlayerBaseState
 
     public override void Tick(float deltaTime)
     {
+        
         if (stateMachine.Targeter.SelectTarget())
             stateMachine.SwitchState(new PlayerTargetingState(stateMachine));
             
@@ -48,18 +49,27 @@ public class PlayerFreeLookState : PlayerBaseState
 
         stateMachine.Animator.SetFloat(FreeLookSpeedHash, 1, AnimatorDampTime, deltaTime);
         FaceMovementDirection(movement, deltaTime);
+        Footsteps(deltaTime);
     }
 
     public override void Exit()
     {
-        stateMachine.InputReader.TargetEvent -= OnTarget;
         stateMachine.InputReader.JumpEvent -= OnJump;
         stateMachine.InputReader.InteractEvent -= OnInteract;
     }
     
-    void OnTarget()
+    void Footsteps(float deltaTime)
     {
+        footstepTimer -= deltaTime;
+
+        // Check if the player is moving before playing footsteps
+        if (footstepTimer <= 0 && stateMachine.InputReader.MovementValue != Vector2.zero)
+        {
+            stateMachine.AudioManager.PlayFootsteps();
+            footstepTimer = 0.5f; // Reset timer after playing a footstep
+        }
     }
+
     
     void OnJump() => stateMachine.SwitchState(new PlayerJumpingState(stateMachine));
     void OnPause() => stateMachine.SwitchState(new PlayerPausedState(stateMachine));

@@ -7,6 +7,7 @@ public class PlayerTargetingState : PlayerBaseState
     int TargetingRightHash = Animator.StringToHash("TargetingRight");
     
     const float CrossFadeDuration = 0.1f;
+    float footstepTimer = 0f;
 
     public PlayerTargetingState(PlayerStateMachine stateMachine) : base(stateMachine) { }
 
@@ -33,7 +34,6 @@ public class PlayerTargetingState : PlayerBaseState
             return;
         }
 
-
         if (stateMachine.Targeter.CurrentTarget == null)
         {
             stateMachine.SwitchState(new PlayerFreeLookState(stateMachine));
@@ -45,6 +45,9 @@ public class PlayerTargetingState : PlayerBaseState
         Move(movement * stateMachine.TargetingMovementSpeed, deltaTime);
         UpdateAnimator(deltaTime);
         FaceTarget();
+        
+        // Call footsteps method
+        Footsteps(deltaTime, movement);
     }
 
     public override void Exit()
@@ -79,7 +82,6 @@ public class PlayerTargetingState : PlayerBaseState
         stateMachine.SwitchState(new PlayerDodgingState(stateMachine, stateMachine.InputReader.MovementValue));
     }
 
-    
     void UpdateAnimator(float deltaTime)
     {
         if (stateMachine.InputReader.MovementValue.y == 0)
@@ -96,6 +98,19 @@ public class PlayerTargetingState : PlayerBaseState
         {
             float value = stateMachine.InputReader.MovementValue.x > 0 ? 1f : -1f;
             stateMachine.Animator.SetFloat(TargetingRightHash, value, 0.1f, deltaTime);
+        }
+    }
+
+    // Footsteps sound management
+    void Footsteps(float deltaTime, Vector3 movement)
+    {
+        footstepTimer -= deltaTime;
+
+        // Check if the player is moving before playing footsteps
+        if (footstepTimer <= 0 && movement.magnitude > 0.1f)
+        {
+            stateMachine.AudioManager.PlayFootsteps();
+            footstepTimer = 0.5f; // Reset timer after playing a footstep
         }
     }
 }
