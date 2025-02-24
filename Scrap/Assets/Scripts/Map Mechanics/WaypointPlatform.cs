@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class WaypointPlatform : MonoBehaviour
@@ -6,7 +6,8 @@ public class WaypointPlatform : MonoBehaviour
     [SerializeField] Transform[] waypoints;
     [SerializeField] float changeDirectionDelay;
     [SerializeField] float speed;
-    
+    public GameObject Parent;
+    public GameObject DetachHolder;
     int currentWaypointIndex = 0;
     bool isWaiting;
     bool isReversed = false;
@@ -74,6 +75,7 @@ public class WaypointPlatform : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             other.transform.parent = transform;
+            DetachHolder.transform.parent = transform;  
         }
     }
 
@@ -81,7 +83,8 @@ public class WaypointPlatform : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            other.transform.parent = null;
+            other.transform.parent = Parent.transform;
+            DetachHolder.transform.parent = null;
         }
     }
 }
