@@ -130028,6 +130028,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall5M (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 7671234079363016804, guid: 30a1189efd8e64b43a18fe7ff4c82281,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 4.5053496
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671234079363016804, guid: 30a1189efd8e64b43a18fe7ff4c82281,
+        type: 3}
+      propertyPath: m_Center.x
+      value: 2.7507656
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671234079363016804, guid: 30a1189efd8e64b43a18fe7ff4c82281,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 2.2582772e-17
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671234079363016804, guid: 30a1189efd8e64b43a18fe7ff4c82281,
+        type: 3}
+      propertyPath: m_Center.z
+      value: -1.0669325e-14
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -133832,6 +133852,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Wall5M (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671234079363016804, guid: 30a1189efd8e64b43a18fe7ff4c82281,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 4.5423064
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671234079363016804, guid: 30a1189efd8e64b43a18fe7ff4c82281,
+        type: 3}
+      propertyPath: m_Center.x
+      value: 2.7322881
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671234079363016804, guid: 30a1189efd8e64b43a18fe7ff4c82281,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 2.1557068e-17
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671234079363016804, guid: 30a1189efd8e64b43a18fe7ff4c82281,
+        type: 3}
+      propertyPath: m_Center.z
+      value: -1.0406745e-14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -326887,8 +326927,8 @@ MonoBehaviour:
   - {fileID: 5984734820077891254}
   - {fileID: 4687292631675260201}
   radius: 100
-  secondaryRadius: 1.58
-  forceStrength: 20
+  secondaryRadius: 2
+  forceStrength: 15
   isRepelling: 0
   isRetracting: 0
   isBodyPartInRange: 0
