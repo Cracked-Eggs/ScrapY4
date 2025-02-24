@@ -29,11 +29,8 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public event Action DropBothLegsEvent;
 
     public event Action RecallBothArmsEvent;
-    public event Action RecallLeftArmEvent;
-    public event Action RecallRightArmEvent;
     public event Action InteractEvent;
-    public event Action AimEvent;
-    public event Action AimLEvent;
+    public event Action PauseEvent;
 
     public event Action GrappleEvent;
     public event Action HoverEvent;
@@ -170,6 +167,12 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     {
         if (!context.performed) return;
         HoverEvent?.Invoke();
+    }
+    
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        PauseEvent?.Invoke();
     }
 
     public void OnAimLeft(InputAction.CallbackContext context)

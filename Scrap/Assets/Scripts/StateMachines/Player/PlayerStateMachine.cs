@@ -1,3 +1,4 @@
+using System;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
@@ -69,9 +70,14 @@ public class PlayerStateMachine : StateMachine
 
     public void HandleLoseBody()
     {
-        
         SwitchState(new PlayerRollingHeadState(this));
-       
     }
 
+    public void OnResume()
+    {
+        Resume = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        FreeLookInput.enabled = true;
+        SwitchState(new PlayerFreeLookState(this));
+    }
 }

@@ -44,7 +44,6 @@ public class MagneticManager : MonoBehaviour
 
                     // Log interaction
                     interactionsLog.Add($"Interaction between {objA.gameObject.name} and {objB.gameObject.name}: {interactionType}");
-                    Debug.Log($"Interaction between {objA.gameObject.name} and {objB.gameObject.name}: {interactionType}");
 
                     // Check if attraction is happening between either arm and an object with the target tag
                     if (isAttracting && (objB.gameObject == leftArm || objB.gameObject == rightArm) && objA.gameObject.CompareTag("MagneticWall"))

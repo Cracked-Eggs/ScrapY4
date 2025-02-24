@@ -215,6 +215,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""017d40e3-b28a-4eb2-9508-b55182dd6465"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -767,6 +776,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""AimLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d2fe4ea2-6d63-4708-9399-f3d31e554c09"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ac5e5d23-bc39-4c6f-bd93-148f6207e5d1"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -824,6 +855,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_ActivateGrappleAndReattach = m_Player.FindAction("ActivateGrappleAndReattach", throwIfNotFound: true);
         m_Player_Hover = m_Player.FindAction("Hover", throwIfNotFound: true);
         m_Player_AimLeft = m_Player.FindAction("AimLeft", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -911,6 +943,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ActivateGrappleAndReattach;
     private readonly InputAction m_Player_Hover;
     private readonly InputAction m_Player_AimLeft;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -936,6 +969,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @ActivateGrappleAndReattach => m_Wrapper.m_Player_ActivateGrappleAndReattach;
         public InputAction @Hover => m_Wrapper.m_Player_Hover;
         public InputAction @AimLeft => m_Wrapper.m_Player_AimLeft;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1008,6 +1042,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @AimLeft.started += instance.OnAimLeft;
             @AimLeft.performed += instance.OnAimLeft;
             @AimLeft.canceled += instance.OnAimLeft;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1075,6 +1112,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @AimLeft.started -= instance.OnAimLeft;
             @AimLeft.performed -= instance.OnAimLeft;
             @AimLeft.canceled -= instance.OnAimLeft;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1133,5 +1173,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnActivateGrappleAndReattach(InputAction.CallbackContext context);
         void OnHover(InputAction.CallbackContext context);
         void OnAimLeft(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

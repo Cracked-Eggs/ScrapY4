@@ -7,7 +7,7 @@ public class PlayerPausedState : PlayerBaseState
 
     public override void Enter()
     {
-        stateMachine.Animator.SetFloat("FreeLookSpeed", 0);
+        stateMachine.Animator.SetFloat("FreeLookSpeed", 0.001f);
         Cursor.lockState = CursorLockMode.None;
         stateMachine.FreeLookInput.enabled = false;
         stateMachine.PauseMenu.SetActive(true);

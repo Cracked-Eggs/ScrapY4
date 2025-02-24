@@ -89,7 +89,6 @@ public class RadiusChecker : MonoBehaviour
             ResetInRangeFlags();
 
             targetBodyParts.Clear(); // Clear the list of target body parts
-            Debug.Log("All body parts reattached!");
             isRetracting = false;
         }
 
