@@ -21,6 +21,7 @@ public class Attach : MonoBehaviour
     public GameObject DetachHolder;
 
     public MagneticField magneticField;
+    public WaypointPlatform WaypointPlatform;
 
     [SerializeField] public float customGravity = -9.81f;
     [SerializeField] AudioClip magnetRepel;
@@ -49,6 +50,7 @@ public class Attach : MonoBehaviour
     public bool _isR_LegDetached = false;
     public bool _isTorsoDetached = false;
     public bool canShoot = true;
+    public bool isPlayerGrappled = false;
 
     public bool _isBothLegsDetached = false;
     public bool _isEverythingDetached = false;
@@ -674,6 +676,8 @@ public class Attach : MonoBehaviour
 
         // Optionally, rotate the player to face the direction of the arm
         transform.rotation = Quaternion.LookRotation(targetPosition - transform.position);
+        isPlayerGrappled = true;
+
     }
 
     public void AttemptReattachG()
@@ -747,6 +751,7 @@ public class Attach : MonoBehaviour
         }
 
         CheckIfFullyReattached();
+        isPlayerGrappled = false;
     }
     public void DetachAllG()
     {

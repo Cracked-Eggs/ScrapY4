@@ -17,7 +17,7 @@ public class PartManager : MonoBehaviour
     public Dictionary<GameObject, Mesh> preBakedMeshes = new Dictionary<GameObject, Mesh>();
     private Dictionary<string, GameObject> gameObjectDictionary = new Dictionary<string, GameObject>();
     public Transform headParent, torsoParent, r_LegParent, l_LegParent, r_ArmParent, l_ArmParent;
-    [SerializeField] public Transform detachHolder; // Assign in Unity Inspector
+  // Assign in Unity Inspector
     public PressurePlate pressurePlate;
 
     [SerializeField] private RadiusChecker secondaryRadiusChecker;
@@ -108,12 +108,7 @@ public class PartManager : MonoBehaviour
             }
             
         }
-        if (detachHolder == null)
-        {
-            GameObject holder = new GameObject("DetachHolder");
-            detachHolder = holder.transform;
-        }
-    
+      
     }
     private void Update()
     {
@@ -258,7 +253,7 @@ public class PartManager : MonoBehaviour
         Quaternion worldRot = part.transform.rotation;
 
         // Detach from parent
-        part.transform.SetParent(detachHolder, true);
+        part.transform.SetParent(null, true);
 
         // Apply the world position & rotation back
         part.transform.position = worldPos;
