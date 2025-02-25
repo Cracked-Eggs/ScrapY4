@@ -157,8 +157,7 @@ public class WaypointPlatform : MonoBehaviour
             if (rb != null)
             {
                 bodyParts.Remove(rb);
-                // Optional: Clear the Rigidbody reference when it exits the plate
-                // bodyPartOriginalPositions.Remove(rb); // If you want to clear it
+               
             }
         }
     }
