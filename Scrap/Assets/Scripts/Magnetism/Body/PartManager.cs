@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.Experimental.GraphView;
+
+
 using UnityEngine;
 
 public class PartManager : MonoBehaviour
@@ -18,6 +18,7 @@ public class PartManager : MonoBehaviour
     private Dictionary<string, GameObject> gameObjectDictionary = new Dictionary<string, GameObject>();
     public Transform headParent, torsoParent, r_LegParent, l_LegParent, r_ArmParent, l_ArmParent;
     [SerializeField] public Transform detachHolder; // Assign in Unity Inspector
+    public PressurePlate pressurePlate;
 
     [SerializeField] private RadiusChecker secondaryRadiusChecker;
     [SerializeField] private Attach attach;
@@ -159,11 +160,10 @@ public class PartManager : MonoBehaviour
 
 
     public bool isReattaching = false;
-  
+
     public IEnumerator ShakeAndReattach(GameObject part)
     {
-       
-
+        
         secondaryRadiusChecker.UpdateBodyPartCount(1);
 
         if(part == torso)
@@ -216,7 +216,7 @@ public class PartManager : MonoBehaviour
         {
             partCollider.size = originalCollidersData[part].size;
             partCollider.center = originalCollidersData[part].center;
-            partCollider.enabled = false;
+            partCollider.enabled = true;
         }
         
 

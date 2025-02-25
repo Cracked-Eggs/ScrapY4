@@ -137,7 +137,7 @@ public class RadiusChecker : MonoBehaviour
     }
 
     // Coroutine to retract body parts one by one
-    private IEnumerator RetractBodyPartOneByOne()
+    public IEnumerator RetractBodyPartOneByOne()
     {
         foreach (GameObject bodyPart in targetBodyParts)
         {
