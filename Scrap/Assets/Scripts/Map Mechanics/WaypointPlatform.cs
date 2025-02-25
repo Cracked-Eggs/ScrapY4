@@ -75,7 +75,7 @@ public class WaypointPlatform : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             other.transform.parent = transform;
-            DetachHolder.transform.parent = transform;  
+            
         }
     }
 
@@ -84,7 +84,7 @@ public class WaypointPlatform : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             other.transform.parent = Parent.transform;
-            DetachHolder.transform.parent = null;
         }
+           
     }
 }

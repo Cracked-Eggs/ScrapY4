@@ -11,7 +11,7 @@ public class MovingPlatform : MonoBehaviour
     float startTime;
     float journeyLength;
     bool isWaiting;
-    GameObject Parent;
+    public GameObject Parent;
     void Start()
     {
         departTarget = startPoint;
@@ -67,8 +67,7 @@ public class MovingPlatform : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if ((other.gameObject.CompareTag("Player") || other.gameObject.layer == LayerMask.NameToLayer("Parts"))
-           )
+        if (other.gameObject.CompareTag("Player") || other.gameObject.layer == LayerMask.NameToLayer("Parts"))
         {
             other.transform.parent = transform;
         }

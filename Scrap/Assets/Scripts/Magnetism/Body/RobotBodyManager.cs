@@ -18,6 +18,7 @@ public class Attach : MonoBehaviour
     public Rigidbody rb_head;
     public SphereCollider playerCollider_head;
     public MagneticManager magneticManager;
+    public GameObject DetachHolder;
 
     public MagneticField magneticField;
 
@@ -678,7 +679,8 @@ public class Attach : MonoBehaviour
     public void AttemptReattachG()
     {
         if (secondaryRadiusChecker.currentBodyParts >= secondaryRadiusChecker.totalBodyParts) return;
-        
+
+        DetachHolder.transform.parent = null;
 
         lastDetachAllTime = Time.time;
         _animator.enabled = true;
