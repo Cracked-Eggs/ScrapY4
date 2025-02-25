@@ -680,8 +680,7 @@ public class Attach : MonoBehaviour
     {
         if (secondaryRadiusChecker.currentBodyParts >= secondaryRadiusChecker.totalBodyParts) return;
 
-        DetachHolder.transform.parent = null;
-
+        
         lastDetachAllTime = Time.time;
         _animator.enabled = true;
 
