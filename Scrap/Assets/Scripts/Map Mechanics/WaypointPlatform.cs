@@ -7,8 +7,6 @@ public class WaypointPlatform : MonoBehaviour
     [SerializeField] Transform[] waypoints;
     [SerializeField] float changeDirectionDelay;
     [SerializeField] float speed;
-    public LayerMask partsLayer; // Set this to "Parts" in Inspector
-
 
     private int currentWaypointIndex = 0;
     private bool isWaiting;
@@ -20,9 +18,9 @@ public class WaypointPlatform : MonoBehaviour
     public Attach attach;
     public CharacterController playerController = null;
     [SerializeField] private List<Rigidbody> bodyParts = new List<Rigidbody>();
+    private Dictionary<Rigidbody, Vector3> bodyPartOriginalPositions = new Dictionary<Rigidbody, Vector3>(); // Store original positions of body parts
+
     public bool isPlayerGrappled = false;
-
-
 
     void Start()
     {
@@ -33,6 +31,7 @@ public class WaypointPlatform : MonoBehaviour
             return;
         }
         lastPosition = transform.position;
+        SaveBodyPartOriginalPositions(); // Save the original positions of body parts
     }
 
     void FixedUpdate()
@@ -101,7 +100,6 @@ public class WaypointPlatform : MonoBehaviour
         }
     }
 
-
     void MoveBodyPartsWithPlatform()
     {
         foreach (Rigidbody rb in bodyParts)
@@ -109,7 +107,19 @@ public class WaypointPlatform : MonoBehaviour
             if (rb != null)
             {
                 rb.position += movementDelta; // Move rigidbody with platform
-                 // Prevent unwanted physics forces
+                // Prevent unwanted physics forces
+            }
+        }
+    }
+
+    void SaveBodyPartOriginalPositions()
+    {
+        // Save the original positions of all body parts
+        foreach (Rigidbody rb in bodyParts)
+        {
+            if (rb != null && !bodyPartOriginalPositions.ContainsKey(rb))
+            {
+                bodyPartOriginalPositions[rb] = rb.position;
             }
         }
     }
@@ -120,12 +130,17 @@ public class WaypointPlatform : MonoBehaviour
         {
             playerController = other.GetComponent<CharacterController>();
         }
-        else if (((1 << other.gameObject.layer) & partsLayer) != 0) // Check if it's on 'Parts' layer
+        else if (other.CompareTag("R_Arm") || other.CompareTag("L_Arm") || other.CompareTag("R_Leg") || other.CompareTag("L_Leg") || other.CompareTag("Torso")) // Check the body part tags
         {
             Rigidbody rb = other.GetComponent<Rigidbody>();
             if (rb != null && !bodyParts.Contains(rb))
             {
                 bodyParts.Add(rb);
+                // Restore the Rigidbody position if it's been detached and reattached
+                if (bodyPartOriginalPositions.ContainsKey(rb))
+                {
+                    rb.position = bodyPartOriginalPositions[rb]; // Reset the position to original
+                }
             }
         }
     }
@@ -136,12 +151,14 @@ public class WaypointPlatform : MonoBehaviour
         {
             playerController = null;
         }
-        else if (((1 << other.gameObject.layer) & partsLayer) != 0)
+        if (other.CompareTag("R_Arm") || other.CompareTag("L_Arm") || other.CompareTag("R_Leg") || other.CompareTag("L_Leg") || other.CompareTag("Torso"))
         {
             Rigidbody rb = other.GetComponent<Rigidbody>();
             if (rb != null)
             {
                 bodyParts.Remove(rb);
+                // Optional: Clear the Rigidbody reference when it exits the plate
+                // bodyPartOriginalPositions.Remove(rb); // If you want to clear it
             }
         }
     }

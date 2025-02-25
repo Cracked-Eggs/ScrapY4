@@ -22,13 +22,15 @@ public class Attach : MonoBehaviour
 
     public MagneticField magneticField;
     public WaypointPlatform WaypointPlatform;
+    public PressurePlate pressurePlate;
 
     [SerializeField] public float customGravity = -9.81f;
     [SerializeField] AudioClip magnetRepel;
     [SerializeField] public float shootingForce = 500f;
     [SerializeField] LayerMask aimColliderLayerMask = new LayerMask();
     [SerializeField] Transform debugTransform;
-    
+    [SerializeField] private List<PressurePlate> pressurePlates;
+
     AudioManager audioManager;
     Animator _animator;
 
@@ -700,13 +702,53 @@ public class Attach : MonoBehaviour
         (partManager.l_Leg, () => _isL_LegDetached = false, _isL_LegDetached),
         (partManager.torso, () => _isTorsoDetached = false, _isTorsoDetached)
     };
-
         bool bodyPartInRange = false;
         secondaryRadiusChecker.targetBodyParts.Clear();
         canShoot = true; // Allow shooting again
+                         // List of pressure plates in the scene
+        // Populate this list in the Inspector
 
         foreach (var (bodyPart, resetFlag, isDetached) in bodyParts)
         {
+            bool shouldSkip = false;
+
+            // Check each pressure plate to see if the body part is on it
+            foreach (var pressurePlate in pressurePlates)
+            {
+                if (bodyPart == partManager.l_Arm && pressurePlate.isLeftArmOnPlate)
+                {
+                    shouldSkip = true;
+                    break; // Skip the loop once we've determined the body part should be skipped
+                }
+                if (bodyPart == partManager.r_Arm && pressurePlate.isRightArmOnPlate)
+                {
+                    shouldSkip = true;
+                    break;
+                }
+                if (bodyPart == partManager.l_Leg && pressurePlate.isLeftLegOnPlate)
+                {
+                    shouldSkip = true;
+                    break;
+                }
+                if (bodyPart == partManager.r_Leg && pressurePlate.isRightLegOnPlate)
+                {
+                    shouldSkip = true;
+                    break;
+                }
+                if (bodyPart == partManager.torso && pressurePlate.isTorsoOnPlate)
+                {
+                    shouldSkip = true;
+                    break;
+                }
+            }
+
+            // If any pressure plate condition matched, skip this part
+            if (shouldSkip)
+            {
+                continue; // Skip the current iteration and move to the next body part
+            }
+
+            // Proceed with the normal logic if no pressure plate conditions matched
             if (isDetached && IsBodyPartInSecondaryRadius(bodyPart))
             {
                 secondaryRadiusChecker.targetBodyParts.Add(bodyPart);
@@ -716,6 +758,8 @@ public class Attach : MonoBehaviour
                 // Optionally, play VFX for reattaching
             }
         }
+
+
 
         if (!bodyPartInRange)
         {
