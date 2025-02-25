@@ -53,8 +53,10 @@ public class PlayerAimingState : PlayerBaseState
     void RotateTowardsCamera()
     {
         Quaternion targetRotation = Quaternion.Euler(0f, stateMachine.MainCameraTransform.eulerAngles.y, 0f);
-        stateMachine.transform.rotation = Quaternion.Lerp(stateMachine.transform.rotation, targetRotation, Time.deltaTime * stateMachine.RotationDamping);
+        stateMachine.transform.rotation = Quaternion.Slerp(stateMachine.transform.rotation, targetRotation, Time.deltaTime * stateMachine.RotationDamping);
     }
+    
+
     
     void UpdateAnimator(float deltaTime)
     {
