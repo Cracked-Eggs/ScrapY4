@@ -643,6 +643,16 @@ public class Attach : MonoBehaviour
     }
     private void TeleportPlayerToArmPosition(Vector3 targetPosition, float teleportDuration = 0.9f)
     {
+        // Ensure the player is detached from any platform before teleporting
+        transform.SetParent(null, true);
+
+        // If using Rigidbody, reset velocity to prevent unwanted forces from carrying over
+        if (TryGetComponent<Rigidbody>(out Rigidbody rb))
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+
         StartCoroutine(LerpTeleport(targetPosition, teleportDuration));
     }
 
