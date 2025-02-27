@@ -16,7 +16,8 @@ public class RadiusChecker : MonoBehaviour
     public Attach attachScript;
     public VFXManager vfxManager;
     public PartManager partManager;
-  
+    public FlowField flowField; // Reference to Flow Field
+    
 
     public bool isHeadInRange = false;
     public bool isTorsoInRange = false;
@@ -38,7 +39,8 @@ public class RadiusChecker : MonoBehaviour
     {
         // Initialize body parts count
         totalBodyParts = bodyParts.Count; // This is the total number of body parts
-        currentBodyParts = totalBodyParts; // Initially, all parts are attached
+        currentBodyParts = totalBodyParts;
+        flowField = GetComponent<FlowField>();// Initially, all parts are attached
 
         vfxManager = GetComponent<VFXManager>();
         // Set up body part priorities
@@ -141,33 +143,40 @@ public class RadiusChecker : MonoBehaviour
     {
         foreach (GameObject bodyPart in targetBodyParts)
         {
-            if (bodyPart != null) // Ensure we have a valid target
+            if (bodyPart != null)
             {
-                
-                float distance = Vector3.Distance(transform.position, bodyPart.transform.position);
-                if (distance <= radius)
+                FlowField flowField = bodyPart.GetComponent<FlowField>();
+                if (flowField == null)
                 {
-                    Rigidbody rb = bodyPart.GetComponent<Rigidbody>();
-                    if (rb != null) // Ensure the object has a Rigidbody
-                    {
-                        
-                        Vector3 direction = transform.position - bodyPart.transform.position; // Direction toward center
-                        direction.Normalize(); // Normalize force
-
-                        rb.AddForce(direction * forceStrength / distance, ForceMode.Impulse);
-                        Debug.Log("Retracted: " + bodyPart.name);
-                        vfxManager.PlayVFX(bodyPart.tag);
-                        
-                        // Wait for the next frame before continuing (you can adjust this time as needed)
-                        yield return new WaitForSeconds(0.2f);
-                    }
+                    flowField = bodyPart.AddComponent<FlowField>(); // Add dynamically
                 }
+
+                Rigidbody rb = bodyPart.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    while (Vector3.Distance(bodyPart.transform.position, transform.position) > 0.5f)
+                    {
+                        flowField.SetNewTarget(transform.position);
+                        Vector3 moveDirection = flowField.GetFlowDirection(bodyPart.transform.position);
+                        rb.velocity = moveDirection * forceStrength;
+
+                        yield return null;
+                    }
+
+                    // **SNAP INTO PLACE**
+                    rb.velocity = Vector3.zero;  // Stop movement
+                    bodyPart.transform.position = transform.position; // Instantly attach
+                }
+
+                Destroy(flowField);
             }
         }
 
-        // After finishing all retractions, stop the retraction process
         isRetracting = false;
     }
+
+
+
 
     void SortBodyPartsByPriority()
     {
