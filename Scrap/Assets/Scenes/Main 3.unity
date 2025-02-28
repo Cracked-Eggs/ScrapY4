@@ -21590,6 +21590,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Transparent_Wall
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bd6559cda8c9ecc41bcbe722f8d35563,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -42789,7 +42794,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 308363401}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73402,6 +73407,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Transparent_Wall (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bd6559cda8c9ecc41bcbe722f8d35563,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -103534,6 +103544,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Transparent_Wall (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bd6559cda8c9ecc41bcbe722f8d35563,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -105257,7 +105272,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 790124636}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113035,6 +113050,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Transparent_Wall (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bd6559cda8c9ecc41bcbe722f8d35563,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -308492,7 +308512,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1937165706}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -338860,7 +338880,7 @@ MonoBehaviour:
   cellSize: 17.1
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 16
+    m_Bits: 64
 --- !u!73398921 &3130800971461966451
 VFXRenderer:
   serializedVersion: 1

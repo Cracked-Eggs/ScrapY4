@@ -21,6 +21,7 @@ TagManager:
   - MagneticWall
   - Platform
   - Checkpoint
+  - SwingPoint
   layers:
   - Default
   - TransparentFX
@@ -34,7 +35,7 @@ TagManager:
   - Moving Platforms
   - Notcollide
   - Head
-  - 
+  - SwingPoint
   - 
   - 
   - 

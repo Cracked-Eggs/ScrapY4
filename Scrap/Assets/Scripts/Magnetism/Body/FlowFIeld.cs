@@ -48,16 +48,21 @@ public class FlowField : MonoBehaviour
     {
         Vector3 bestDirection = Vector3.zero;
         float bestDistance = float.MaxValue;
+        float checkRadius = cellSize * 0.4f; // Obstacle check size
 
-        // Prioritize horizontal movement first, then vertical
+        // Primary movement directions
         Vector3[] horizontalDirections = { Vector3.forward, Vector3.back, Vector3.right, Vector3.left };
+        Vector3[] diagonalDirections = {
+        (Vector3.forward + Vector3.right).normalized, (Vector3.forward + Vector3.left).normalized,
+        (Vector3.back + Vector3.right).normalized, (Vector3.back + Vector3.left).normalized
+    };
         Vector3[] verticalDirections = { Vector3.up, Vector3.down };
 
-        // First, try horizontal movement
+        // Try horizontal movement first
         foreach (Vector3 dir in horizontalDirections)
         {
             Vector3 checkPos = startPos + dir * cellSize;
-            if (!Physics.CheckSphere(checkPos, cellSize * 0.4f, obstacleLayer))
+            if (!Physics.CheckSphere(checkPos, checkRadius, obstacleLayer))
             {
                 float distance = Vector3.Distance(checkPos, targetPosition);
                 if (distance < bestDistance)
@@ -68,13 +73,13 @@ public class FlowField : MonoBehaviour
             }
         }
 
-        // If no valid horizontal movement, then check vertical
+        // If no valid horizontal movement, try diagonals
         if (bestDirection == Vector3.zero)
         {
-            foreach (Vector3 dir in verticalDirections)
+            foreach (Vector3 dir in diagonalDirections)
             {
                 Vector3 checkPos = startPos + dir * cellSize;
-                if (!Physics.CheckSphere(checkPos, cellSize * 0.4f, obstacleLayer))
+                if (!Physics.CheckSphere(checkPos, checkRadius, obstacleLayer))
                 {
                     float distance = Vector3.Distance(checkPos, targetPosition);
                     if (distance < bestDistance)
@@ -86,7 +91,25 @@ public class FlowField : MonoBehaviour
             }
         }
 
-        return bestDirection.normalized;
+        // If still no valid direction, check vertical movement
+        if (bestDirection == Vector3.zero)
+        {
+            foreach (Vector3 dir in verticalDirections)
+            {
+                Vector3 checkPos = startPos + dir * cellSize;
+                if (!Physics.CheckSphere(checkPos, checkRadius, obstacleLayer))
+                {
+                    float distance = Vector3.Distance(checkPos, targetPosition);
+                    if (distance < bestDistance)
+                    {
+                        bestDistance = distance;
+                        bestDirection = dir;
+                    }
+                }
+            }
+        }
+
+        return bestDirection.normalized; // Return the best movement direction
     }
 
 

@@ -577,7 +577,7 @@ public class Attach : MonoBehaviour
         yield return StartCoroutine(partManager.ShakeAndReattach(bodyPart));
 
         Debug.Log(bodyPart.name + " has been reattached.");
-        
+            
 
         // Remove the body part from targetBodyParts after successful reattachment
         if (secondaryRadiusChecker.targetBodyParts.Contains(bodyPart))

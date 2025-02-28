@@ -16,9 +16,8 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public event Action JumpEvent;
     public event Action DodgeEvent;
     public event Action TargetEvent;
-    public event Action DetachPartEvent;
-    public event Action ReattachPartEvent;
-    public event Action ShootRightEvent;
+   
+    
     public event Action ShootLeftEvent;
 
     public event Action DropEverythingEvent;
