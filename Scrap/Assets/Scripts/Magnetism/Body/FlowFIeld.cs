@@ -5,7 +5,7 @@ using UnityEngine;
 public class FlowField : MonoBehaviour
 {
     public Vector3 gridSize = new Vector3(5, 5, 5);
-    public float cellSize = 1f;
+    public float cellSize = 0.2f;
     public LayerMask obstacleLayer;
 
     private Vector3[,,] flowField;
@@ -49,20 +49,18 @@ public class FlowField : MonoBehaviour
         Vector3 bestDirection = Vector3.zero;
         float bestDistance = float.MaxValue;
 
-        // Define possible movement directions (6-way movement)
-        Vector3[] directions = {
-        Vector3.forward, Vector3.back, Vector3.right, Vector3.left, Vector3.up, Vector3.down
-    };
+        // Prioritize horizontal movement first, then vertical
+        Vector3[] horizontalDirections = { Vector3.forward, Vector3.back, Vector3.right, Vector3.left };
+        Vector3[] verticalDirections = { Vector3.up, Vector3.down };
 
-        foreach (Vector3 dir in directions)
+        // First, try horizontal movement
+        foreach (Vector3 dir in horizontalDirections)
         {
-            Vector3 checkPos = startPos + dir * cellSize; // Check neighboring cell
-
-            // If this direction is not blocked
+            Vector3 checkPos = startPos + dir * cellSize;
             if (!Physics.CheckSphere(checkPos, cellSize * 0.4f, obstacleLayer))
             {
                 float distance = Vector3.Distance(checkPos, targetPosition);
-                if (distance < bestDistance) // Find the closest valid direction
+                if (distance < bestDistance)
                 {
                     bestDistance = distance;
                     bestDirection = dir;
@@ -70,8 +68,27 @@ public class FlowField : MonoBehaviour
             }
         }
 
-        return bestDirection.normalized; // Return the best available movement direction
+        // If no valid horizontal movement, then check vertical
+        if (bestDirection == Vector3.zero)
+        {
+            foreach (Vector3 dir in verticalDirections)
+            {
+                Vector3 checkPos = startPos + dir * cellSize;
+                if (!Physics.CheckSphere(checkPos, cellSize * 0.4f, obstacleLayer))
+                {
+                    float distance = Vector3.Distance(checkPos, targetPosition);
+                    if (distance < bestDistance)
+                    {
+                        bestDistance = distance;
+                        bestDirection = dir;
+                    }
+                }
+            }
+        }
+
+        return bestDirection.normalized;
     }
+
 
 
     public Vector3 GetFlowDirection(Vector3 position)
