@@ -6,10 +6,9 @@ public class PlayerRollingHeadState : PlayerBaseState
 
     [SerializeField] public float rollSpeed = 4f;
     [SerializeField] public float rotationSpeed = 0.000001f;
-
-
-    
-    [SerializeField] private float jetpackRotationSpeed =1000f; 
+    [SerializeField] private float jetpackRotationSpeed =1000f;
+    int HeadOnlyStateHash = Animator.StringToHash("HeadOnlyState");
+    const float CrossFadeDuration = 0.1f;
 
     public PlayerRollingHeadState(PlayerStateMachine stateMachine) : base(stateMachine) { }
 
@@ -22,7 +21,9 @@ public class PlayerRollingHeadState : PlayerBaseState
             return;
         }
 
-        rb.isKinematic = false; 
+        rb.isKinematic = false;
+        //stateMachine.Animator.Play(HeadOnlyStateHash);
+        stateMachine.Animator.CrossFadeInFixedTime(HeadOnlyStateHash, CrossFadeDuration);
     }
 
     public override void Tick(float deltaTime)
@@ -34,7 +35,8 @@ public class PlayerRollingHeadState : PlayerBaseState
 
     public override void Exit()
     {
-        rb.velocity = Vector3.zero; 
+        rb.velocity = Vector3.zero;
+      
     }
 
     private Vector3 CalculateMovement()

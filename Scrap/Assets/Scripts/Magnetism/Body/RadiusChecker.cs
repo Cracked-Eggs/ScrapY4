@@ -5,7 +5,7 @@ using UnityEngine.VFX;
 
 public class RadiusChecker : MonoBehaviour
 {
-    public List<GameObject> bodyParts; // List of body parts to check
+   [SerializeField] public List<GameObject> bodyParts; // List of body parts to check
     public float radius = 5f; // Main radius to check around the object
     public float secondaryRadius = 3f; // Secondary radius for checking proximity
     public float forceStrength = 10f; // Strength of the force
