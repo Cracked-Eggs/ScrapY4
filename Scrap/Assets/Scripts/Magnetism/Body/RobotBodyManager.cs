@@ -17,6 +17,8 @@ public class Attach : MonoBehaviour
     InputReader _inputReader;
     public Rigidbody rb_head;
     public SphereCollider playerCollider_head;
+    public SphereCollider l_Arm;
+    public SphereCollider r_Arm;
     public MagneticManager magneticManager;
     public GameObject DetachHolder;
 
@@ -186,8 +188,8 @@ public class Attach : MonoBehaviour
         }
 
         CheckIfFullyReattached();
-        partManager.l_Arm.GetComponent<MagneticField>().enabled = false;
-        partManager.r_Arm.GetComponent<MagneticField>().enabled = false;
+        l_Arm.enabled = false;
+        r_Arm.enabled = false;
     }
 
     private void CheckIfFullyReattached()
@@ -233,11 +235,12 @@ public class Attach : MonoBehaviour
         _isTorsoDetached = true;
         partManager.l_Arm.GetComponent<MagneticField>().enabled = true;
         partManager.r_Arm.GetComponent<MagneticField>().enabled = true;
-        //leftArmMagnetScript.enabled = true;
-        //rightArmMagnetScript.enabled = true;
+        
         //leftArmSphereColl.enabled = true;
         //rightArmSphereColl.enabled = true;
         canShoot = false;
+        l_Arm.enabled = true;
+        r_Arm.enabled = true;
     }
     private bool CanDetach()
     {
@@ -363,11 +366,11 @@ public class Attach : MonoBehaviour
 
         partManager.DetachPart(partManager.r_Arm);
 
-        partManager.r_Arm.GetComponent<MagneticField>().enabled = true;
-
+       
         StopAllCoroutines(); // Stop any ongoing movement
         StartCoroutine(MovePartToTarget(partManager.r_Arm, mouseWorldPosition, shootingForce));
-
+       
+        r_Arm.enabled = true;
         _isR_ArmDetached = true;
         
     }
@@ -381,7 +384,9 @@ public class Attach : MonoBehaviour
             secondaryRadiusChecker.isRetracting = true;
             StartCoroutine(WaitForRetractComplete(partManager.r_Arm));
             _isR_ArmDetached = false;
-            partManager.r_Arm.GetComponent<MagneticField>().enabled = false;
+           
+           
+            r_Arm.enabled = false;
         }
         else
         {
@@ -396,7 +401,10 @@ public class Attach : MonoBehaviour
         if (_isL_ArmDetached) return; // Prevent double shooting
 
         vfxManager.PlayBurstVFX("L_Arm");
-        partManager.l_Arm.GetComponent<MagneticField>().enabled = true;
+       
+        partManager.l_Arm.GetComponent<MagneticField>().isPositivePolarity = false;
+        l_Arm.enabled = true;
+        
         partManager.DetachPart(partManager.l_Arm);
 
         StopAllCoroutines(); // Stop any ongoing movement
@@ -417,9 +425,10 @@ public class Attach : MonoBehaviour
                 secondaryRadiusChecker.isRetracting = true;
                 StartCoroutine(WaitForRetractComplete(partManager.l_Arm));
                 _isL_ArmDetached = false;
-                partManager.l_Arm.GetComponent<MagneticField>().enabled = true;
-                //leftArmMagnetScript.enabled = false;
-                //leftArmSphereColl.enabled = false;
+               
+  
+                l_Arm.enabled = false;
+                
             }
             else
             {
@@ -454,9 +463,9 @@ public class Attach : MonoBehaviour
             partManager.DetachPart(partManager.l_Arm);
             _isL_ArmDetached = true;
             audioManager.Play("Detach");
-            partManager.l_Arm.GetComponent<MagneticField>().enabled = true;
-            //leftArmMagnetScript.enabled = true;
-            //leftArmSphereColl.enabled = true;
+            
+            l_Arm.enabled = true;
+          
         }
     }
     public void DropRightArm(InputAction.CallbackContext context)
@@ -487,9 +496,9 @@ public class Attach : MonoBehaviour
             partManager.DetachPart(partManager.r_Arm);
             _isR_ArmDetached = true;
             audioManager.Play("Detach");
-            partManager.r_Arm.GetComponent<MagneticField>().enabled = true;
-            //rightArmMagnetScript.enabled = true;
-            //rightArmSphereColl.enabled = true;
+           
+            r_Arm.enabled = true;
+          
         }
     }
     public void RecallBothArms(InputAction.CallbackContext context)
@@ -521,8 +530,9 @@ public class Attach : MonoBehaviour
                     //rightArmSphereColl.enabled = false;
                     secondaryRadiusChecker.isRightArmInRange = false;
                     secondaryRadiusChecker.isLeftArmInRange = false;
-                    partManager.l_Arm.GetComponent<MagneticField>().enabled = false;
-                    partManager.r_Arm.GetComponent<MagneticField>().enabled = false;
+                   
+                    l_Arm.enabled = false; 
+                    r_Arm.enabled = false;
                 }
                 else
                 {
@@ -796,6 +806,9 @@ public class Attach : MonoBehaviour
 
         CheckIfFullyReattached();
         isPlayerGrappled = false;
+       
+        r_Arm.enabled = false;
+        l_Arm.enabled = false;
     }
     public void DetachAllG()
     {
@@ -828,11 +841,11 @@ public class Attach : MonoBehaviour
         _isR_LegDetached = true;
         _isTorsoDetached = true;
 
-        //leftArmMagnetScript.enabled = true;
-        //rightArmMagnetScript.enabled = true;
-        //leftArmSphereColl.enabled = true;
-        //rightArmSphereColl.enabled = true;
+      
+        l_Arm.enabled = true;
+        l_Arm.enabled = true;
         canShoot = false;
+        vfxManager.StopAllVFX();
     }
 
 

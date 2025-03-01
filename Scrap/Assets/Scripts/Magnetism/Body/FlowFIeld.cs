@@ -1,11 +1,11 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FlowField : MonoBehaviour
 {
     public Vector3 gridSize = new Vector3(5, 5, 5);
-    public float cellSize = 0.2f;
+    public float cellSize = 0.7f;
     public LayerMask obstacleLayer;
 
     private Vector3[,,] flowField;
@@ -48,18 +48,18 @@ public class FlowField : MonoBehaviour
     {
         Vector3 bestDirection = Vector3.zero;
         float bestDistance = float.MaxValue;
-        float checkRadius = cellSize * 0.4f; // Obstacle check size
+        float checkRadius = cellSize * 0.4f;
 
         // Primary movement directions
-        Vector3[] horizontalDirections = { Vector3.forward, Vector3.back, Vector3.right, Vector3.left };
-        Vector3[] diagonalDirections = {
+        Vector3[] directions = {
+        Vector3.forward, Vector3.back, Vector3.right, Vector3.left,
+        Vector3.up, Vector3.down,
         (Vector3.forward + Vector3.right).normalized, (Vector3.forward + Vector3.left).normalized,
         (Vector3.back + Vector3.right).normalized, (Vector3.back + Vector3.left).normalized
     };
-        Vector3[] verticalDirections = { Vector3.up, Vector3.down };
 
-        // Try horizontal movement first
-        foreach (Vector3 dir in horizontalDirections)
+        // Try all directions to find the closest one
+        foreach (Vector3 dir in directions)
         {
             Vector3 checkPos = startPos + dir * cellSize;
             if (!Physics.CheckSphere(checkPos, checkRadius, obstacleLayer))
@@ -73,44 +73,21 @@ public class FlowField : MonoBehaviour
             }
         }
 
-        // If no valid horizontal movement, try diagonals
+        // 🔥 If still stuck, try a small random push
         if (bestDirection == Vector3.zero)
         {
-            foreach (Vector3 dir in diagonalDirections)
-            {
-                Vector3 checkPos = startPos + dir * cellSize;
-                if (!Physics.CheckSphere(checkPos, checkRadius, obstacleLayer))
-                {
-                    float distance = Vector3.Distance(checkPos, targetPosition);
-                    if (distance < bestDistance)
-                    {
-                        bestDistance = distance;
-                        bestDirection = dir;
-                    }
-                }
-            }
+            Vector3 randomDirection = new Vector3(
+                Random.Range(-1f, 1f),
+                Random.Range(-1f, 1f),
+                Random.Range(-1f, 1f)
+            ).normalized;
+
+            return randomDirection; // Add a small push to break out of being stuck
         }
 
-        // If still no valid direction, check vertical movement
-        if (bestDirection == Vector3.zero)
-        {
-            foreach (Vector3 dir in verticalDirections)
-            {
-                Vector3 checkPos = startPos + dir * cellSize;
-                if (!Physics.CheckSphere(checkPos, checkRadius, obstacleLayer))
-                {
-                    float distance = Vector3.Distance(checkPos, targetPosition);
-                    if (distance < bestDistance)
-                    {
-                        bestDistance = distance;
-                        bestDirection = dir;
-                    }
-                }
-            }
-        }
-
-        return bestDirection.normalized; // Return the best movement direction
+        return bestDirection.normalized;
     }
+
 
 
 

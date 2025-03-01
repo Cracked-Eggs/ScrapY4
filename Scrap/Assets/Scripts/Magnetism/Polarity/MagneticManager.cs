@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class MagneticManager : MonoBehaviour
 {
@@ -7,22 +8,33 @@ public class MagneticManager : MonoBehaviour
 
     private List<MagneticField> activeMagneticObjects = new List<MagneticField>();
     private List<string> interactionsLog = new List<string>(); // Track interactions
+    private VFXManager vFXManager;
 
     // Inspector exposed fields
-    public GameObject leftArm; // Reference to the left arm (drag in the Inspector)
+    public GameObject leftArm;  // Reference to the left arm (drag in the Inspector)
     public GameObject rightArm; // Reference to the right arm (drag in the Inspector)
 
-    // canGrapple flag (will be set to true when attraction happens)
+    private bool canGrapplePrev = false; // Track previous state to avoid redundant VFX calls
     public bool canGrapple = false;
 
     void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+
+        // Assign the VFXManager (Ensure it's in the scene)
+        vFXManager = FindObjectOfType<VFXManager>();
+        if (vFXManager == null)
+        {
+            Debug.LogError("VFXManager not found in the scene! Assign it manually.");
+        }
     }
 
     void Update()
     {
+       
+        bool newCanGrapple = false; // Temporary variable to track this frame's grapple status
+
         // Check interactions between all active magnetic objects
         for (int i = 0; i < activeMagneticObjects.Count; i++)
         {
@@ -42,22 +54,36 @@ public class MagneticManager : MonoBehaviour
                     bool isAttracting = objA.isPositivePolarity != objB.isPositivePolarity; // Opposite polarity attracts
                     string interactionType = isAttracting ? "Attracting" : "Repelling";
 
-                    // Log interaction
-                    interactionsLog.Add($"Interaction between {objA.gameObject.name} and {objB.gameObject.name}: {interactionType}");
 
-                    // Check if attraction is happening between either arm and an object with the target tag
+                    // Check if attraction is happening between either arm and a MagneticWall
                     if (isAttracting && (objB.gameObject == leftArm || objB.gameObject == rightArm) && objA.gameObject.CompareTag("MagneticWall"))
                     {
-                        canGrapple = true; // Enable canGrapple flag
+                        newCanGrapple = true; // Update temporary flag
                         Debug.Log("Can Grapple is now ENABLED!");
-                    }
-                    else
-                    {
-                        canGrapple = false; // Disable if attraction does not happen between arms and the target
+
+                        // Play VFX for the respective arm
+                        if (vFXManager != null)
+                        {
+                            if (objB.gameObject == leftArm)
+                            {
+                                vFXManager.PlayVFX("L_Arm");
+                            }
+                            else if (objB.gameObject == rightArm)
+                            {
+                                vFXManager.PlayVFX("R_Arm");
+                            }
+                        }
+
                     }
                 }
             }
         }
+
+   
+
+       
+        canGrapplePrev = newCanGrapple;
+        canGrapple = newCanGrapple; 
     }
 
     public void RegisterMagneticObject(MagneticField obj)
@@ -72,11 +98,7 @@ public class MagneticManager : MonoBehaviour
             activeMagneticObjects.Remove(obj);
     }
 
-    public List<string> GetInteractionsLog()
-    {
-        return interactionsLog;
-    }
-
+    
     public bool CanGrapple()
     {
         return canGrapple;
