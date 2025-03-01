@@ -5,7 +5,7 @@ using UnityEngine;
 public class FlowField : MonoBehaviour
 {
     public Vector3 gridSize = new Vector3(5, 5, 5);
-    public float cellSize = 0.7f;
+    public float cellSize = 0.4f;
     public LayerMask obstacleLayer;
 
     private Vector3[,,] flowField;

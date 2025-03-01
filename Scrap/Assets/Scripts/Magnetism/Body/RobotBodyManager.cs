@@ -256,20 +256,34 @@ public class Attach : MonoBehaviour
     }
     private IEnumerator SmoothRise(float riseAmount)
     {
+        float dropAmount = 0.05f; // Small downward effect
         Vector3 start = transform.position;
+        Vector3 dip = start - Vector3.up * dropAmount; // Slight downward pull
         Vector3 end = start + Vector3.up * riseAmount;
-        float duration = 0.05f; // Adjust for speed
+
+        float duration = 0.2f;
         float elapsed = 0f;
 
-        while (elapsed < duration)
+        // Small dip down before rising
+        while (elapsed < duration * 0.3f)
         {
-            transform.position = Vector3.Lerp(start, end, elapsed / duration);
+            transform.position = Vector3.Lerp(start, dip, elapsed / (duration * 0.3f));
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        transform.position = end; // Ensure exact final position
+        elapsed = 0f;
+        while (elapsed < duration)
+        {
+            float smoothStep = Mathf.SmoothStep(0, 1, elapsed / duration);
+            transform.position = Vector3.Lerp(dip, end, smoothStep);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = end;
     }
+
     public bool IsBodyPartDetached(GameObject bodyPart)
     {
         if (bodyPart == partManager.r_Arm) return _isR_ArmDetached;
@@ -782,7 +796,7 @@ public class Attach : MonoBehaviour
         {
             controller.center = new Vector3(0, -2.46f, 0);
             controller.height = 5.61f;
-            StartCoroutine(SmoothRise(1f));
+            StartCoroutine(SmoothRise(0.1f));
         }
 
         if (TryGetComponent<SphereCollider>(out SphereCollider sphereCollider))

@@ -14,7 +14,7 @@ public class RadiusChecker : MonoBehaviour
     public bool isBodyPartInRange = false; // Flag to check if body part is in secondary radius
     public bool isBodyPartInMainRange = false; // Flag to check if body part is in main radius
     public Attach attachScript;
-    public VFXManager vfxManager;
+    
     public PartManager partManager;
     public FlowField    flowField; // Reference to Flow Field
     
@@ -42,7 +42,7 @@ public class RadiusChecker : MonoBehaviour
         currentBodyParts = totalBodyParts;
         flowField = GetComponent<FlowField>();// Initially, all parts are attached
 
-        vfxManager = GetComponent<VFXManager>();
+       
         // Set up body part priorities
         AssignBodyPartPriorities();
     }
