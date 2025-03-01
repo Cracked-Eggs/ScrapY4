@@ -7,14 +7,14 @@ public class MagneticManager : MonoBehaviour
     public static MagneticManager Instance; // Singleton for easy access
 
     private List<MagneticField> activeMagneticObjects = new List<MagneticField>();
-    
+    private List<string> interactionsLog = new List<string>(); // Track interactions
     private VFXManager vFXManager;
 
     // Inspector exposed fields
     public GameObject leftArm;  // Reference to the left arm (drag in the Inspector)
     public GameObject rightArm; // Reference to the right arm (drag in the Inspector)
 
-    
+    private bool canGrapplePrev = false; // Track previous state to avoid redundant VFX calls
     public bool canGrapple = false;
 
     void Awake()
@@ -59,7 +59,9 @@ public class MagneticManager : MonoBehaviour
                     if (isAttracting && (objB.gameObject == leftArm || objB.gameObject == rightArm) && objA.gameObject.CompareTag("MagneticWall"))
                     {
                         newCanGrapple = true; // Update temporary flag
-                  
+                        Debug.Log("Can Grapple is now ENABLED!");
+
+                        
 
                     }
                 }
@@ -69,7 +71,7 @@ public class MagneticManager : MonoBehaviour
    
 
        
-     
+        canGrapplePrev = newCanGrapple;
         canGrapple = newCanGrapple; 
     }
 
