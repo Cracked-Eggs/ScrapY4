@@ -126685,7 +126685,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 947668917}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0021992994, y: -0.09187586, z: 0.00020292126, w: 0.9957681}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -334514,7 +334514,6 @@ MonoBehaviour:
   isBodyPartInRange: 0
   isBodyPartInMainRange: 0
   attachScript: {fileID: 8142012839679114182}
-  vfxManager: {fileID: 8447834631875489800}
   partManager: {fileID: 8447834631875489799}
   flowField: {fileID: 0}
   isHeadInRange: 0
@@ -341532,6 +341531,7 @@ GameObject:
   - component: {fileID: 6426998165998321238}
   - component: {fileID: 8628445702019163963}
   - component: {fileID: 8628445702019163964}
+  - component: {fileID: 8628445702019163965}
   m_Layer: 3
   m_Name: Arms_Right
   m_TagString: R_Arm
@@ -349665,6 +349665,7 @@ GameObject:
   - component: {fileID: 7545252807930312035}
   - component: {fileID: 7545252807930312036}
   - component: {fileID: 7545252807930312037}
+  - component: {fileID: 7545252807930312038}
   m_Layer: 3
   m_Name: Arms_Left
   m_TagString: L_Arm
@@ -350306,6 +350307,27 @@ MonoBehaviour:
   fieldRadius: 1
   stickThreshold: 0.5
   slowDownFactor: 90.9
+--- !u!135 &7545252807930312038
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7202677107970338027}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.8544419
+  m_Center: {x: 0.061508864, y: 0.5563803, z: -1.0081112}
 --- !u!4 &7578809552494522007
 Transform:
   m_ObjectHideFlags: 0
@@ -351187,8 +351209,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canRetach: 0
-  rb_head: {fileID: 0}
+  rb_head: {fileID: 3378434661943795783}
   playerCollider_head: {fileID: 7624502085984488077}
+  l_ArmColl: {fileID: 8628445702019163965}
+  r_ArmColl: {fileID: 7545252807930312038}
   magneticManager: {fileID: 1359220492}
   DetachHolder: {fileID: 0}
   magneticField: {fileID: 0}
@@ -352181,6 +352205,27 @@ MonoBehaviour:
   fieldRadius: 1
   stickThreshold: 0.5
   slowDownFactor: 90.9
+--- !u!135 &8628445702019163965
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4971076857206666165}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.860933
+  m_Center: {x: 0.027757049, y: 0.0057531595, z: -1.0323268}
 --- !u!4 &8637392757185617864
 Transform:
   m_ObjectHideFlags: 0
