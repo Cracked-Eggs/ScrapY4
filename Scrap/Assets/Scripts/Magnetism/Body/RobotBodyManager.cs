@@ -17,8 +17,8 @@ public class Attach : MonoBehaviour
     InputReader _inputReader;
     public Rigidbody rb_head;
     public SphereCollider playerCollider_head;
-    public SphereCollider l_Arm;
-    public SphereCollider r_Arm;
+    public SphereCollider l_ArmColl;
+    public SphereCollider r_ArmColl;
     public MagneticManager magneticManager;
     public GameObject DetachHolder;
 
@@ -188,8 +188,8 @@ public class Attach : MonoBehaviour
         }
 
         CheckIfFullyReattached();
-        l_Arm.enabled = false;
-        r_Arm.enabled = false;
+        l_ArmColl.enabled = false;
+        r_ArmColl.enabled = false;
     }
 
     private void CheckIfFullyReattached()
@@ -239,8 +239,8 @@ public class Attach : MonoBehaviour
         //leftArmSphereColl.enabled = true;
         //rightArmSphereColl.enabled = true;
         canShoot = false;
-        l_Arm.enabled = true;
-        r_Arm.enabled = true;
+        l_ArmColl.enabled = true;
+        r_ArmColl.enabled = true;
     }
     private bool CanDetach()
     {
@@ -384,7 +384,7 @@ public class Attach : MonoBehaviour
         StopAllCoroutines(); // Stop any ongoing movement
         StartCoroutine(MovePartToTarget(partManager.r_Arm, mouseWorldPosition, shootingForce));
        
-        r_Arm.enabled = true;
+        r_ArmColl.enabled = true;
         _isR_ArmDetached = true;
         
     }
@@ -400,7 +400,7 @@ public class Attach : MonoBehaviour
             _isR_ArmDetached = false;
            
            
-            r_Arm.enabled = false;
+            r_ArmColl.enabled = false;
         }
         else
         {
@@ -417,7 +417,7 @@ public class Attach : MonoBehaviour
         vfxManager.PlayBurstVFX("L_Arm");
        
         partManager.l_Arm.GetComponent<MagneticField>().isPositivePolarity = false;
-        l_Arm.enabled = true;
+        l_ArmColl.enabled = true;
         
         partManager.DetachPart(partManager.l_Arm);
 
@@ -441,7 +441,7 @@ public class Attach : MonoBehaviour
                 _isL_ArmDetached = false;
                
   
-                l_Arm.enabled = false;
+                l_ArmColl.enabled = false;
                 
             }
             else
@@ -478,7 +478,7 @@ public class Attach : MonoBehaviour
             _isL_ArmDetached = true;
             audioManager.Play("Detach");
             
-            l_Arm.enabled = true;
+            l_ArmColl.enabled = true;
           
         }
     }
@@ -511,7 +511,7 @@ public class Attach : MonoBehaviour
             _isR_ArmDetached = true;
             audioManager.Play("Detach");
            
-            r_Arm.enabled = true;
+            r_ArmColl.enabled = true;
           
         }
     }
@@ -538,15 +538,12 @@ public class Attach : MonoBehaviour
 
                     _isR_ArmDetached = false;
                     _isL_ArmDetached = false;
-                    //leftArmMagnetScript.enabled = false;
-                    //rightArmMagnetScript.enabled = false;
-                    //leftArmSphereColl.enabled = false;
-                    //rightArmSphereColl.enabled = false;
+                   
                     secondaryRadiusChecker.isRightArmInRange = false;
                     secondaryRadiusChecker.isLeftArmInRange = false;
                    
-                    l_Arm.enabled = false; 
-                    r_Arm.enabled = false;
+                    l_ArmColl.enabled = false; 
+                    r_ArmColl.enabled = false;
                 }
                 else
                 {
@@ -821,8 +818,8 @@ public class Attach : MonoBehaviour
         CheckIfFullyReattached();
         isPlayerGrappled = false;
        
-        r_Arm.enabled = false;
-        l_Arm.enabled = false;
+        r_ArmColl.enabled = false;
+        l_ArmColl.enabled = false;
     }
     public void DetachAllG()
     {
@@ -856,8 +853,8 @@ public class Attach : MonoBehaviour
         _isTorsoDetached = true;
 
       
-        l_Arm.enabled = true;
-        l_Arm.enabled = true;
+        l_ArmColl.enabled = true;
+        r_ArmColl.enabled = true;
         canShoot = false;
         vfxManager.StopAllVFX();
     }
