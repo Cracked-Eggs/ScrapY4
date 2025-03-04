@@ -10,6 +10,8 @@ public class EnemyChasingState : EnemyBaseState
     float blockGraceTimer = 2f; 
     float elapsedTime = 0f;
 
+    float rotationSpeed = 5f; // Adjust this to control how fast the enemy turns 
+
     public EnemyChasingState(EnemyStateMachine stateMachine) : base(stateMachine) { }
 
     public override void Enter()
@@ -46,18 +48,34 @@ public class EnemyChasingState : EnemyBaseState
 
     public override void Exit()
     {
-        stateMachine.Agent.ResetPath();
-        stateMachine.Agent.velocity = Vector3.zero;
     }
 
     void MoveToPlayer(float deltaTime)
     {
-        if (stateMachine.Agent.isOnNavMesh)
-        {
-            stateMachine.Agent.destination = stateMachine.Player.transform.position;
-            Move(stateMachine.Agent.desiredVelocity.normalized * stateMachine.MovementSpeed, deltaTime);
-        }
-        stateMachine.Agent.velocity = stateMachine.Controller.velocity;
+        Vector3 direction = (stateMachine.Player.transform.position - stateMachine.transform.position).normalized;
+        SmoothFaceTarget(direction, deltaTime);
+
+        stateMachine.Controller.Move(direction * stateMachine.MovementSpeed * deltaTime);
+    }
+
+    void FacePlayer()
+    {
+        Vector3 direction = (stateMachine.Player.transform.position - stateMachine.transform.position).normalized;
+        SmoothFaceTarget(direction, Time.deltaTime);
+    }
+
+    void SmoothFaceTarget(Vector3 direction, float deltaTime)
+    {
+        if (direction == Vector3.zero) return;
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        // Smoothly interpolate between the current rotation and the target rotation
+        stateMachine.transform.rotation = Quaternion.Slerp(
+            stateMachine.transform.rotation,
+            targetRotation,
+            rotationSpeed * deltaTime
+        );
     }
 
     bool IsInAttackRange()
