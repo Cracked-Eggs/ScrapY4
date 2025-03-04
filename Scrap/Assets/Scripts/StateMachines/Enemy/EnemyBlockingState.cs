@@ -5,7 +5,7 @@ public class EnemyBlockingState : EnemyBaseState
     int BlockHash = Animator.StringToHash("Block");
     const float CrossFadeDuration = 0.1f;
 
-    float blockDuration = 4f; // Adjust this value as needed
+    float blockDuration = 10f; // Adjust this value as needed
 
     public EnemyBlockingState(EnemyStateMachine stateMachine) : base(stateMachine) { }
 
