@@ -19,13 +19,38 @@ public class PlayerFallingState : PlayerBaseState
 
     public override void Tick(float deltaTime)
     {
+        Vector3 movement = CalculateMovement();
+        momentum = movement * stateMachine.FreeLookMovementSpeed;
         Move(momentum, deltaTime);
 
-        if(stateMachine.Controller.isGrounded)
+        if (stateMachine.Controller.isGrounded)
             ReturnToLocomotion();
 
-        FaceTarget();
+        FaceMovementDirection(movement, deltaTime);
     }
 
     public override void Exit() { }
+
+    Vector3 CalculateMovement()
+    {
+        Vector3 forward = stateMachine.MainCameraTransform.forward;
+        Vector3 right = stateMachine.MainCameraTransform.right;
+
+        forward.y = 0f;
+        right.y = 0f;
+
+        forward.Normalize();
+        right.Normalize();
+
+        return forward * stateMachine.InputReader.MovementValue.y +
+               right * stateMachine.InputReader.MovementValue.x;
+    }
+
+    void FaceMovementDirection(Vector3 movement, float deltaTime)
+    {
+        stateMachine.transform.rotation = Quaternion.Lerp(
+            stateMachine.transform.rotation,
+            Quaternion.LookRotation(movement),
+            deltaTime * stateMachine.RotationDamping);
+    }
 }
