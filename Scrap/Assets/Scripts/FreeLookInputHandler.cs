@@ -4,7 +4,7 @@ using UnityEngine;
 public class FreeLookInputHandler : MonoBehaviour
 {
     public CinemachineFreeLook freeLookCamera;
-    public float xAxisSensitivity = 200f; 
+    public float xAxisSensitivity = 150f; 
     public float yAxisSensitivity = 2f;   
     public float accelerationTime = 0.2f; 
     public float decelerationTime = 0.2f; 

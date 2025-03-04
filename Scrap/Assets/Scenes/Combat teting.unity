@@ -161393,9 +161393,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4178924e2b5cf704585650cd94de8208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  freeLookCamera: {fileID: 6688885851369311090}
+  freeLookCamera: {fileID: 1226013580}
   xAxisSensitivity: 150
-  yAxisSensitivity: 3
+  yAxisSensitivity: 2
   accelerationTime: 0.2
   decelerationTime: 0.2
 --- !u!1001 &1226503701
@@ -351149,7 +351149,7 @@ MonoBehaviour:
     m_Radius: 5
   - m_Height: 0.5
     m_Radius: 6
-  - m_Height: -0.75
+  - m_Height: -2
     m_Radius: 5
   m_LegacyHeadingBias: 3.4028235e+38
   m_Rigs:
@@ -354882,7 +354882,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   freeLookCamera: {fileID: 6688885851369311090}
   xAxisSensitivity: 150
-  yAxisSensitivity: 3
+  yAxisSensitivity: 2
   accelerationTime: 0.2
   decelerationTime: 0.2
 --- !u!114 &8813125874204564527
