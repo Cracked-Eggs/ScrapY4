@@ -24,7 +24,7 @@ public class Health : MonoBehaviour
 
     public void SetInvulnerable(bool isInvulnerable) => this.isInvulnerable = isInvulnerable;
 
-    public void DealDamage(int damage)
+    public void DealDamage(int damage, bool ignoreInvulnerability = false)
     {
         // Check if enough time has passed since the last damage
         if (Time.time < lastDamageTime + damageCooldown)
@@ -32,7 +32,7 @@ public class Health : MonoBehaviour
             return;
         }
 
-        if (health == 0 || isInvulnerable)
+        if (!ignoreInvulnerability && (health == 0 || isInvulnerable))
         {
             return;
         }
@@ -52,12 +52,10 @@ public class Health : MonoBehaviour
         {
             OnDie?.Invoke();
             DieEvent.Invoke();
-
         }
 
         Debug.Log(health);
     }
-
 
     public IEnumerator Restart()
     {

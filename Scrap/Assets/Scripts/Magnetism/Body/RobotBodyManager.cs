@@ -56,6 +56,7 @@ public class Attach : MonoBehaviour
     public bool _isTorsoDetached = false;
     public bool canShoot = true;
     public bool isPlayerGrappled = false;
+    public bool magneticHit;
 
     public bool _isBothLegsDetached = false;
     public bool _isEverythingDetached = false;
@@ -387,7 +388,7 @@ public class Attach : MonoBehaviour
         StopAllCoroutines(); // Stop any ongoing movement
         StartCoroutine(MovePartToTarget(partManager.r_Arm, mouseWorldPosition, shootingForce));
        
-        r_ArmColl.enabled = true;
+        r_ArmColl.enabled = false;
         _isR_ArmDetached = true;
         
     }
@@ -397,13 +398,14 @@ public class Attach : MonoBehaviour
         if (!_isR_ArmDetached) return;
         if (secondaryRadiusChecker.isRightArmInRange)
         {
+            magneticHit = true;
             secondaryRadiusChecker.targetBodyParts.Add(partManager.r_Arm);
             secondaryRadiusChecker.isRetracting = true;
             StartCoroutine(WaitForRetractComplete(partManager.r_Arm));
             _isR_ArmDetached = false;
            
            
-            r_ArmColl.enabled = false;
+            r_ArmColl.enabled = true;
         }
         else
         {
@@ -433,31 +435,31 @@ public class Attach : MonoBehaviour
     public void RecallLeftArm()
     {
         if(partManager.isReattaching) return;
-        if (_isL_ArmDetached)
-        {
-            // Handle retraction of left arm
+        if (_isL_ArmDetached) return;
+        
             if (secondaryRadiusChecker.isLeftArmInRange)
             {
+                magneticHit = true;
                 secondaryRadiusChecker.targetBodyParts.Add(partManager.l_Arm);
                 secondaryRadiusChecker.isRetracting = true;
                 StartCoroutine(WaitForRetractComplete(partManager.l_Arm));
                 _isL_ArmDetached = false;
                
   
-                l_ArmColl.enabled = false;
+                l_ArmColl.enabled = true;
                 
             }
             else
             {
                 Debug.Log("Left arm is not in range for reattachment.");
             }
-        }
     }
     public void DropLeftArm(InputAction.CallbackContext context)
     {
         if (!canShoot) return;
         if (Time.time < lastDetachLeftArmTime + detachLeftArmCooldown) return;
 
+        magneticHit = false;
         lastDetachLeftArmTime = Time.time;
 
         if (_isL_ArmDetached)
@@ -490,6 +492,7 @@ public class Attach : MonoBehaviour
         if (!canShoot) return;
         if (Time.time < lastDetachRightArmTime + detachRightArmCooldown) return;
 
+        magneticHit = false;
         lastDetachRightArmTime = Time.time;
 
         if (_isR_ArmDetached)

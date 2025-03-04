@@ -7,7 +7,7 @@ public class EnemyChasingState : EnemyBaseState
     const float CrossFadeDuration = 0.1f;
     const float AnimatorDampTime = 0.1f;
     
-    float blockGraceTimer = 2f; 
+    float blockGraceTimer = 1f; 
     float elapsedTime = 0f;
 
     float rotationSpeed = 5f; // Adjust this to control how fast the enemy turns 
