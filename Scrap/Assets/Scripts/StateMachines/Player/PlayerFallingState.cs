@@ -20,13 +20,17 @@ public class PlayerFallingState : PlayerBaseState
     public override void Tick(float deltaTime)
     {
         Vector3 movement = CalculateMovement();
-        momentum = movement * stateMachine.FreeLookMovementSpeed;
+
+        if (movement != Vector3.zero)
+            momentum = movement * stateMachine.FreeLookMovementSpeed;
+
         Move(momentum, deltaTime);
 
         if (stateMachine.Controller.isGrounded)
             ReturnToLocomotion();
 
-        FaceMovementDirection(movement, deltaTime);
+        if (movement != Vector3.zero)
+            FaceMovementDirection(movement, deltaTime);
     }
 
     public override void Exit() { }

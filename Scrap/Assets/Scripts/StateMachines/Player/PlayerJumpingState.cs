@@ -21,24 +21,21 @@ public class PlayerJumpingState : PlayerBaseState
 
     public override void Tick(float deltaTime)
     {
-        // Read movement input and calculate movement direction
         Vector3 movement = CalculateMovement();
 
-        // Apply movement input to the momentum
-        momentum = movement * stateMachine.FreeLookMovementSpeed;
+        if (movement != Vector3.zero)
+            momentum = movement * stateMachine.FreeLookMovementSpeed;
 
-        // Move the player with the calculated momentum
         Move(momentum, deltaTime);
 
-        // Check if the player is falling
         if (stateMachine.Controller.velocity.y <= 0)
         {
             stateMachine.SwitchState(new PlayerFallingState(stateMachine));
             return;
         }
 
-        // Face the movement direction
-        FaceMovementDirection(movement, deltaTime);
+        if (movement != Vector3.zero)
+            FaceMovementDirection(movement, deltaTime);
     }
 
     public override void Exit() { }
