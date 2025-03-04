@@ -20,7 +20,7 @@ public class FreeLookInputHandler : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (freeLookCamera != null)
         {
