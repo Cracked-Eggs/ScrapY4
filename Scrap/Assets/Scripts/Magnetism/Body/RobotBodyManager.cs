@@ -19,6 +19,7 @@ public class Attach : MonoBehaviour
     public SphereCollider playerCollider_head;
     public SphereCollider l_ArmColl;
     public SphereCollider r_ArmColl;
+    public GameObject chestCollider;
     public MagneticManager magneticManager;
     public GameObject DetachHolder;
 
@@ -190,6 +191,7 @@ public class Attach : MonoBehaviour
         CheckIfFullyReattached();
         l_ArmColl.enabled = false;
         r_ArmColl.enabled = false;
+        chestCollider.SetActive(true);
     }
 
     private void CheckIfFullyReattached()
@@ -219,6 +221,7 @@ public class Attach : MonoBehaviour
         partManager.DetachPart(partManager.l_Leg);
         partManager.DetachPart(partManager.r_Arm);
         partManager.DetachPart(partManager.l_Arm);
+        chestCollider.SetActive(false);
 
         CharacterController controller = GetComponent<CharacterController>();
         controller.center = new Vector3(0, 0.77f, 0);
@@ -710,6 +713,7 @@ public class Attach : MonoBehaviour
         
         lastDetachAllTime = Time.time;
         _animator.enabled = true;
+        chestCollider.SetActive(true);
 
         characterController.enabled = true;
         Vector3 initialEulerAngles = playerStateMachine.initalRotation.eulerAngles;
@@ -831,6 +835,7 @@ public class Attach : MonoBehaviour
         playerStateMachine.HandleLoseBody();
         characterController.enabled = false;
         _animator.enabled = false;
+        chestCollider.SetActive(false);
 
         partManager.DetachPart(partManager.torso);
         partManager.DetachPart(partManager.r_Leg);
