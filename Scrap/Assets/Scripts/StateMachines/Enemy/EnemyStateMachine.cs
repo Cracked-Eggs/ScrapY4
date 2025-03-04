@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,6 +19,9 @@ public class EnemyStateMachine : StateMachine
     [field: SerializeField] public float AttackRange { get; private set; }
     [field: SerializeField] public int AttackDamage { get; private set; }
     [field: SerializeField] public int AttackKnockback { get; private set; }
+    [field: SerializeField] public List<Transform> PatrolPoints { get; private set; } = new List<Transform>();
+    [field: SerializeField] public float PatrolSpeed { get; private set; } = 2f;
+    [field: SerializeField] public float BlockChance { get; private set; } = 0.01f; 
 
     public Health Player;
 
@@ -28,7 +32,7 @@ public class EnemyStateMachine : StateMachine
         Agent.updatePosition = false;
         Agent.updateRotation = false;
         
-        SwitchState(new EnemyIdleState(this));
+        SwitchState(new EnemyPatrolState(this));
     }
     
     void OnEnable()

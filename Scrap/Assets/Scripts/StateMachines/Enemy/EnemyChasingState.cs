@@ -20,10 +20,15 @@ public class EnemyChasingState : EnemyBaseState
         }
         else if (IsInAttackRange())
         {
+           
             stateMachine.SwitchState(new EnemyAttackingState(stateMachine));
             return;
         }
-
+        else if (Random.value < stateMachine.BlockChance)
+        {
+            stateMachine.SwitchState(new EnemyBlockingState(stateMachine));
+            return;
+        }
         MoveToPlayer(deltaTime);
         FacePlayer();
 

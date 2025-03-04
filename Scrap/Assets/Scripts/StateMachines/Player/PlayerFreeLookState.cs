@@ -15,6 +15,7 @@ public class PlayerFreeLookState : PlayerBaseState
     public override void Enter()
     {
         stateMachine.InputReader.JumpEvent += OnJump;
+        stateMachine.InputReader.TargetEvent += OnTarget;
         stateMachine.InputReader.InteractEvent += OnInteract;
         stateMachine.InputReader.PauseEvent += OnPause;
         stateMachine.Animator.CrossFadeInFixedTime(FreeLookBlendTreeHash, CrossFadeDuration);
@@ -22,10 +23,6 @@ public class PlayerFreeLookState : PlayerBaseState
 
     public override void Tick(float deltaTime)
     {
-        
-        if (stateMachine.Targeter.SelectTarget())
-            stateMachine.SwitchState(new PlayerTargetingState(stateMachine));
-            
         if (stateMachine.InputReader.IsAttacking)
         {
             stateMachine.SwitchState(new PlayerAttackingState(stateMachine, 0));
@@ -55,8 +52,17 @@ public class PlayerFreeLookState : PlayerBaseState
     public override void Exit()
     {
         stateMachine.InputReader.JumpEvent -= OnJump;
+        stateMachine.InputReader.TargetEvent -= OnTarget;
         stateMachine.InputReader.InteractEvent -= OnInteract;
     }
+    
+    private void OnTarget()
+    {
+        if (!stateMachine.Targeter.SelectTarget()) { return; }
+
+        stateMachine.SwitchState(new PlayerTargetingState(stateMachine));
+    }
+
     
     void Footsteps(float deltaTime)
     {
