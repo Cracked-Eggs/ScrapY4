@@ -234616,7 +234616,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2110833791}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 9014445379506605816, guid: 1e8d1ff13b620384283d8ee80920d14e, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e8d1ff13b620384283d8ee80920d14e, type: 3}
@@ -353343,6 +353344,7 @@ MonoBehaviour:
   playerCollider_head: {fileID: 7624502085984488077}
   l_ArmColl: {fileID: 8628445702019163965}
   r_ArmColl: {fileID: 7545252807930312038}
+  chestCollider: {fileID: 0}
   magneticManager: {fileID: 1359220492}
   DetachHolder: {fileID: 0}
   magneticField: {fileID: 0}

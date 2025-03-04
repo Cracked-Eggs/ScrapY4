@@ -6,13 +6,22 @@ public class EnemyChasingState : EnemyBaseState
     int SpeedHash = Animator.StringToHash("Speed"); 
     const float CrossFadeDuration = 0.1f;
     const float AnimatorDampTime = 0.1f;
+    
+    float blockGraceTimer = 2f; 
+    float elapsedTime = 0f;
 
     public EnemyChasingState(EnemyStateMachine stateMachine) : base(stateMachine) { }
 
-    public override void Enter() => stateMachine.Animator.CrossFadeInFixedTime(LocomotionHash, CrossFadeDuration);
+    public override void Enter()
+    {
+        stateMachine.Animator.CrossFadeInFixedTime(LocomotionHash, CrossFadeDuration);
+        elapsedTime = 0f;
+    }
 
     public override void Tick(float deltaTime)
     {
+        elapsedTime += deltaTime;
+
         if (!IsInChaseRange())
         {
             stateMachine.SwitchState(new EnemyIdleState(stateMachine));
@@ -20,15 +29,15 @@ public class EnemyChasingState : EnemyBaseState
         }
         else if (IsInAttackRange())
         {
-           
             stateMachine.SwitchState(new EnemyAttackingState(stateMachine));
             return;
         }
-        else if (Random.value < stateMachine.BlockChance)
+        else if (elapsedTime >= blockGraceTimer && Random.value < stateMachine.BlockChance && stateMachine.CanBlock)
         {
             stateMachine.SwitchState(new EnemyBlockingState(stateMachine));
             return;
         }
+
         MoveToPlayer(deltaTime);
         FacePlayer();
 
@@ -50,7 +59,7 @@ public class EnemyChasingState : EnemyBaseState
         }
         stateMachine.Agent.velocity = stateMachine.Controller.velocity;
     }
-    
+
     bool IsInAttackRange()
     {
         if (stateMachine.Player.IsDead) { return false; }

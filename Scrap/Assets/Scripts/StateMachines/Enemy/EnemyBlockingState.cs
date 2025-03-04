@@ -5,8 +5,7 @@ public class EnemyBlockingState : EnemyBaseState
     int BlockHash = Animator.StringToHash("Block");
     const float CrossFadeDuration = 0.1f;
 
-    float blockDuration = 2f; // Adjust this value as needed
-    float timer;
+    float blockDuration = 4f; // Adjust this value as needed
 
     public EnemyBlockingState(EnemyStateMachine stateMachine) : base(stateMachine) { }
 
@@ -15,17 +14,16 @@ public class EnemyBlockingState : EnemyBaseState
         stateMachine.Health.SetInvulnerable(true);
 
         stateMachine.Animator.CrossFadeInFixedTime(BlockHash, CrossFadeDuration);
-
-        timer = blockDuration;
+        stateMachine.CanBlock = false;
     }
 
     public override void Tick(float deltaTime)
     {
         FacePlayer();
 
-        timer -= deltaTime;
+        blockDuration -= deltaTime;
 
-        if (timer <= 0f)
+        if (blockDuration <= 0f)
         {
             stateMachine.SwitchState(new EnemyChasingState(stateMachine));
             return;
@@ -35,5 +33,12 @@ public class EnemyBlockingState : EnemyBaseState
     public override void Exit()
     {
         stateMachine.Health.SetInvulnerable(false);
+        stateMachine.StartCoroutine(EnableBlockingAfterCooldown());
+    }
+    
+    private System.Collections.IEnumerator EnableBlockingAfterCooldown()
+    {
+        yield return new WaitForSeconds(3f);
+        stateMachine.CanBlock = true;
     }
 }
