@@ -97,6 +97,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  isHeadOnPlate: 0
+  isTorsoOnPlate: 0
+  isRightArmOnPlate: 0
+  isLeftArmOnPlate: 0
+  isRightLegOnPlate: 0
+  isLeftLegOnPlate: 0
 --- !u!1001 &2915701206870716414
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -105,6 +111,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1460064090207964909}
     m_Modifications:
+    - target: {fileID: -9035983693202875576, guid: 4de8ee674c200ed499a28109e5accaaa,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 54feaa5b96bfbf24c8d0c147202d5b5a, type: 2}
+    - target: {fileID: -8768133303093192197, guid: 4de8ee674c200ed499a28109e5accaaa,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 54feaa5b96bfbf24c8d0c147202d5b5a, type: 2}
     - target: {fileID: -8679921383154817045, guid: 4de8ee674c200ed499a28109e5accaaa,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -155,11 +171,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1601867561789842677, guid: 4de8ee674c200ed499a28109e5accaaa,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 54feaa5b96bfbf24c8d0c147202d5b5a, type: 2}
+    - target: {fileID: -678588488315902003, guid: 4de8ee674c200ed499a28109e5accaaa,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3b98990cc31d0b049bd1c5ba3d71c71b, type: 2}
     - target: {fileID: 919132149155446097, guid: 4de8ee674c200ed499a28109e5accaaa,
         type: 3}
       propertyPath: m_Name
       value: PressureButton 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2951965982385773142, guid: 4de8ee674c200ed499a28109e5accaaa,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3b98990cc31d0b049bd1c5ba3d71c71b, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -292,6 +323,12 @@ MonoBehaviour:
   offMagnetEvent:
     m_PersistentCalls:
       m_Calls: []
+  isHeadOnPlate: 0
+  isTorsoOnPlate: 0
+  isRightArmOnPlate: 0
+  isLeftArmOnPlate: 0
+  isRightLegOnPlate: 0
+  isLeftLegOnPlate: 0
 --- !u!4 &3457673462406547477 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4de8ee674c200ed499a28109e5accaaa,
