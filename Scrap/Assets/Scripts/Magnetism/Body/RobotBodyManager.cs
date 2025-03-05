@@ -434,9 +434,7 @@ public class Attach : MonoBehaviour
 
     public void RecallLeftArm()
     {
-        if(partManager.isReattaching) return;
-        if (_isL_ArmDetached) return;
-        
+        if (!_isL_ArmDetached) return;
             if (secondaryRadiusChecker.isLeftArmInRange)
             {
                 magneticHit = true;
