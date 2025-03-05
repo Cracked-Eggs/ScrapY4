@@ -158,7 +158,8 @@ public class RadiusChecker : MonoBehaviour
                 {
                     flowField.SetNewTarget(transform.position);
                     Vector3 moveDirection = flowField.GetFlowDirection(bodyPart.transform.position);
-                    rb.velocity = moveDirection * forceStrength;
+                        moveDirection += Vector3.up * 0.1f;
+                        rb.velocity = moveDirection * forceStrength;
 
                     yield return null;
                 }
