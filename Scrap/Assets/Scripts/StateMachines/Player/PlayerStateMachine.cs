@@ -36,6 +36,7 @@ public class PlayerStateMachine : StateMachine
     [field: SerializeField] public LayerMask aimColliderLayerMask = new LayerMask();
     [field: SerializeField] public Transform debugTransform { get; private set; }
     [field: SerializeField] public GameObject Crosshair { get; private set; }
+    [field: SerializeField] public Attach Attach { get; private set; }
 
     public Quaternion initalRotation;
     public float PreviousDodgeTime { get; private set; } = Mathf.NegativeInfinity;
@@ -51,6 +52,7 @@ public class PlayerStateMachine : StateMachine
         MainCameraTransform = Camera.main.transform;
         initalRotation = transform.rotation;
         SwitchState(new PlayerFreeLookState(this));
+        Attach = GetComponent<Attach>();
     }
     
     void OnEnable()

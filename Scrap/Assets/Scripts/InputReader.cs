@@ -19,6 +19,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
    
     
     public event Action ShootLeftEvent;
+    public event Action ShootRightEvent;
 
     public event Action DropEverythingEvent;
     public event Action DropLeftArmEvent;
@@ -86,7 +87,11 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
             IsBlocking = false;
     }
 
-    public void OnShootR(InputAction.CallbackContext context) { }
+    public void OnShootR(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        ShootRightEvent?.Invoke();
+    }
 
     public void OnShootL(InputAction.CallbackContext context)
     {

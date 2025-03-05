@@ -18,6 +18,7 @@ public class EnemyChasingState : EnemyBaseState
     {
         stateMachine.Animator.CrossFadeInFixedTime(LocomotionHash, CrossFadeDuration);
         elapsedTime = 0f;
+        stateMachine.CanBlock = true;
     }
 
     public override void Tick(float deltaTime)
