@@ -163,20 +163,9 @@ public class RadiusChecker : MonoBehaviour
                         rb.velocity = moveDirection * forceStrength;
 
                     yield return null;
-                }
-
-                // **SNAP INTO PLACE**
-                rb.velocity = Vector3.zero;  // Stop movement
-
-                    // Stop physics influence
-
-                    rb.MovePosition(transform.position);
-
-
-
-
-                    // Re-enable physics after
-                    // Instantly attach
+                } 
+                rb.velocity = Vector3.zero; 
+                rb.MovePosition(transform.position);
                 }
 
                 Destroy(flowField);
