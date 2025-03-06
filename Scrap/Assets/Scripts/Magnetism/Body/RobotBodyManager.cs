@@ -362,16 +362,27 @@ public class Attach : MonoBehaviour
         Collider partCollider = part.GetComponent<Collider>();
         if (partCollider != null) partCollider.enabled = true;
 
+        // Temporarily disable gravity to avoid the arch
+        bool wasGravityEnabled = rb.useGravity;
+        rb.useGravity = false;
+
         Vector3 direction = (targetPosition - part.transform.position).normalized;
 
         rb.AddForce(direction * force, ForceMode.Impulse);
 
+        // Wait until the part is close enough to the target
         while (Vector3.Distance(part.transform.position, targetPosition) > 0.5f)
             yield return null;
 
+        // Stop movement and angular velocity
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+
+        // Re-enable gravity after the movement is complete, and ensure it's set correctly
+        rb.useGravity = wasGravityEnabled;
     }
+
+
 
     public void ShootRightArm()
     {
