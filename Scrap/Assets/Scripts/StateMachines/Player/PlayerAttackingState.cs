@@ -39,7 +39,9 @@ public class PlayerAttackingState : PlayerBaseState
         previousFrameTime = normalizedTime;
     }
 
-    public override void Exit() { }
+    public override void Exit()
+    {
+    }
     
     void TryComboAttack(float normalizedTime)
     {

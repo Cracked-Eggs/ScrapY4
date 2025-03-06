@@ -15,7 +15,6 @@ public class PlayerTargetingState : PlayerBaseState
     {
         stateMachine.InputReader.DodgeEvent += OnDodge;
         stateMachine.InputReader.TargetEvent += OnTarget;
-        stateMachine.InputReader.JumpEvent += OnJump;
         stateMachine.Animator.CrossFadeInFixedTime(TargetingBlendTreeHash, CrossFadeDuration);
         stateMachine.InputReader.IsInCombat = true;
     }
@@ -24,6 +23,8 @@ public class PlayerTargetingState : PlayerBaseState
     {
         if(stateMachine.InputReader.IsAttacking)
         {
+            stateMachine.MDamageL.enabled = false;
+            stateMachine.MDamageR.enabled = false;
             stateMachine.SwitchState(new PlayerAttackingState(stateMachine, 0));
             return;
         }
@@ -53,7 +54,6 @@ public class PlayerTargetingState : PlayerBaseState
     public override void Exit()
     {
         stateMachine.InputReader.TargetEvent -= OnTarget;
-        stateMachine.InputReader.JumpEvent -= OnJump;
         stateMachine.InputReader.DodgeEvent -= OnDodge;
         stateMachine.InputReader.IsInCombat = false;
     }
@@ -64,7 +64,6 @@ public class PlayerTargetingState : PlayerBaseState
         stateMachine.SwitchState(new PlayerFreeLookState(stateMachine));
     }
 
-    void OnJump() => stateMachine.SwitchState(new PlayerJumpingState(stateMachine));
 
     Vector3 CalculateMovement(float deltaTime)
     {

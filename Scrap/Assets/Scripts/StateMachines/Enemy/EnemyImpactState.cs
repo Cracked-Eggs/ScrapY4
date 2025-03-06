@@ -13,6 +13,7 @@ public class EnemyImpactState : EnemyBaseState
     public override void Tick(float deltaTime)
     {
         Move(deltaTime);
+        FacePlayer();
         duration -= deltaTime;
 
         if(duration <= 0f)
