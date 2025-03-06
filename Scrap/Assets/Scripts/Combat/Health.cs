@@ -42,7 +42,8 @@ public class Health : MonoBehaviour
 
         if (damagePrefab != null)
         {
-            Instantiate(damagePrefab, transform.position, Quaternion.identity);
+            GameObject damageInstance = Instantiate(damagePrefab, transform.position, Quaternion.identity);
+            Destroy(damageInstance, 2f); // Destroy the damage prefab after 2 seconds
         }
 
         OnTakeDamage?.Invoke();

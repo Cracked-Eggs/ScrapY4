@@ -100973,7 +100973,7 @@ PrefabInstance:
     - target: {fileID: 7831797283207266870, guid: 1e8d1ff13b620384283d8ee80920d14e,
         type: 3}
       propertyPath: <AttackRange>k__BackingField
-      value: 1.08
+      value: 1.06
       objectReference: {fileID: 0}
     - target: {fileID: 7831797283207266870, guid: 1e8d1ff13b620384283d8ee80920d14e,
         type: 3}
@@ -235236,11 +235236,6 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 8169336256840684856}
-    - target: {fileID: 7831797283207266870, guid: 1e8d1ff13b620384283d8ee80920d14e,
-        type: 3}
-      propertyPath: <AttackRange>k__BackingField
-      value: 1.08
-      objectReference: {fileID: 0}
     - target: {fileID: 7831797283207266870, guid: 1e8d1ff13b620384283d8ee80920d14e,
         type: 3}
       propertyPath: <PatrolPoints>k__BackingField.Array.size

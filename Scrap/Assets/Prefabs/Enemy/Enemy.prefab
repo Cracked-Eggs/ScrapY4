@@ -2079,6 +2079,9 @@ MonoBehaviour:
   healthBar: {fileID: 5411928774942220974}
   damagePrefab: {fileID: 3392681967298815628, guid: 969fa613c6226394cac6a8fa6aba9044,
     type: 3}
+  DieEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7831797283207266870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2101,9 +2104,14 @@ MonoBehaviour:
   <Target>k__BackingField: {fileID: 8087209474669671353}
   <MovementSpeed>k__BackingField: 3
   <PlayerChasingRange>k__BackingField: 10
-  <AttackRange>k__BackingField: 1
+  <AttackRange>k__BackingField: 1.06
   <AttackDamage>k__BackingField: 20
   <AttackKnockback>k__BackingField: 20
+  <PatrolPoints>k__BackingField: []
+  <PatrolSpeed>k__BackingField: 2
+  <BlockChance>k__BackingField: 0.01
+  CanBlock: 0
+  Player: {fileID: 0}
 --- !u!114 &5226696166961063814
 MonoBehaviour:
   m_ObjectHideFlags: 0
