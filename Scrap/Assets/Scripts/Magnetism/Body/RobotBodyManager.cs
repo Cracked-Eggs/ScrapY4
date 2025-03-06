@@ -362,6 +362,10 @@ public class Attach : MonoBehaviour
         Collider partCollider = part.GetComponent<Collider>();
         if (partCollider != null) partCollider.enabled = true;
 
+       
+        bool wasGravityEnabled = rb.useGravity;
+        rb.useGravity = false;
+
         Vector3 direction = (targetPosition - part.transform.position).normalized;
 
         rb.AddForce(direction * force, ForceMode.Impulse);
@@ -369,9 +373,15 @@ public class Attach : MonoBehaviour
         while (Vector3.Distance(part.transform.position, targetPosition) > 0.5f)
             yield return null;
 
+       
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+
+       
+        rb.useGravity = wasGravityEnabled;
     }
+
+
 
     public void ShootRightArm()
     {
