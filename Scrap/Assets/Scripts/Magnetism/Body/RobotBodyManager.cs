@@ -43,6 +43,8 @@ public class Attach : MonoBehaviour
     private float lastDetachLeftArmTime = -2.0f;
     private float lastDetachRightArmTime = -2.0f;
     private float lastDetachAllTime = -2.0f;
+    public float shootCooldown = 2.0f; // Cooldown duration for shooting during battle
+    bool _isOnCooldown;
     Vector3 currentRotation;
     Vector3 mouseWorldPosition;
 
@@ -352,45 +354,52 @@ public class Attach : MonoBehaviour
        
     }
 
-    IEnumerator MovePartToTarget(GameObject part, Vector3 targetPosition, float force)
+    IEnumerator MovePartToTarget(GameObject part, Vector3 targetPosition, float speed)
     {
         Rigidbody rb = part.GetComponent<Rigidbody>();
-        if (rb == null)
-            yield break;
 
-        rb.isKinematic = false;
-        Collider partCollider = part.GetComponent<Collider>();
-        if (partCollider != null) partCollider.enabled = true;
+        if (rb)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.isKinematic = true; // Disable physics while moving
+        }
 
-        Vector3 direction = (targetPosition - part.transform.position).normalized;
-
-        rb.AddForce(direction * force, ForceMode.Impulse);
-
-        while (Vector3.Distance(part.transform.position, targetPosition) > 0.5f)
+        while (Vector3.Distance(part.transform.position, targetPosition) > 0.1f)
+        {
+            part.transform.position = Vector3.MoveTowards(part.transform.position, targetPosition, speed * Time.deltaTime);
             yield return null;
+        }
 
-        rb.velocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+        if (rb) rb.isKinematic = false;
     }
 
+    private IEnumerator Cooldown()
+    {
+        _isOnCooldown = true; 
+        yield return new WaitForSeconds(shootCooldown);
+        _isOnCooldown = false;
+    }
 
 
     public void ShootRightArm()
     {
-        if (_inputReader.IsInCombat)
+        if (_inputReader.IsInCombat && !_isOnCooldown)
         {
+
             Target closestTarget = FindClosestTarget();
             vfxManager.PlayBurstVFX("R_Arm");
+            r_ArmColl.enabled = true;
+
 
             partManager.DetachPart(partManager.r_Arm);
 
-       
             StopAllCoroutines(); // Stop any ongoing movement
             StartCoroutine(MovePartToTarget(partManager.r_Arm, closestTarget.transform.position, shootingForce));
-       
-            r_ArmColl.enabled = false;
+
             _isR_ArmDetached = true;
 
+            StartCoroutine(Cooldown());
         }
         else
         {
@@ -458,20 +467,22 @@ public class Attach : MonoBehaviour
 
     public void ShootLeftArm()
     {
-        if (_inputReader.IsInCombat)
+        if (_inputReader.IsInCombat && !_isOnCooldown)
         {
             Target closestTarget = FindClosestTarget();
             vfxManager.PlayBurstVFX("L_Arm");
-       
+
             partManager.l_Arm.GetComponent<MagneticField>().isPositivePolarity = false;
             l_ArmColl.enabled = true;
-        
+
             partManager.DetachPart(partManager.l_Arm);
 
             StopAllCoroutines(); // Stop any ongoing movement
             StartCoroutine(MovePartToTarget(partManager.l_Arm, closestTarget.transform.position, shootingForce));
 
             _isL_ArmDetached = true;
+
+            StartCoroutine(Cooldown());
         }
         else
         {
