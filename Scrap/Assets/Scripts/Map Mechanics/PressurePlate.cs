@@ -9,7 +9,7 @@ public class PressurePlate : MonoBehaviour
     const string PressedHash = "isPressed";
    
 
-    [SerializeField] UnityEvent magnetEvent;
+    [SerializeField] public UnityEvent magnetEvent;
     [SerializeField] UnityEvent offMagnetEvent;
 
     // Flags for each body part

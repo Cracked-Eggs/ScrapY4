@@ -7,7 +7,7 @@ public class TogglePressurePlate : MonoBehaviour
     Animator animator;
     const string PressedHash = "isPressed";
 
-    [SerializeField] UnityEvent magnetEvent;
+    [SerializeField] public UnityEvent magnetEvent;
     private bool isActivated = false; // Tracks if the plate has been pressed
 
     void Awake() => animator = GetComponentInChildren<Animator>();
@@ -22,6 +22,12 @@ public class TogglePressurePlate : MonoBehaviour
             Debug.Log("Pressure plate activated!");
         }
     }
+    public void ResetPlate()
+    {
+        isActivated = false; // Unlock the plate
+        animator.SetBool(PressedHash, false); // Reset animation
+    }
+
 
     bool IsValidObject(Collider other)
     {
