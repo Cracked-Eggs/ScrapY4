@@ -33,7 +33,10 @@ public class EnemyStateMachine : StateMachine
         Agent.updatePosition = false;
         Agent.updateRotation = false;
         
-        SwitchState(new EnemyPatrolState(this));
+        if (PatrolPoints.Count == 0)
+            SwitchState(new EnemyIdleState(this));
+        else
+            SwitchState(new EnemyPatrolState(this));
     }
     
     void OnEnable()
