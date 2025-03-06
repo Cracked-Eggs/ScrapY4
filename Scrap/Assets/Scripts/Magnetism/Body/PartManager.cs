@@ -7,7 +7,7 @@ using UnityEngine;
 public class PartManager : MonoBehaviour
 {
     public GameObject head, head2, head3, head4, head5, torso, r_Leg, l_Leg, r_Arm, l_Arm, parent;
-    private Dictionary<GameObject, Vector3> originalPositions = new Dictionary<GameObject, Vector3>();
+    public Dictionary<GameObject, Vector3> originalPositions = new Dictionary<GameObject, Vector3>();
     private Dictionary<GameObject, Quaternion> originalRotations = new Dictionary<GameObject, Quaternion>();
     private Dictionary<GameObject, Vector3> originalScales = new Dictionary<GameObject, Vector3>();
     private Dictionary<GameObject, Transform[]> originalBones = new Dictionary<GameObject, Transform[]>();
@@ -119,7 +119,7 @@ public class PartManager : MonoBehaviour
                 Debug.LogError($"Pre-baked mesh for {part.name} not found!");
                 part.GetComponent<SkinnedMeshRenderer>().updateWhenOffscreen = true;
             }
-
+      
     }
     private Transform GetParentForPart(GameObject part)
     {
@@ -188,6 +188,7 @@ public class PartManager : MonoBehaviour
             partRb.isKinematic = true;
         }
 
+        
 
         part.transform.SetParent(GetParentForPart(part));
        
@@ -206,7 +207,11 @@ public class PartManager : MonoBehaviour
 
         part.transform.localPosition = originalPositions[part];
         part.transform.localRotation = originalRotations[part];
+
+
+
         
+
         if (part.TryGetComponent<BoxCollider>(out BoxCollider partCollider))
         {
             partCollider.size = originalCollidersData[part].size;

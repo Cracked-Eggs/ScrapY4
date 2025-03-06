@@ -148,6 +148,7 @@ public class RadiusChecker : MonoBehaviour
             FlowField flowField = bodyPart.GetComponent<FlowField>();
             if (flowField == null)
             {
+                    Debug.Log("poop");
                 flowField = bodyPart.AddComponent<FlowField>(); // Add dynamically
             }
 
@@ -166,11 +167,20 @@ public class RadiusChecker : MonoBehaviour
 
                 // **SNAP INTO PLACE**
                 rb.velocity = Vector3.zero;  // Stop movement
-                bodyPart.transform.position = transform.position; // Instantly attach
-            }
 
-            Destroy(flowField);
-        }
+                    // Stop physics influence
+
+                    rb.MovePosition(transform.position);
+
+
+
+
+                    // Re-enable physics after
+                    // Instantly attach
+                }
+
+                Destroy(flowField);
+            }
     }
 
     isRetracting = false;

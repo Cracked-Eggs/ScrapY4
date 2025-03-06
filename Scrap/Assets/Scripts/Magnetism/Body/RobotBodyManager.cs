@@ -579,6 +579,7 @@ public class Attach : MonoBehaviour
             audioManager.Play("Detach");
            
             r_ArmColl.enabled = true;
+            
           
         }
     }

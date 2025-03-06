@@ -73,7 +73,7 @@ public class FlowField : MonoBehaviour
             }
         }
 
-        // 🔥 If still stuck, try a small random push
+       
         if (bestDirection == Vector3.zero)
         {
             Vector3 randomDirection = new Vector3(
