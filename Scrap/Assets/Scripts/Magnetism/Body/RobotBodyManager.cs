@@ -352,46 +352,87 @@ public class Attach : MonoBehaviour
        
     }
 
-    IEnumerator MovePartToTarget(GameObject part, Vector3 targetPosition, float speed)
+    IEnumerator MovePartToTarget(GameObject part, Vector3 targetPosition, float force)
     {
         Rigidbody rb = part.GetComponent<Rigidbody>();
+        if (rb == null)
+            yield break;
 
-        // Ensure Rigidbody is disabled for smooth movement
-        if (rb)
-        {
-            rb.velocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-            rb.isKinematic = true; // Disable physics while moving
-        }
+        rb.isKinematic = false;
+        Collider partCollider = part.GetComponent<Collider>();
+        if (partCollider != null) partCollider.enabled = true;
 
-        while (Vector3.Distance(part.transform.position, targetPosition) > 0.1f)
-        {
-            part.transform.position = Vector3.MoveTowards(part.transform.position, targetPosition, speed * Time.deltaTime);
+        Vector3 direction = (targetPosition - part.transform.position).normalized;
+
+        rb.AddForce(direction * force, ForceMode.Impulse);
+
+        while (Vector3.Distance(part.transform.position, targetPosition) > 0.5f)
             yield return null;
-        }
 
-        // Reactivate Rigidbody after reaching the target
-        if (rb) rb.isKinematic = false;
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
     }
 
     public void ShootRightArm()
     {
-        if (partManager.isReattaching) return;
-        if (_inputReader.IsAiming == false) return;
-        if (_isR_ArmDetached) return; // Prevent double shooting
+        if (_inputReader.IsInCombat)
+        {
+            Target closestTarget = FindClosestTarget();
+            vfxManager.PlayBurstVFX("R_Arm");
 
-        vfxManager.PlayBurstVFX("R_Arm");
-
-        partManager.DetachPart(partManager.r_Arm);
+            partManager.DetachPart(partManager.r_Arm);
 
        
-        StopAllCoroutines(); // Stop any ongoing movement
-        StartCoroutine(MovePartToTarget(partManager.r_Arm, mouseWorldPosition, shootingForce));
+            StopAllCoroutines(); // Stop any ongoing movement
+            StartCoroutine(MovePartToTarget(partManager.r_Arm, closestTarget.transform.position, shootingForce));
        
-        r_ArmColl.enabled = false;
-        _isR_ArmDetached = true;
+            r_ArmColl.enabled = false;
+            _isR_ArmDetached = true;
+
+        }
+        else
+        {
+            if (partManager.isReattaching) return;
+            if (_inputReader.IsAiming == false) return;
+            if (_isR_ArmDetached) return; // Prevent double shooting
+
+            vfxManager.PlayBurstVFX("R_Arm");
+
+            partManager.DetachPart(partManager.r_Arm);
+
+       
+            StopAllCoroutines(); // Stop any ongoing movement
+            StartCoroutine(MovePartToTarget(partManager.r_Arm, mouseWorldPosition, shootingForce));
+       
+            r_ArmColl.enabled = false;
+            _isR_ArmDetached = true;
+        }
+       
         
     }
+    
+    private Target FindClosestTarget()
+    {
+        // Find all targets in the scene
+        Target[] targets = FindObjectsOfType<Target>();
+        Target closestTarget = null;
+        float closestDistance = Mathf.Infinity;
+        Vector3 currentPosition = transform.position;
+
+        // Iterate through all targets to find the closest one
+        foreach (Target target in targets)
+        {
+            float distance = Vector3.Distance(currentPosition, target.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestTarget = target;
+            }
+        }
+
+        return closestTarget;
+    }
+
 
     public void RecallRightArm()
     {
@@ -415,21 +456,41 @@ public class Attach : MonoBehaviour
 
     public void ShootLeftArm()
     {
-        if (partManager.isReattaching) return;
-        if (_inputReader.IsLAiming == false) return;
-        if (_isL_ArmDetached) return; // Prevent double shooting
-
-        vfxManager.PlayBurstVFX("L_Arm");
+        if (_inputReader.IsInCombat)
+        {
+            Target closestTarget = FindClosestTarget();
+            vfxManager.PlayBurstVFX("L_Arm");
        
-        partManager.l_Arm.GetComponent<MagneticField>().isPositivePolarity = false;
-        l_ArmColl.enabled = true;
+            partManager.l_Arm.GetComponent<MagneticField>().isPositivePolarity = false;
+            l_ArmColl.enabled = true;
         
-        partManager.DetachPart(partManager.l_Arm);
+            partManager.DetachPart(partManager.l_Arm);
 
-        StopAllCoroutines(); // Stop any ongoing movement
-        StartCoroutine(MovePartToTarget(partManager.l_Arm, mouseWorldPosition, shootingForce));
+            StopAllCoroutines(); // Stop any ongoing movement
+            StartCoroutine(MovePartToTarget(partManager.l_Arm, closestTarget.transform.position, shootingForce));
 
-        _isL_ArmDetached = true;
+            _isL_ArmDetached = true;
+        }
+        else
+        {
+            if (partManager.isReattaching) return;
+            if (_inputReader.IsLAiming == false) return;
+            if (_isL_ArmDetached) return; // Prevent double shooting
+
+            vfxManager.PlayBurstVFX("L_Arm");
+       
+            partManager.l_Arm.GetComponent<MagneticField>().isPositivePolarity = false;
+            l_ArmColl.enabled = true;
+        
+            partManager.DetachPart(partManager.l_Arm);
+
+            StopAllCoroutines(); // Stop any ongoing movement
+            StartCoroutine(MovePartToTarget(partManager.l_Arm, mouseWorldPosition, shootingForce));
+
+            _isL_ArmDetached = true;
+        }
+        
+       
     }
 
     public void RecallLeftArm()
