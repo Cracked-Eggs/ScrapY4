@@ -235238,6 +235238,11 @@ PrefabInstance:
       objectReference: {fileID: 8169336256840684856}
     - target: {fileID: 7831797283207266870, guid: 1e8d1ff13b620384283d8ee80920d14e,
         type: 3}
+      propertyPath: <AttackDamage>k__BackingField
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831797283207266870, guid: 1e8d1ff13b620384283d8ee80920d14e,
+        type: 3}
       propertyPath: <PatrolPoints>k__BackingField.Array.size
       value: 2
       objectReference: {fileID: 0}

@@ -12,7 +12,9 @@ public class Health : MonoBehaviour
     [SerializeField] UnityEvent DieEvent;
 
     int health;
+    int damageTakenCounter = 0;
     bool isInvulnerable;
+    bool rArmLosing;
     float lastDamageTime; // Track the last time damage was dealt
     float damageCooldown = 0.5f; // Cooldown time in seconds
 
@@ -20,22 +22,42 @@ public class Health : MonoBehaviour
     public event Action OnDie;
     public bool IsDead => health == 0;
 
-    void Start() => health = maxHealth;
+    Attach attachScript;
+
+    void Start()
+    {
+        health = maxHealth;
+        attachScript = GetComponent<Attach>();
+    }
+
+    void Update()
+    {
+        if (damageTakenCounter == 1 && attachScript != null && !attachScript._isL_ArmDetached && !rArmLosing)
+        {
+            attachScript.l_ArmColl.enabled = false;
+            attachScript.DroppingLeftArm();
+            damageTakenCounter = 0;
+            rArmLosing = true;
+        }
+        
+        if (damageTakenCounter == 1 && attachScript != null && !attachScript._isR_ArmDetached && rArmLosing)
+        {
+            attachScript.r_ArmColl.enabled = false;
+            attachScript.DroppingRightArm();
+            damageTakenCounter = 0;
+            rArmLosing = false;
+        }
+    }
 
     public void SetInvulnerable(bool isInvulnerable) => this.isInvulnerable = isInvulnerable;
 
     public void DealDamage(int damage, bool ignoreInvulnerability = false)
     {
-        // Check if enough time has passed since the last damage
         if (Time.time < lastDamageTime + damageCooldown)
-        {
             return;
-        }
 
         if (!ignoreInvulnerability && (health == 0 || isInvulnerable))
-        {
             return;
-        }
 
         health = Mathf.Max(health - damage, 0);
         lastDamageTime = Time.time; // Update the last damage time
@@ -47,7 +69,8 @@ public class Health : MonoBehaviour
         }
 
         OnTakeDamage?.Invoke();
-        healthBar.UpdateHeathBar(maxHealth, health);
+        healthBar?.UpdateHeathBar(maxHealth, health);
+        damageTakenCounter++;
 
         if (health == 0)
         {

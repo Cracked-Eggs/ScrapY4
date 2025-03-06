@@ -554,10 +554,8 @@ public class Attach : MonoBehaviour
             partManager.DetachPart(partManager.l_Arm);
             _isL_ArmDetached = true;
             audioManager.Play("Detach");
-            
-            l_ArmColl.enabled = true;
-          
         }
+
     }
     public void DropRightArm(InputAction.CallbackContext context)
     {
@@ -589,7 +587,7 @@ public class Attach : MonoBehaviour
             _isR_ArmDetached = true;
             audioManager.Play("Detach");
            
-            r_ArmColl.enabled = true;
+            r_ArmColl.enabled = false;
             
           
         }
