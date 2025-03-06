@@ -16,6 +16,7 @@ public class MagneticDamage : MonoBehaviour
             {
                 enemyHealth.DealDamage((int)damage, true);
                 attach.magneticHit = false;
+                attach.RecallRightArm();
             }
         }
     }

@@ -353476,7 +353476,7 @@ MonoBehaviour:
   pressurePlate: {fileID: 0}
   customGravity: -9.81
   magnetRepel: {fileID: 0}
-  shootingForce: 30
+  shootingForce: 35
   aimColliderLayerMask:
     serializedVersion: 2
     m_Bits: 64
