@@ -32,7 +32,7 @@ public class Health : MonoBehaviour
 
     void Update()
     {
-        if (damageTakenCounter == 1 && attachScript != null && !attachScript._isL_ArmDetached && !rArmLosing)
+        if (damageTakenCounter == 2 && attachScript != null && !attachScript._isL_ArmDetached && !rArmLosing)
         {
             attachScript.l_ArmColl.enabled = false;
             attachScript.DroppingLeftArm();
@@ -40,7 +40,7 @@ public class Health : MonoBehaviour
             rArmLosing = true;
         }
         
-        if (damageTakenCounter == 1 && attachScript != null && !attachScript._isR_ArmDetached && rArmLosing)
+        if (damageTakenCounter == 2 && attachScript != null && !attachScript._isR_ArmDetached && rArmLosing)
         {
             attachScript.r_ArmColl.enabled = false;
             attachScript.DroppingRightArm();
