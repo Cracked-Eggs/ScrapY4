@@ -450650,8 +450650,6 @@ MonoBehaviour:
   magneticManager: {fileID: 1359220492}
   DetachHolder: {fileID: 0}
   magneticField: {fileID: 0}
-  WaypointPlatform: {fileID: 0}
-  pressurePlate: {fileID: 0}
   customGravity: -9.81
   magnetRepel: {fileID: 0}
   shootingForce: 35
@@ -450660,8 +450658,8 @@ MonoBehaviour:
     m_Bits: 64
   debugTransform: {fileID: 371856068}
   pressurePlates:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1036953383}
+  - {fileID: 360141760492536629}
   detachLeftArmCooldown: 0.5
   detachRightArmCooldown: 0.5
   detachAllCooldown: 0.5
