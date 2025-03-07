@@ -4725,6 +4725,7 @@ GameObject:
   - component: {fileID: 32988838}
   - component: {fileID: 32988837}
   - component: {fileID: 32988836}
+  - component: {fileID: 32988839}
   m_Layer: 10
   m_Name: MagneticWall
   m_TagString: MagneticWall
@@ -4812,6 +4813,27 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &32988839
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32988834}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &33445159
 GameObject:
@@ -117760,6 +117782,7 @@ GameObject:
   - component: {fileID: 306752249}
   - component: {fileID: 306752248}
   - component: {fileID: 306752247}
+  - component: {fileID: 306752250}
   m_Layer: 10
   m_Name: MagneticWall (3)
   m_TagString: MagneticWall
@@ -117776,7 +117799,7 @@ Transform:
   m_GameObject: {fileID: 306752245}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -24.29, y: 9.69, z: 68.81999}
+  m_LocalPosition: {x: -23.42, y: 9.69, z: 68.81999}
   m_LocalScale: {x: 3.82, y: 0.3, z: 3.82}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -117847,6 +117870,27 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &306752250
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306752245}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!43 &306763672
 Mesh:
@@ -119599,6 +119643,7 @@ GameObject:
   - component: {fileID: 319966518}
   - component: {fileID: 319966517}
   - component: {fileID: 319966516}
+  - component: {fileID: 319966519}
   m_Layer: 10
   m_Name: MagneticWall (1)
   m_TagString: MagneticWall
@@ -119686,6 +119731,27 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &319966519
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319966514}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!43 &320469799
 Mesh:
@@ -217098,7 +217164,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 947668917}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.00079292327, y: -0.07640658, z: -0.0000607622, w: 0.99707645}
+  m_LocalRotation: {x: -0.00079292327, y: -0.076406635, z: -0.00006076224, w: 0.99707645}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -240823,7 +240889,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1119326711}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.014920166, y: -0.07639805, z: 0.0011433415, w: 0.9969651}
+  m_LocalRotation: {x: 0.014920166, y: -0.076398104, z: 0.0011433422, w: 0.9969651}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -256959,7 +257025,7 @@ Transform:
   m_GameObject: {fileID: 1226013576}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 31.183735, y: 0.7847967, z: 162.30446}
+  m_LocalPosition: {x: 8.208735, y: -0.6752033, z: 142.52646}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -353795,6 +353861,7 @@ GameObject:
   - component: {fileID: 1427813365}
   - component: {fileID: 1427813364}
   - component: {fileID: 1427813363}
+  - component: {fileID: 1427813366}
   m_Layer: 10
   m_Name: MagneticWall (2)
   m_TagString: MagneticWall
@@ -353882,6 +353949,27 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &1427813366
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427813361}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1429827361
 PrefabInstance:
@@ -361326,7 +361414,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1484583391}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.016474674, y: -0.076396175, z: -0.0012624643, w: 0.9969407}
+  m_LocalRotation: {x: -0.016474674, y: -0.07639623, z: -0.0012624653, w: 0.9969407}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -458379,7 +458467,7 @@ Transform:
   m_GameObject: {fileID: 6750928841991304399}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 26.125, y: 11.77, z: 231.058}
+  m_LocalPosition: {x: 3.15, y: 10.31, z: 211.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -459181,16 +459269,16 @@ VisualEffect:
       m_Array: []
     m_Vector3f:
       m_Array:
-      - m_Value: {x: 25.355858, y: 10.46039, z: 182.61789}
+      - m_Value: {x: 2.3808572, y: 9.00039, z: 162.8399}
         m_Name: Pos1
         m_Overridden: 1
-      - m_Value: {x: 25.322643, y: 10.450994, z: 182.618}
+      - m_Value: {x: 2.3476436, y: 8.9909935, z: 162.84}
         m_Name: Pos4
         m_Overridden: 1
-      - m_Value: {x: 25.099316, y: 10.491037, z: 182.61789}
+      - m_Value: {x: 2.1243148, y: 9.031036, z: 162.83989}
         m_Name: Pos2
         m_Overridden: 1
-      - m_Value: {x: 25.322643, y: 10.450994, z: 182.618}
+      - m_Value: {x: 2.3476436, y: 8.9909935, z: 162.84}
         m_Name: Pos3
         m_Overridden: 1
     m_Vector4f:
@@ -459849,16 +459937,16 @@ VisualEffect:
       m_Array: []
     m_Vector3f:
       m_Array:
-      - m_Value: {x: 25.355858, y: 10.46039, z: 182.61789}
+      - m_Value: {x: 2.3808572, y: 9.00039, z: 162.8399}
         m_Name: Pos1
         m_Overridden: 1
-      - m_Value: {x: 25.047962, y: 10.459115, z: 182.61786}
+      - m_Value: {x: 2.072963, y: 8.999115, z: 162.83984}
         m_Name: Pos4
         m_Overridden: 1
-      - m_Value: {x: 25.355858, y: 10.46039, z: 182.61789}
+      - m_Value: {x: 2.3808572, y: 9.00039, z: 162.8399}
         m_Name: Pos2
         m_Overridden: 1
-      - m_Value: {x: 25.047962, y: 10.459115, z: 182.61786}
+      - m_Value: {x: 2.072963, y: 8.999115, z: 162.83984}
         m_Name: Pos3
         m_Overridden: 1
     m_Vector4f:
@@ -459951,16 +460039,16 @@ VisualEffect:
       m_Array: []
     m_Vector3f:
       m_Array:
-      - m_Value: {x: 25.189903, y: 11.334912, z: 182.6178}
+      - m_Value: {x: 2.2149034, y: 9.874912, z: 162.8398}
         m_Name: Pos1
         m_Overridden: 1
-      - m_Value: {x: 25.195, y: 11.381663, z: 182.618}
+      - m_Value: {x: 2.22, y: 9.921663, z: 162.84}
         m_Name: Pos4
         m_Overridden: 1
-      - m_Value: {x: 25.18992, y: 11.3224125, z: 182.6178}
+      - m_Value: {x: 2.2149205, y: 9.862412, z: 162.8398}
         m_Name: Pos2
         m_Overridden: 1
-      - m_Value: {x: 25.195, y: 11.381663, z: 182.618}
+      - m_Value: {x: 2.22, y: 9.921663, z: 162.84}
         m_Name: Pos3
         m_Overridden: 1
     m_Vector4f:
@@ -464061,7 +464149,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 409794202815816061}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.00079292327, y: 0.07640675, z: 0.00006076233, w: 0.99707645}
+  m_LocalRotation: {x: -0.00079292327, y: 0.076406635, z: 0.00006076224, w: 0.99707645}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -465239,7 +465327,7 @@ Transform:
   m_GameObject: {fileID: 3240638091063083353}
   serializedVersion: 2
   m_LocalRotation: {x: 0.17842513, y: 3.8013018e-15, z: -1.2240955e-15, w: 0.98395354}
-  m_LocalPosition: {x: 31.183735, y: 1.7847967, z: 164.30446}
+  m_LocalPosition: {x: 8.208735, y: 0.32479668, z: 144.52646}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -465888,16 +465976,16 @@ VisualEffect:
       m_Array: []
     m_Vector3f:
       m_Array:
-      - m_Value: {x: 24.890265, y: 10.890499, z: 182.61783}
+      - m_Value: {x: 1.9152646, y: 9.430499, z: 162.83984}
         m_Name: Pos1
         m_Overridden: 1
-      - m_Value: {x: 24.948015, y: 10.681727, z: 182.65817}
+      - m_Value: {x: 1.9730157, y: 9.221727, z: 162.88019}
         m_Name: Pos4
         m_Overridden: 1
-      - m_Value: {x: 24.890265, y: 10.890499, z: 182.61783}
+      - m_Value: {x: 1.9152646, y: 9.430499, z: 162.83984}
         m_Name: Pos2
         m_Overridden: 1
-      - m_Value: {x: 24.948015, y: 10.681727, z: 182.65817}
+      - m_Value: {x: 1.9730157, y: 9.221727, z: 162.88019}
         m_Name: Pos3
         m_Overridden: 1
     m_Vector4f:
@@ -467254,16 +467342,16 @@ VisualEffect:
       m_Array: []
     m_Vector3f:
       m_Array:
-      - m_Value: {x: 25.460226, y: 10.918784, z: 182.61786}
+      - m_Value: {x: 2.4852262, y: 9.458784, z: 162.83986}
         m_Name: Pos1
         m_Overridden: 1
-      - m_Value: {x: 25.4925, y: 10.81225, z: 182.64801}
+      - m_Value: {x: 2.5175, y: 9.35225, z: 162.87}
         m_Name: Pos4
         m_Overridden: 1
-      - m_Value: {x: 25.460226, y: 10.918784, z: 182.61786}
+      - m_Value: {x: 2.4852262, y: 9.458784, z: 162.83986}
         m_Name: Pos2
         m_Overridden: 1
-      - m_Value: {x: 25.492544, y: 10.86467, z: 182.64801}
+      - m_Value: {x: 2.517545, y: 9.40467, z: 162.87}
         m_Name: Pos3
         m_Overridden: 1
     m_Vector4f:
@@ -473116,7 +473204,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 865981810351844160}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.014920166, y: 0.076398216, z: -0.001143344, w: 0.9969651}
+  m_LocalRotation: {x: 0.014920166, y: 0.076398104, z: -0.0011433422, w: 0.9969651}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -473361,7 +473449,7 @@ Transform:
   m_GameObject: {fileID: 8791177800378537207}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 31.183735, y: 0.7847967, z: 162.30446}
+  m_LocalPosition: {x: 8.208735, y: -0.6752033, z: 142.52646}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -475730,7 +475818,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6430149856980795171}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.016474674, y: 0.07639634, z: 0.001262467, w: 0.9969407}
+  m_LocalRotation: {x: -0.016474674, y: 0.07639623, z: 0.0012624653, w: 0.9969407}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -477285,7 +477373,7 @@ Transform:
   m_GameObject: {fileID: 8599018447580962223}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0019663887, y: -0.09066958, z: 0.00017902954, w: 0.9958791}
-  m_LocalPosition: {x: 31.183735, y: 0.7847967, z: 162.30446}
+  m_LocalPosition: {x: 8.208735, y: -0.6752033, z: 142.52646}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
