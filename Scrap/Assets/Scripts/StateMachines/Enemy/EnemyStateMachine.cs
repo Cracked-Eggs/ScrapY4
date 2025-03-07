@@ -22,6 +22,7 @@ public class EnemyStateMachine : StateMachine
     [field: SerializeField] public List<Transform> PatrolPoints { get; private set; } = new List<Transform>();
     [field: SerializeField] public float PatrolSpeed { get; private set; } = 2f;
     [field: SerializeField] public float BlockChance { get; private set; } = 0.01f;
+    [field: SerializeField] public float BlockGrace { get; private set; } = 1.5f;
     [field: SerializeField] public bool CanBlock;
 
     public Health Player;

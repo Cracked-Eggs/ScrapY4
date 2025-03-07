@@ -7,7 +7,6 @@ public class EnemyChasingState : EnemyBaseState
     const float CrossFadeDuration = 0.1f;
     const float AnimatorDampTime = 0.1f;
     
-    float blockGraceTimer = 1.5f; 
     float elapsedTime = 0f;
 
     float rotationSpeed = 5f; // Adjust this to control how fast the enemy turns 
@@ -35,7 +34,7 @@ public class EnemyChasingState : EnemyBaseState
             stateMachine.SwitchState(new EnemyAttackingState(stateMachine));
             return;
         }
-        else if (elapsedTime >= blockGraceTimer && Random.value < stateMachine.BlockChance && stateMachine.CanBlock)
+        else if (elapsedTime >= stateMachine.BlockGrace && Random.value < stateMachine.BlockChance && stateMachine.CanBlock)
         {
             stateMachine.SwitchState(new EnemyBlockingState(stateMachine));
             return;
