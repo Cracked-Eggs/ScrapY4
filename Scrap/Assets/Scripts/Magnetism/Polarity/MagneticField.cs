@@ -19,9 +19,7 @@ public class MagneticField : MonoBehaviour
         {
             sphereCollider = gameObject.AddComponent<SphereCollider>();
         }
-
-        sphereCollider.isTrigger = true;
-        sphereCollider.radius = fieldRadius;  // Adjust the field radius
+  // Adjust the field radius
     }
     void OnDestroy()
     {

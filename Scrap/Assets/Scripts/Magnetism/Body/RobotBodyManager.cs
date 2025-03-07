@@ -24,8 +24,7 @@ public class Attach : MonoBehaviour
     public GameObject DetachHolder;
 
     public MagneticField magneticField;
-    public WaypointPlatform WaypointPlatform;
-    public PressurePlate pressurePlate;
+   
 
     [SerializeField] public float customGravity = -9.81f;
     [SerializeField] AudioClip magnetRepel;
@@ -809,7 +808,7 @@ public class Attach : MonoBehaviour
 
         foreach (var (bodyPart, resetFlag, isDetached) in bodyParts)
         {
-            /*   bool shouldSkip = false;
+              bool shouldSkip = false;
 
              // Check each pressure plate to see if the body part is on it
              foreach (var pressurePlate in pressurePlates)
@@ -845,7 +844,7 @@ public class Attach : MonoBehaviour
              if (shouldSkip)
              {
                  continue; // Skip the current iteration and move to the next body part
-            }*/
+            }
 
             // Proceed with the normal logic if no pressure plate conditions matched
             if (isDetached && IsBodyPartInSecondaryRadius(bodyPart))
