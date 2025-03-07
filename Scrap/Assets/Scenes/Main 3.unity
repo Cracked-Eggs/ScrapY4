@@ -116660,7 +116660,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 288271107}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.018007347, y: 0.09246756, z: -0.0016725354, w: 0.9955515}
+  m_LocalRotation: {x: 0.01800735, y: 0.092467554, z: -0.0016725359, w: 0.99555147}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -119961,7 +119961,7 @@ PrefabInstance:
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
       propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
@@ -120022,7 +120022,7 @@ PrefabInstance:
         type: 3}
       propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 372434710}
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
       propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Target
@@ -120061,7 +120061,7 @@ PrefabInstance:
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
       propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: ShowTooltipCoroutine
+      value: Play
       objectReference: {fileID: 0}
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
@@ -120086,7 +120086,7 @@ PrefabInstance:
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
       propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: TooltipManager, Assembly-CSharp
+      value: AudioManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
@@ -120111,7 +120111,7 @@ PrefabInstance:
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
       propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
-      value: Detach
+      value: PlateRelease
       objectReference: {fileID: 0}
     - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
@@ -134493,6 +134493,7 @@ Transform:
   - {fileID: 1097687144}
   - {fileID: 8746495080923455429}
   - {fileID: 1962025930}
+  - {fileID: 1369279480}
   m_Father: {fileID: 932110668}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!43 &409220449
@@ -140218,7 +140219,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 425077599}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.019823888, y: 0.09065821, z: 0.0014468599, w: 0.9956837}
+  m_LocalRotation: {x: -0.01982389, y: 0.09065821, z: 0.0014468603, w: 0.99568367}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -150079,6 +150080,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 7660588071434726557, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7681034263352330854, guid: c000c3c25a71cdd458251d4b8e112aa8,
         type: 3}
       propertyPath: m_Enabled
@@ -150124,7 +150130,8 @@ PrefabInstance:
       propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Platforms, Assembly-CSharp
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -208818,7 +208825,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 869436560}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0017574747, y: 0.09066954, z: -0.00019805005, w: 0.99587953}
+  m_LocalRotation: {x: -0.0017574757, y: 0.09066955, z: -0.00019804998, w: 0.99587953}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -212222,7 +212229,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 875196850}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.016357355, y: 0.09065094, z: -0.0018472497, w: 0.9957467}
+  m_LocalRotation: {x: 0.016357355, y: 0.09065094, z: -0.0018472498, w: 0.9957467}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -238813,7 +238820,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1036972909}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.013344513, y: 0.092474386, z: 0.0012394484, w: 0.9956249}
+  m_LocalRotation: {x: -0.013344518, y: 0.09247438, z: 0.0012394487, w: 0.9956249}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -358538,7 +358545,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1344654640}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0023161534, y: -0.09248243, z: 0.00021512606, w: 0.9957116}
+  m_LocalRotation: {x: 0.0023161524, y: -0.09248243, z: 0.00021512595, w: 0.9957116}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -361538,6 +361545,551 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1001 &1369279479
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 409214833}
+    m_Modifications:
+    - target: {fileID: 36551782495745448, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5f13447d53654524887400ae43dce34e, type: 2}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: validLayers.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2123328569}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 372434710}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 372434710}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 372434710}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 2123328569}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 372434710}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 372434710}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LowerPlatform
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: RaisePlatform
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Platforms, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: AudioManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: AudioManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: AudioManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Platforms, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: AudioManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: AudioManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: PlateClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_StringArgument
+      value: DoorOpen
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: PlateRelease
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: PlateRelease
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_StringArgument
+      value: PlateRelease
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_StringArgument
+      value: DoorClose
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 360141759110952676, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1460064090207964909, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 16.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 1460064090207964909, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.453
+      objectReference: {fileID: 0}
+    - target: {fileID: 1460064090207964909, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -23.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 1460064090207964909, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1460064090207964909, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1460064090207964909, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1460064090207964909, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1460064090207964909, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1460064090207964909, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1460064090207964909, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4604849411546338835, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.5039467
+      objectReference: {fileID: 0}
+    - target: {fileID: 4604849411546338835, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 2.275224
+      objectReference: {fileID: 0}
+    - target: {fileID: 4604849411546338835, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 1.4620719
+      objectReference: {fileID: 0}
+    - target: {fileID: 4604849411546338835, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_Center.x
+      value: -0.0019685924
+      objectReference: {fileID: 0}
+    - target: {fileID: 4604849411546338835, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.905144
+      objectReference: {fileID: 0}
+    - target: {fileID: 4604849411546338835, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_Center.z
+      value: 0.0031533837
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837464316677326899, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5f13447d53654524887400ae43dce34e, type: 2}
+    - target: {fileID: 7660588071434726557, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_Name
+      value: pressure plate (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1360594030}
+    - target: {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1360594030}
+    - target: {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CloseDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Door, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Door, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322343776528707492, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322343776528707492, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1360594030}
+    - target: {fileID: 8322343776528707492, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322343776528707492, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1360594030}
+    - target: {fileID: 8322343776528707492, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322343776528707492, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322343776528707492, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322343776528707492, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CloseDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322343776528707492, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ShowTooltipCoroutine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322343776528707492, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: magnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Door, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322343776528707492, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Door, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322343776528707492, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: TooltipManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322343776528707492, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Detach
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322343776528707492, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      propertyPath: offMagnetEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8306957503326650670, guid: c000c3c25a71cdd458251d4b8e112aa8, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2645811031019475631, guid: c000c3c25a71cdd458251d4b8e112aa8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1369279482}
+  m_SourcePrefab: {fileID: 100100000, guid: c000c3c25a71cdd458251d4b8e112aa8, type: 3}
+--- !u!4 &1369279480 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1460064090207964909, guid: c000c3c25a71cdd458251d4b8e112aa8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1369279479}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1369279481 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2645811031019475631, guid: c000c3c25a71cdd458251d4b8e112aa8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1369279479}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1369279482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369279481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14b63f35486ffcf48a287e0c66fd74b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  soundEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 372434710}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: PlateClick
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1369878721
 GameObject:
   m_ObjectHideFlags: 0
@@ -432761,7 +433313,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1815910560}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.018007347, y: -0.09246757, z: 0.0016725358, w: 0.99555147}
+  m_LocalRotation: {x: 0.01800735, y: -0.092467554, z: 0.0016725359, w: 0.99555147}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -444759,7 +445311,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1904488337}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.013344512, y: -0.092474386, z: -0.0012394481, w: 0.9956249}
+  m_LocalRotation: {x: -0.013344518, y: -0.09247438, z: -0.0012394487, w: 0.9956249}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -462087,7 +462639,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2018095600}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0023161517, y: 0.09248244, z: -0.00021512588, w: 0.9957116}
+  m_LocalRotation: {x: 0.0023161524, y: 0.09248243, z: -0.00021512595, w: 0.9957116}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
