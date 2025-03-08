@@ -129441,11 +129441,11 @@ MonoBehaviour:
     volume: 0.3
   footstepSounds:
   - name: Footstep1
-    clip: {fileID: 8300000, guid: e8b1cbbc877c5ca4c97d2a9fd97e68c9, type: 3}
+    clip: {fileID: 8300000, guid: f9acc6ccb244894489e3884b3546e17f, type: 3}
     source: {fileID: 0}
     volume: 0.1
   - name: Footstep2
-    clip: {fileID: 8300000, guid: 9d79d1390b93d9a48bbf7931e16ecbfe, type: 3}
+    clip: {fileID: 8300000, guid: 4fefff49a191f95428e89209904b51f4, type: 3}
     source: {fileID: 0}
     volume: 0.1
   attackSounds: []
@@ -129459,9 +129459,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: e76419707564cf94b9db57c995238cae, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -140220,7 +140220,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 425077599}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.023068752, y: 0.09065302, z: 0.0017423106, w: 0.9956138}
+  m_LocalRotation: {x: -0.023068758, y: 0.090653025, z: 0.0017423114, w: 0.9956138}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -208826,7 +208826,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 869436560}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.005003226, y: 0.0906697, z: 0.00009744859, w: 0.99586844}
+  m_LocalRotation: {x: -0.0050030746, y: 0.090669714, z: 0.0000974465, w: 0.9958685}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -212230,7 +212230,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 875196850}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.013112093, y: 0.09065648, z: -0.0015518054, w: 0.9957948}
+  m_LocalRotation: {x: 0.013112094, y: 0.0906565, z: -0.0015518056, w: 0.9957948}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
