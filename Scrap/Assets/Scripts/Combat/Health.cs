@@ -81,9 +81,16 @@ public class Health : MonoBehaviour
         Debug.Log(health);
     }
 
+    public void Die()
+    {
+        health = Mathf.Max(health - 100, 0);
+        healthBar?.UpdateHeathBar(maxHealth, health);
+        StartCoroutine(Restart());
+    }
+
     public IEnumerator Restart()
     {
         yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 }

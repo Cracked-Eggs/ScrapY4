@@ -2,6 +2,7 @@ using System;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class PlayerStateMachine : StateMachine
 {
@@ -71,7 +72,7 @@ public class PlayerStateMachine : StateMachine
 
     void HandleTakeDamage() => SwitchState(new PlayerImpactState(this));
 
-    void HandleDie() => SwitchState(new PlayerDeadState(this));
+    public void HandleDie() => SwitchState(new PlayerDeadState(this));
 
     public void HandleLoseBody()
     {
@@ -84,5 +85,11 @@ public class PlayerStateMachine : StateMachine
         Cursor.lockState = CursorLockMode.Locked;
         FreeLookInput.enabled = true;
         SwitchState(new PlayerFreeLookState(this));
+    }
+
+    public void Restart()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
     }
 }
