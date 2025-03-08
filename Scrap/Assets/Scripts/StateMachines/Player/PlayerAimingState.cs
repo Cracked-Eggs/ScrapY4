@@ -5,6 +5,7 @@ public class PlayerAimingState : PlayerBaseState
     int AimingBlendTreeHash = Animator.StringToHash("AimingBlendTree");
     int TargetingForwardHash = Animator.StringToHash("AimingForward");
     int TargetingRightHash = Animator.StringToHash("AimingRight");
+    float footstepTimer = 0f;
     
     const float CrossFadeDuration = 0.1f;
     
@@ -27,6 +28,7 @@ public class PlayerAimingState : PlayerBaseState
         Move(movement * stateMachine.TargetingMovementSpeed, deltaTime);
         UpdateAnimator(deltaTime);
         RotateTowardsCamera();
+        Footsteps(deltaTime, movement);
     }
 
     public override void Exit()
@@ -74,6 +76,18 @@ public class PlayerAimingState : PlayerBaseState
         {
             float value = stateMachine.InputReader.MovementValue.x > 0 ? 1f : -1f;
             stateMachine.Animator.SetFloat(TargetingRightHash, value, 0.1f, deltaTime);
+        }
+    }
+    
+    void Footsteps(float deltaTime, Vector3 movement)
+    {
+        footstepTimer -= deltaTime;
+
+        // Check if the player is moving before playing footsteps
+        if (footstepTimer <= 0 && movement.magnitude > 0.1f)
+        {
+            stateMachine.AudioManager.PlayFootsteps();
+            footstepTimer = 0.5f; // Reset timer after playing a footstep
         }
     }
 }
