@@ -68,6 +68,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8391222552659086748, guid: a7db2ab273264a04ead05fff44e3c79f,
+        type: 3}
+      propertyPath: m_Name
+      value: Glass Pane
+      objectReference: {fileID: 0}
     - target: {fileID: -4683669308469848369, guid: a7db2ab273264a04ead05fff44e3c79f,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -78,6 +83,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 48085d1461eb2534280f29e8b78f08e3, type: 2}
+    - target: {fileID: -516098083770646512, guid: a7db2ab273264a04ead05fff44e3c79f,
+        type: 3}
+      propertyPath: m_Name
+      value: Border
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a7db2ab273264a04ead05fff44e3c79f,
         type: 3}
       propertyPath: m_Name
