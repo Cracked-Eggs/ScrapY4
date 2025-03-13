@@ -90,7 +90,7 @@ public class EnemyBlockingState : EnemyBaseState
         );
     }
 
-    bool IsInAttackRange()
+    new bool IsInAttackRange()
     {
         if (stateMachine.Player.IsDead) { return false; }
 

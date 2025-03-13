@@ -58,7 +58,7 @@ public class EnemyChasingState : EnemyBaseState
         stateMachine.Controller.Move(direction * stateMachine.MovementSpeed * deltaTime);
     }
 
-    void FacePlayer()
+    new void FacePlayer()
     {
         Vector3 direction = (stateMachine.Player.transform.position - stateMachine.transform.position).normalized;
         SmoothFaceTarget(direction, Time.deltaTime);
@@ -78,7 +78,7 @@ public class EnemyChasingState : EnemyBaseState
         );
     }
 
-    bool IsInAttackRange()
+    new bool IsInAttackRange()
     {
         if (stateMachine.Player.IsDead) { return false; }
         

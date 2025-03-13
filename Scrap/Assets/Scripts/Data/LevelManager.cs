@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,7 +21,7 @@ public class LevelManager : MonoBehaviour
     
     IEnumerator LeaveLevelCo()
     {
-        //UIController.instance.StartFadeToBlack();
+        UIController.instance.StartFadeToBlack();
 
         if (nextLevel != SaveSystem.instance.sceneToNotSave)
         {
@@ -46,9 +44,6 @@ public class LevelManager : MonoBehaviour
     
     void UpdateSaveSystem()
     {
-        PlayerStats stats = PlayerStats.instance;
-
-        SaveSystem.instance.activeSave.level = stats.level;
         SaveSystem.instance.activeSave.currentLevel = nextLevel;
     }
 }

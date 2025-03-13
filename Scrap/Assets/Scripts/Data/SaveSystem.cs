@@ -5,6 +5,10 @@ using System.Xml.Serialization;
 public class SaveSystem : MonoBehaviour
 {
     public static SaveSystem instance;
+    public SaveData activeSave;
+    public string sceneToNotSave;
+    public string saveName;
+    public bool dontSave;
     
     void Awake() => SetupInstance();
 
@@ -21,13 +25,6 @@ public class SaveSystem : MonoBehaviour
         else if(instance != this)
             Destroy(gameObject);
     }
-
-    public SaveData activeSave;
-    public string sceneToNotSave;
-
-    public string saveName;
-
-    public bool dontSave;
 
     public void Save()
     {
