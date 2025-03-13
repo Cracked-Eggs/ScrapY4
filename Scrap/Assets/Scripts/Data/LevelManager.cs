@@ -32,14 +32,14 @@ public class LevelManager : MonoBehaviour
 
         yield return new WaitForSeconds(.5f);
 
-        if (nextLevel != "")
+        /*if (nextLevel != "")
         {
             SceneManager.LoadScene(nextLevel);
         }
         else
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
+        }*/
     }
     
     void UpdateSaveSystem()

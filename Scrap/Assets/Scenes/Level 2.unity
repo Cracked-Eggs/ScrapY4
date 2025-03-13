@@ -245573,7 +245573,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8f51cf95ee7444498ea553ed5d61023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextLevel: Level 2
+  nextLevel: Level 3
 --- !u!1 &928745492
 GameObject:
   m_ObjectHideFlags: 0
@@ -266117,6 +266117,7 @@ GameObject:
   - component: {fileID: 1038749513}
   - component: {fileID: 1038749512}
   - component: {fileID: 1038749515}
+  - component: {fileID: 1038749516}
   m_Layer: 0
   m_Name: Tooltip Trigger
   m_TagString: Checkpoint
@@ -266200,6 +266201,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f2ea0d7c60028dc4295ab156a149a2a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1038749516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1038749511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2353b30fa62e99c46a7bf1e04b337d45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1039110572
