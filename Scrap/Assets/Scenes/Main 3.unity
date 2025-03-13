@@ -1036,7 +1036,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 1248283093}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &6674169 stripped
@@ -127679,7 +127679,6 @@ MonoBehaviour:
   randomizePitchButtonPressSound: 1
   minPitchButtonPressSound: 0.92
   maxPitchButtonPressSound: 1.09
-  isKeyboardAndMouse: 0
   resolutionDropdown: {fileID: 219173004}
   fullScreenToggle: {fileID: 1926716037}
   masterVolumeSlider: {fileID: 1317132521}
@@ -127688,6 +127687,7 @@ MonoBehaviour:
   defaultButtonSettings: {fileID: 1416390272}
   defaultButtonExtras: {fileID: 1002118196}
   defaultButtonQuitMessageMenu: {fileID: 1718044905}
+  defaultPauseMenuButton: {fileID: 0}
 --- !u!114 &301488443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223428,7 +223428,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fc725068647c09469df41dac49a2898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showHoverUIOnPC: 0
   hoverUIObject: {fileID: 0}
 --- !u!114 &825503154
 MonoBehaviour:
@@ -397497,7 +397496,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fc725068647c09469df41dac49a2898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showHoverUIOnPC: 0
   hoverUIObject: {fileID: 0}
 --- !u!95 &1360621333
 Animator:
@@ -454761,7 +454759,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fc725068647c09469df41dac49a2898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showHoverUIOnPC: 0
   hoverUIObject: {fileID: 0}
 --- !u!114 &1708284661
 MonoBehaviour:
