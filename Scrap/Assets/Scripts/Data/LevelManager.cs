@@ -21,7 +21,6 @@ public class LevelManager : MonoBehaviour
     
     IEnumerator LeaveLevelCo()
     {
-        UIController.instance.StartFadeToBlack();
 
         if (nextLevel != SaveSystem.instance.sceneToNotSave)
         {
