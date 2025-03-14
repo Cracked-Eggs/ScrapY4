@@ -40,6 +40,7 @@ public class PlayerStateMachine : StateMachine
     [field: SerializeField] public Attach Attach { get; private set; }
     [field: SerializeField] public SphereCollider MDamageR { get; private set; }
     [field: SerializeField] public SphereCollider MDamageL { get; private set; }
+    [field: SerializeField] public UnityEvent StartTooltip { get; private set; }
 
     public Quaternion initalRotation;
     public float PreviousDodgeTime { get; private set; } = Mathf.NegativeInfinity;
@@ -51,7 +52,7 @@ public class PlayerStateMachine : StateMachine
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        TooltipManager.StartTooltip("Move");
+        StartTooltip.Invoke();
         MainCameraTransform = Camera.main.transform;
         initalRotation = transform.rotation;
         SwitchState(new PlayerFreeLookState(this));

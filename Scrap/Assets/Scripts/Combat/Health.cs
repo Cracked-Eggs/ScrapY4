@@ -58,11 +58,21 @@ public class Health : MonoBehaviour
         else if (health == 0 && Player)
         {
             OnDie?.Invoke();
-            UIController.instance.StartFadeToBlack();
-            SceneManager.LoadScene(SaveSystem.instance.activeSave.currentLevel);
+            StartCoroutine(Die());
         }
 
         Debug.Log(health);
     }
+
+    IEnumerator Die()
+    {
+        yield return new WaitForSeconds(1f);
+        UIController.instance.StartFadeToBlack();
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(SaveSystem.instance.activeSave.currentLevel);
+
+    }
+
+    public void Restart() => StartCoroutine(Die());
 
 }
