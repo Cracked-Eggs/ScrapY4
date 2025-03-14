@@ -5,29 +5,19 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager instance;
-    public string nextLevel;
-    bool isEnding;
 
     void Awake() => instance = this;
-    
+
     public void LeaveLevel()
     {
-        if (isEnding == false)
-        {
-            isEnding = true;
-            StartCoroutine(LeaveLevelCo());
-        }
+        StartCoroutine(LeaveLevelCo());
     }
-    
+
     IEnumerator LeaveLevelCo()
     {
+        UpdateSaveSystem();
 
-        if (nextLevel != SaveSystem.instance.sceneToNotSave)
-        {
-            UpdateSaveSystem();
-
-            SaveSystem.instance.Save();
-        }
+        SaveSystem.instance.Save();
 
         yield return new WaitForSeconds(.5f);
 
@@ -40,9 +30,12 @@ public class LevelManager : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }*/
     }
-    
+
     void UpdateSaveSystem()
     {
-        SaveSystem.instance.activeSave.currentLevel = nextLevel;
+        if (SaveSystem.instance.activeSave.currentLevel == "")
+            SaveSystem.instance.activeSave.currentLevel = "Level 2";
+        else if (SaveSystem.instance.activeSave.currentLevel == "Level 2")
+            SaveSystem.instance.activeSave.currentLevel = "Level 3";
     }
 }
