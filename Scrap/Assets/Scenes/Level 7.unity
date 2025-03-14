@@ -234665,7 +234665,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 875196850}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.013112436, y: 0.090656504, z: -0.0015518428, w: 0.99579465}
+  m_LocalRotation: {x: 0.013112353, y: 0.090656504, z: -0.0015518324, w: 0.99579465}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -538486,6 +538486,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Door with Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 2960539981185338816, guid: 167a6d189008eed40b80084eda623064,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5507564105375032395, guid: 167a6d189008eed40b80084eda623064,
         type: 3}
