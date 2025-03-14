@@ -32404,7 +32404,7 @@ PrefabInstance:
     - target: {fileID: 4485214937212003672, guid: 9fd93d8e269355b46bea98d1fbefdd32,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4485214937212003672, guid: 9fd93d8e269355b46bea98d1fbefdd32,
         type: 3}
@@ -32449,7 +32449,7 @@ PrefabInstance:
     - target: {fileID: 4485214937212003672, guid: 9fd93d8e269355b46bea98d1fbefdd32,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: LoadLevel1
+      value: LoadLevel
       objectReference: {fileID: 0}
     - target: {fileID: 4485214937212003672, guid: 9fd93d8e269355b46bea98d1fbefdd32,
         type: 3}
@@ -32480,6 +32480,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4485214937212003672, guid: 9fd93d8e269355b46bea98d1fbefdd32,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Level 1
       objectReference: {fileID: 0}
     - target: {fileID: 4485214937212003672, guid: 9fd93d8e269355b46bea98d1fbefdd32,
         type: 3}
