@@ -34,15 +34,6 @@ public class MenuData : MonoBehaviour
         fadeFromBlack = true;
     }
 
-    public void StartGame() => StartCoroutine(StartCo());
-
-    IEnumerator StartCo()
-    {
-        StartFadeToBlack();
-        yield return new WaitForSeconds(1f);
-        SceneManager.LoadScene(firstLevel);
-    }
-
     public void Continue() => StartCoroutine(ContinueCo());
 
     IEnumerator ContinueCo()

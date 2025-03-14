@@ -33,7 +33,7 @@ public class LevelManager : MonoBehaviour
 
     void UpdateSaveSystem()
     {
-        if (SaveSystem.instance.activeSave.currentLevel == "")
+        if (SaveSystem.instance.activeSave.currentLevel == "Level 1")
             SaveSystem.instance.activeSave.currentLevel = "Level 2";
         else if (SaveSystem.instance.activeSave.currentLevel == "Level 2")
             SaveSystem.instance.activeSave.currentLevel = "Level 3";
