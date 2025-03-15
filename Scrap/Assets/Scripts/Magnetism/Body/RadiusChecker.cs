@@ -139,41 +139,48 @@ public class RadiusChecker : MonoBehaviour
     }
 
     // Coroutine to retract body parts one by one
-   public IEnumerator RetractBodyPartOneByOne()
-{
-    foreach (GameObject bodyPart in targetBodyParts)
+    public IEnumerator RetractBodyPartOneByOne()
     {
-        if (bodyPart != null)
-        {
-            FlowField flowField = bodyPart.GetComponent<FlowField>();
-            if (flowField == null)
-            {
-                    Debug.Log("poop");
-                flowField = bodyPart.AddComponent<FlowField>(); // Add dynamically
-            }
+        List<GameObject> bodyPartsCopy = new List<GameObject>(targetBodyParts); // Copy the list
 
-            Rigidbody rb = bodyPart.GetComponent<Rigidbody>();
-            if (rb != null)
+        foreach (GameObject bodyPart in bodyPartsCopy)
+        {
+            if (bodyPart != null)
             {
-                while (Vector3.Distance(bodyPart.transform.position, transform.position) > 0.5f)
+                FlowField flowField = bodyPart.GetComponent<FlowField>();
+                if (flowField == null)
                 {
-                    flowField.SetNewTarget(transform.position);
-                    Vector3 moveDirection = flowField.GetFlowDirection(bodyPart.transform.position);
+                    Debug.Log("poop");
+                    flowField = bodyPart.AddComponent<FlowField>(); // Add dynamically
+                }
+
+                Rigidbody rb = bodyPart.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    while (Vector3.Distance(bodyPart.transform.position, transform.position) > 0.6f)
+                    {
+                        if (flowField == null) yield break; // Prevent errors if destroyed
+
+                        flowField.SetNewTarget(transform.position);
+                        Vector3 moveDirection = flowField.GetFlowDirection(bodyPart.transform.position);
                         moveDirection += Vector3.up * 0.1f;
                         rb.velocity = moveDirection * forceStrength;
 
-                    yield return null;
-                } 
-                rb.velocity = Vector3.zero; 
-                rb.MovePosition(transform.position);
+                        yield return null;
+                    }
+
+                    rb.velocity = Vector3.zero;
+                    rb.MovePosition(transform.position);
                 }
 
+                //yield return new WaitForSeconds(0.01f); // Small delay to ensure coroutine is done
                 Destroy(flowField);
             }
+        }
+
+        isRetracting = false;
     }
 
-    isRetracting = false;
-}
 
 
 
