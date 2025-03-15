@@ -9,6 +9,7 @@ public class TriggeredPlatform : MonoBehaviour
     
     private int currentWaypointIndex = 0;
     private bool isTriggered = false;
+    private bool isReversed = false;
     private const float waypointThreshold = 0.05f;
     
     public Attach attach;
@@ -46,7 +47,7 @@ public class TriggeredPlatform : MonoBehaviour
     
     void Move()
     {
-        if (currentWaypointIndex < waypoints.Length)
+        if (currentWaypointIndex >= 0 && currentWaypointIndex < waypoints.Length)
         {
             Vector3 targetPosition = waypoints[currentWaypointIndex].position;
             Vector3 direction = (targetPosition - transform.position).normalized;
@@ -55,7 +56,14 @@ public class TriggeredPlatform : MonoBehaviour
             if (Vector3.Distance(transform.position, targetPosition) <= waypointThreshold)
             {
                 transform.position = targetPosition;
-                currentWaypointIndex++;
+                if (isReversed)
+                {
+                    currentWaypointIndex--;
+                }
+                else
+                {
+                    currentWaypointIndex++;
+                }
             }
         }
     }
@@ -63,13 +71,22 @@ public class TriggeredPlatform : MonoBehaviour
     public void TriggerMovement()
     {
         isTriggered = true;
+        isReversed = false;
+        currentWaypointIndex = Mathf.Clamp(currentWaypointIndex, 0, waypoints.Length - 1);
+    }
+    
+    public void ReverseMovement()
+    {
+        isTriggered = true;
+        isReversed = true;
+        currentWaypointIndex = Mathf.Clamp(currentWaypointIndex, 0, waypoints.Length - 1);
     }
     
     void MovePlayerWithPlatform()
     {
         if (playerController != null)
         {
-            playerController.Move(transform.position - waypoints[currentWaypointIndex - 1].position);
+            playerController.Move(transform.position - waypoints[Mathf.Clamp(currentWaypointIndex - 1, 0, waypoints.Length - 1)].position);
         }
     }
     
@@ -79,7 +96,7 @@ public class TriggeredPlatform : MonoBehaviour
         {
             if (rb != null)
             {
-                rb.position += transform.position - waypoints[currentWaypointIndex - 1].position;
+                rb.position += transform.position - waypoints[Mathf.Clamp(currentWaypointIndex - 1, 0, waypoints.Length - 1)].position;
             }
         }
     }
