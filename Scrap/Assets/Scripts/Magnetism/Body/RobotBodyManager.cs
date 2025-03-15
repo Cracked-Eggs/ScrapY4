@@ -46,7 +46,7 @@ public class Attach : MonoBehaviour
     bool _isOnCooldown;
     Vector3 currentRotation;
     Vector3 mouseWorldPosition;
-
+    public bool inVent = false;
 
 
     public bool isDetached = false;
@@ -120,8 +120,10 @@ public class Attach : MonoBehaviour
     }
     public void AttemptReattach()
     {
+        if (inVent) return;
         if (secondaryRadiusChecker.currentBodyParts >= secondaryRadiusChecker.totalBodyParts) return;
         if (Time.time < lastDetachAllTime + detachAllCooldown) return;
+        
 
         lastDetachAllTime = Time.time;
         _animator.enabled = true;
