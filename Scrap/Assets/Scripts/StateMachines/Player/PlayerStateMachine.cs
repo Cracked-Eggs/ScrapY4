@@ -38,6 +38,7 @@ public class PlayerStateMachine : StateMachine
     [field: SerializeField] public Transform debugTransform { get; private set; }
     [field: SerializeField] public GameObject Crosshair { get; private set; }
     [field: SerializeField] public Attach Attach { get; private set; }
+    [field: SerializeField] public PartManager PartManager { get; private set; }
     [field: SerializeField] public SphereCollider MDamageR { get; private set; }
     [field: SerializeField] public SphereCollider MDamageL { get; private set; }
     [field: SerializeField] public UnityEvent StartTooltip { get; private set; }

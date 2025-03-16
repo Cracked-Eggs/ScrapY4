@@ -24,10 +24,18 @@ public class PlayerFreeLookState : PlayerBaseState
     public override void Tick(float deltaTime)
     {
         if (stateMachine.InputReader.IsAiming)
+        {
+            if (stateMachine.Attach._isR_ArmDetached) return;
+            if (stateMachine.PartManager.isReattaching) return;
             stateMachine.SwitchState(new PlayerAimingState(stateMachine));
-        
+        }
+
         if (stateMachine.InputReader.IsLAiming)
+        {
+            if (stateMachine.Attach._isL_ArmDetached) return;
+            if (stateMachine.PartManager.isReattaching) return;
             stateMachine.SwitchState(new PlayerLeftAimingState(stateMachine));
+        }
 
         Vector3 movement = CalculateMovement();
         Move(movement * stateMachine.FreeLookMovementSpeed, deltaTime);
