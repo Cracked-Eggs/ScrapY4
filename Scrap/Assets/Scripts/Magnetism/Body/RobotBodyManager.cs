@@ -458,7 +458,7 @@ public class Attach : MonoBehaviour
             _isR_ArmDetached = false;
            
            
-            r_ArmColl.enabled = true;
+            r_ArmColl.enabled = false;
         }
         else
         {
@@ -519,7 +519,7 @@ public class Attach : MonoBehaviour
                 _isL_ArmDetached = false;
                
   
-                l_ArmColl.enabled = true;
+                l_ArmColl.enabled = false;
                 
             }
             else
