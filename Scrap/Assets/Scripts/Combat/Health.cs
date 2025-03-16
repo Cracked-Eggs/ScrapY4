@@ -60,8 +60,6 @@ public class Health : MonoBehaviour
             OnDie?.Invoke();
             StartCoroutine(Die());
         }
-
-        Debug.Log(health);
     }
 
     IEnumerator Die()

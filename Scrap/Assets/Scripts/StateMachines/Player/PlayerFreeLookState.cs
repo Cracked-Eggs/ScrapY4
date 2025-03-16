@@ -23,12 +23,6 @@ public class PlayerFreeLookState : PlayerBaseState
 
     public override void Tick(float deltaTime)
     {
-        if (stateMachine.InputReader.IsAttacking)
-        {
-            stateMachine.SwitchState(new PlayerAttackingState(stateMachine, 0));
-            return;
-        }
-        
         if (stateMachine.InputReader.IsAiming)
             stateMachine.SwitchState(new PlayerAimingState(stateMachine));
         
