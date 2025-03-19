@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class CombinationPuzzleManager : MonoBehaviour
 {
-    public List<TogglePressurePlate> Plates = new List<TogglePressurePlate>(); 
+    public List<PressurePlate> Plates = new List<PressurePlate>(); 
     public List<int> CorrectSequence = new List<int>();
 
     private List<int> pressedSequence = new List<int>(); 
@@ -15,7 +15,7 @@ public class CombinationPuzzleManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (TogglePressurePlate plate in Plates)
+        foreach (PressurePlate plate in Plates)
         {
             plate.magnetEvent.AddListener(() => OnPlatePressed(Plates.IndexOf(plate)));
         }
@@ -38,29 +38,13 @@ public class CombinationPuzzleManager : MonoBehaviour
             else
             {
                 Debug.Log("Wrong Order! Resetting...");
-                ResetPlates(); 
+               
                 pressedSequence.Clear();
                 onWrongSequence.Invoke();
             }
         }
     }
-    private void ResetPlates()
-    {
-        StartCoroutine(ResetPlatesAfterDelay());
-    }
-
-    private IEnumerator ResetPlatesAfterDelay()
-    {
-        yield return new WaitForSeconds(0.6f); 
-
-        foreach (TogglePressurePlate plate in Plates)
-        {
-            plate.ResetPlate(); 
-        }
-
-        pressedSequence.Clear(); 
-    }
-
+   
     private bool IsSequenceCorrect()
     {
         for (int i = 0; i < CorrectSequence.Count; i++)
