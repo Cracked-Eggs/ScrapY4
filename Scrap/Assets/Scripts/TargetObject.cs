@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UIWorldController;
 
 public class TargetObject : MonoBehaviour
 {
     public UIWorldController ui;
+    public Attach attach;
+    // Default to false, change in Inspector if needed
 
     private void Awake()
     {
@@ -25,12 +28,23 @@ public class TargetObject : MonoBehaviour
         if (ui != null)
         {
             Debug.Log("Adding target indicator to UIWorldController.");
-            ui.AddTargetIndicator(this.gameObject);
+            if (gameObject.CompareTag("L_Arm"))
+            {
+                ui.AddTargetIndicator(this.gameObject, IndicatorType.Left);
+            }
+            if (gameObject.CompareTag("R_Arm"))
+            {
+                ui.AddTargetIndicator(this.gameObject, IndicatorType.Right);
+            }
+            if(gameObject.CompareTag("General"))
+            {
+                ui.AddTargetIndicator(this.gameObject, IndicatorType.General);
+            }
+
         }
         else
         {
             Debug.LogError("UIWorldController reference is still null in Start().", this);
         }
     }
-
 }

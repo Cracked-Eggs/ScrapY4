@@ -8,7 +8,17 @@ public class UIWorldController : MonoBehaviour
     public Canvas canvas;
     public List<TargetIndicator> targetIndicators = new List<TargetIndicator>();
     public Camera MainCamera;
-    public GameObject TargetIndicatorPrefab;
+    public GameObject generalIndicatorPrefab;
+    public GameObject leftIndicatorPrefab;
+    public GameObject rightIndicatorPrefab;
+
+    public enum IndicatorType
+    {
+        Left,
+        Right,
+        General
+    }
+
     void Start()
     {
         
@@ -26,10 +36,54 @@ public class UIWorldController : MonoBehaviour
         }
     }
 
-    public void AddTargetIndicator(GameObject target)
+    public void AddTargetIndicator(GameObject target, IndicatorType type)
     {
-        TargetIndicator indicator = GameObject.Instantiate(TargetIndicatorPrefab, canvas.transform). GetComponent<TargetIndicator>();
-        indicator.InitialiseTargetIndicator(target,MainCamera, canvas);
+        GameObject indicatorPrefab;
+
+        // Determine which indicator to use based on type
+        switch (type)
+        {
+            case IndicatorType.Left:
+                indicatorPrefab = leftIndicatorPrefab;
+                Debug.Log("Adding Left Indicator");
+                break;
+            case IndicatorType.Right:
+                indicatorPrefab = rightIndicatorPrefab;
+                Debug.Log("Adding Right Indicator");
+                break;
+            case IndicatorType.General:
+                indicatorPrefab = generalIndicatorPrefab;
+                Debug.Log("Adding General Purpose Indicator");
+                break;
+            default:
+                Debug.LogError("Invalid indicator type!", this);
+                return;
+        }
+
+        if (indicatorPrefab == null)
+        {
+            Debug.LogError("Indicator prefab is missing!", this);
+            return;
+        }
+
+        // Instantiate the selected indicator
+        GameObject indicatorObject = Instantiate(indicatorPrefab, canvas.transform);
+
+        // Get the TargetIndicator component
+        TargetIndicator indicator = indicatorObject.GetComponent<TargetIndicator>();
+
+        if (indicator == null)
+        {
+            Debug.LogError("TargetIndicator component is missing on the instantiated prefab!", this);
+            return;
+        }
+
+        // Initialize the indicator
+        indicator.InitialiseTargetIndicator(target, MainCamera, canvas);
+
+        // Add to the list of active indicators (if needed)
         targetIndicators.Add(indicator);
     }
+
+
 }

@@ -48,6 +48,8 @@ public class Attach : MonoBehaviour
     Vector3 mouseWorldPosition;
     public bool inVent = false;
 
+    public TargetObject L_indicator;
+    public TargetObject R_indicator;
 
     public bool isDetached = false;
     public bool _isL_ArmDetached = false;
@@ -399,7 +401,7 @@ public class Attach : MonoBehaviour
             StartCoroutine(MovePartToTarget(partManager.r_Arm, closestTarget.transform.position, shootingForce));
 
             _isR_ArmDetached = true;
-
+            
             StartCoroutine(Cooldown());
         }
         else
@@ -418,6 +420,7 @@ public class Attach : MonoBehaviour
        
             r_ArmColl.enabled = false;
             _isR_ArmDetached = true;
+            R_indicator.enabled = true;
         }
        
         
@@ -456,8 +459,8 @@ public class Attach : MonoBehaviour
             secondaryRadiusChecker.isRetracting = true;
             StartCoroutine(WaitForRetractComplete(partManager.r_Arm));
             _isR_ArmDetached = false;
-           
-           
+
+            R_indicator.enabled = false;
             r_ArmColl.enabled = false;
         }
         else
@@ -500,6 +503,7 @@ public class Attach : MonoBehaviour
 
             StopAllCoroutines(); // Stop any ongoing movement
             StartCoroutine(MovePartToTarget(partManager.l_Arm, mouseWorldPosition, shootingForce));
+            L_indicator.enabled = true;
 
             _isL_ArmDetached = true;
         }
@@ -517,8 +521,8 @@ public class Attach : MonoBehaviour
                 secondaryRadiusChecker.isRetracting = true;
                 StartCoroutine(WaitForRetractComplete(partManager.l_Arm));
                 _isL_ArmDetached = false;
-               
-  
+                L_indicator.enabled = false;
+
                 l_ArmColl.enabled = false;
                 
             }
@@ -555,6 +559,7 @@ public class Attach : MonoBehaviour
             partManager.DetachPart(partManager.l_Arm);
             _isL_ArmDetached = true;
             audioManager.Play("Detach");
+            L_indicator.enabled = true;
         }
 
     }
@@ -587,7 +592,7 @@ public class Attach : MonoBehaviour
             partManager.DetachPart(partManager.r_Arm);
             _isR_ArmDetached = true;
             audioManager.Play("Detach");
-           
+            R_indicator.enabled = true;
             r_ArmColl.enabled = false;
             
           

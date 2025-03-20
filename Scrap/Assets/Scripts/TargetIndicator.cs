@@ -35,7 +35,7 @@ public class TargetIndicator : MonoBehaviour
 
         float referenceDistance = 10f; // Adjust based on testing
         float distance = Vector3.Distance(mainCamera.transform.position, target.transform.position);
-        float scaleFactor = Mathf.Clamp(referenceDistance / distance, 0.5f, 1f); // Limits to avoid extreme scaling
+        float scaleFactor = Mathf.Clamp(referenceDistance / distance, 0.3f, 0.6f); // Limits to avoid extreme scaling
 
         rectTransform.localScale = Vector3.one * scaleFactor;
         OffScreenTargetIndicator.rectTransform.localScale = Vector3.one * scaleFactor;
