@@ -31,15 +31,32 @@ public class TargetIndicator : MonoBehaviour
 
     public void UpdateTargetIndicator()
     {
-        SetIndicatorPosition();
+        if (target == null || mainCamera == null) return;
 
-        float referenceDistance = 10f; // Adjust based on testing
-        float distance = Vector3.Distance(mainCamera.transform.position, target.transform.position);
-        float scaleFactor = Mathf.Clamp(referenceDistance / distance, 0.3f, 0.6f); // Limits to avoid extreme scaling
+        // Check if the target is directly in front of the camera
+        Vector3 dirToTarget = (target.transform.position - mainCamera.transform.position).normalized;
+        float angle = Vector3.Angle(mainCamera.transform.forward, dirToTarget);
 
-        rectTransform.localScale = Vector3.one * scaleFactor;
-        OffScreenTargetIndicator.rectTransform.localScale = Vector3.one * scaleFactor;
+        // If the target is directly in the center of the screen (within 5 degrees), disable the indicator
+        bool isTargetInCenter = angle < 3f;
+
+        TargetIndicatorImage.enabled = !isTargetInCenter;
+        OffScreenTargetIndicator.enabled = !isTargetInCenter;
+
+        // If the indicator is active, update its position and scale
+        if (!isTargetInCenter)
+        {
+            SetIndicatorPosition();
+
+            float referenceDistance = 10f;
+            float distance = Vector3.Distance(mainCamera.transform.position, target.transform.position);
+            float scaleFactor = Mathf.Clamp(referenceDistance / distance, 0.2f, 0.5f);
+
+            rectTransform.localScale = Vector3.one * scaleFactor;
+            OffScreenTargetIndicator.rectTransform.localScale = Vector3.one * scaleFactor;
+        }
     }
+
 
 
 
