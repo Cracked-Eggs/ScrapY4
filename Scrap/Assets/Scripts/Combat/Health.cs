@@ -14,37 +14,36 @@ public class Health : MonoBehaviour
 
     int health;
     bool isInvulnerable;
-    float lastDamageTime; // Track the last time damage was dealt
-    float damageCooldown = 0.5f; // Cooldown time in seconds
+    float lastDamageTime;
+    float damageCooldown = 0.5f;
 
     public event Action OnTakeDamage;
     public event Action OnDie;
     public bool IsDead => health == 0;
 
-    void Start() => health = maxHealth;
+    private Attach attachScript;
+
+    void Start()
+    {
+        health = maxHealth;
+        attachScript = GetComponent<Attach>();
+    }
 
     public void SetInvulnerable(bool isInvulnerable) => this.isInvulnerable = isInvulnerable;
 
     public void DealDamage(int damage, bool ignoreInvulnerability = false)
     {
-        // Check if enough time has passed since the last damage
-        if (Time.time < lastDamageTime + damageCooldown)
-        {
-            return;
-        }
+        if (Time.time < lastDamageTime + damageCooldown) return;
 
-        if (!ignoreInvulnerability && (health == 0 || isInvulnerable))
-        {
-            return;
-        }
+        if (!ignoreInvulnerability && (health == 0 || isInvulnerable)) return;
 
         health = Mathf.Max(health - damage, 0);
-        lastDamageTime = Time.time; // Update the last damage time
+        lastDamageTime = Time.time;
 
         if (damagePrefab != null)
         {
             GameObject damageInstance = Instantiate(damagePrefab, transform.position, Quaternion.identity);
-            Destroy(damageInstance, 2f); // Destroy the damage prefab after 2 seconds
+            Destroy(damageInstance, 2f);
         }
 
         OnTakeDamage?.Invoke();
@@ -64,13 +63,14 @@ public class Health : MonoBehaviour
 
     IEnumerator Die()
     {
+        if (attachScript != null)
+            attachScript.DetachAll();
+
         yield return new WaitForSeconds(1f);
         UIController.instance.StartFadeToBlack();
         yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(SaveSystem.instance.activeSave.currentLevel);
-
     }
 
     public void Restart() => StartCoroutine(Die());
-
 }
