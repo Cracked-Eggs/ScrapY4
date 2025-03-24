@@ -52,6 +52,7 @@ public class Health : MonoBehaviour
         if (health == 0 && !Player)
         {
             OnDie?.Invoke();
+            StartCoroutine(EnemyDie());
             DieEvent.Invoke();
         }
         else if (health == 0 && Player)
@@ -71,6 +72,23 @@ public class Health : MonoBehaviour
         yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(SaveSystem.instance.activeSave.currentLevel);
     }
+    
+    IEnumerator MainMenu()
+    {
+        yield return new WaitForSeconds(1f);
+        UIController.instance.StartFadeToBlack();
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(0);
+    }
+    
+    
+    IEnumerator EnemyDie()
+    {
+        if (attachScript != null)
+            attachScript.DetachAll();
+        yield return new WaitForSeconds(1f);
+    }
 
     public void Restart() => StartCoroutine(Die());
+    public void Menu() => StartCoroutine(MainMenu());
 }
