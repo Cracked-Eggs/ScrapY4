@@ -33,6 +33,7 @@ public class PlayerStateMachine : StateMachine
     [field: SerializeField] public CinemachineInputProvider FreeLookInput { get; private set; }
     [field: SerializeField] public GameObject PauseMenu { get; private set; }
     [field: SerializeField] public Attack[] Attacks { get; private set; }
+    [field: SerializeField] public HeavyAttack[] HeavyAttack { get; private set; }
     [field: SerializeField] public TooltipManager TooltipManager { get; private set; }
     [field: SerializeField] public LayerMask aimColliderLayerMask = new LayerMask();
     [field: SerializeField] public Transform debugTransform { get; private set; }

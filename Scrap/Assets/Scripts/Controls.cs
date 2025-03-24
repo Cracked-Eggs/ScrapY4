@@ -224,6 +224,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AttackHeavy"",
+                    ""type"": ""Button"",
+                    ""id"": ""79228381-b6f2-465f-96d5-62c8e98964ec"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -809,6 +818,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a66fa445-7060-4a91-bf80-418c4fe9623d"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""AttackHeavy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -867,6 +887,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_Hover = m_Player.FindAction("Hover", throwIfNotFound: true);
         m_Player_AimLeft = m_Player.FindAction("AimLeft", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
+        m_Player_AttackHeavy = m_Player.FindAction("AttackHeavy", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -955,6 +976,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Hover;
     private readonly InputAction m_Player_AimLeft;
     private readonly InputAction m_Player_Pause;
+    private readonly InputAction m_Player_AttackHeavy;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -981,6 +1003,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Hover => m_Wrapper.m_Player_Hover;
         public InputAction @AimLeft => m_Wrapper.m_Player_AimLeft;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
+        public InputAction @AttackHeavy => m_Wrapper.m_Player_AttackHeavy;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1056,6 +1079,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @AttackHeavy.started += instance.OnAttackHeavy;
+            @AttackHeavy.performed += instance.OnAttackHeavy;
+            @AttackHeavy.canceled += instance.OnAttackHeavy;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1126,6 +1152,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @AttackHeavy.started -= instance.OnAttackHeavy;
+            @AttackHeavy.performed -= instance.OnAttackHeavy;
+            @AttackHeavy.canceled -= instance.OnAttackHeavy;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1185,5 +1214,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnHover(InputAction.CallbackContext context);
         void OnAimLeft(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnAttackHeavy(InputAction.CallbackContext context);
     }
 }

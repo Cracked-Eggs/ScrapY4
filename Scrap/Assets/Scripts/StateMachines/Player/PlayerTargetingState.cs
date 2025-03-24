@@ -29,6 +29,14 @@ public class PlayerTargetingState : PlayerBaseState
             return;
         }
         
+        if(stateMachine.InputReader.IsHeavyAttacking)
+        {
+            stateMachine.MDamageL.enabled = false;
+            stateMachine.MDamageR.enabled = false;
+            stateMachine.SwitchState(new PlayerHeavyAttackingState(stateMachine, 0));
+            return;
+        }
+        
         if (stateMachine.InputReader.IsBlocking)
         {
             stateMachine.SwitchState(new PlayerBlockingState(stateMachine));

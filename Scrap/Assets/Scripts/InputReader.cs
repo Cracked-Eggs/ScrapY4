@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class InputReader : MonoBehaviour, Controls.IPlayerActions
 {
     public bool IsAttacking { get; private set; }
+    public bool IsHeavyAttacking { get; private set; }
     public bool IsBlocking { get; private set; }
     public bool IsAiming { get; private set; }
     public bool IsLAiming { get; private set; }
@@ -77,6 +78,14 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
             IsAttacking = true;
         else if (context.canceled)
             IsAttacking = false;
+    }
+    
+    public void OnAttackHeavy(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            IsHeavyAttacking = true;
+        else if (context.canceled)
+            IsHeavyAttacking = false;
     }
 
     public void OnBlock(InputAction.CallbackContext context)
@@ -178,6 +187,8 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
         if (!context.performed) return;
         PauseEvent?.Invoke();
     }
+
+    
 
     public void OnAimLeft(InputAction.CallbackContext context)
     {
