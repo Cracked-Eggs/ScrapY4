@@ -10,6 +10,8 @@ using UnityEngine.Events;
 
 public class Attach : MonoBehaviour
 {
+    [SerializeField] CD rightCD;
+    [SerializeField] CD leftCD;
     private CharacterController characterController;
     private Collider playerCollider;
     public bool canRetach;
@@ -45,10 +47,13 @@ public class Attach : MonoBehaviour
     public float detachRightArmCooldown = 2.0f;
     public float detachAllCooldown = 2.0f;
     private float lastDetachLeftArmTime = -2.0f;
+    float shootCooldown = 2.0f;
     private float lastDetachRightArmTime = -2.0f;
     private float lastDetachAllTime = -2.0f;
-    public float shootCooldown = 2.0f; // Cooldown duration for shooting during battle
-    bool _isOnCooldown;
+    private float lastShootRightArmTime = -2.0f;
+    private float lastShootLeftArmTime = -2.0f;
+    private bool _isRightArmOnCooldown = false;
+    private bool _isLeftArmOnCooldown = false;
     Vector3 currentRotation;
     Vector3 mouseWorldPosition;
     public bool inVent = false;
@@ -326,18 +331,14 @@ public class Attach : MonoBehaviour
     {
         if(canShoot)
         {
-            if (Time.time < lastDetachLeftArmTime + detachLeftArmCooldown) return;
-
-            lastDetachLeftArmTime = Time.time;
+            if (Time.time < lastShootRightArmTime + shootCooldown) return;
 
             if (_isR_ArmDetached)
             {
-                // The arm is out, recall it
                 RecallRightArm();
             }
             else
             {
-                // The arm is not out, shoot it
                 ShootRightArm();
             }
         }
@@ -345,19 +346,16 @@ public class Attach : MonoBehaviour
     }
     public void ShootOrRecallLeftArm(InputAction.CallbackContext context)
     {
-        if (canShoot) {
-            if (Time.time < lastDetachLeftArmTime + detachLeftArmCooldown) return;
-
-            lastDetachLeftArmTime = Time.time;
+        if (canShoot) 
+        {
+            if (Time.time < lastShootLeftArmTime + shootCooldown) return;
 
             if (_isL_ArmDetached)
             {
-                // The arm is out, recall it
                 RecallLeftArm();
             }
             else
             {
-                // The arm is not out, shoot it
                 ShootLeftArm();
             }
         }
@@ -384,32 +382,39 @@ public class Attach : MonoBehaviour
         if (rb) rb.isKinematic = false;
     }
 
-    private IEnumerator Cooldown()
+    private IEnumerator RightArmCooldown()
     {
-        _isOnCooldown = true; 
+        rightCD.StartCountdown(shootCooldown);
+        _isRightArmOnCooldown = true;
         yield return new WaitForSeconds(shootCooldown);
-        _isOnCooldown = false;
+        _isRightArmOnCooldown = false;
+    }
+
+    private IEnumerator LeftArmCooldown()
+    {
+        leftCD.StartCountdown(shootCooldown);
+        _isLeftArmOnCooldown = true;
+        yield return new WaitForSeconds(shootCooldown);
+        _isLeftArmOnCooldown = false;
     }
 
 
     public void ShootRightArm()
     {
-        if (_inputReader.IsInCombat && !_isOnCooldown)
+        if (_inputReader.IsInCombat && Time.time >= lastShootRightArmTime + shootCooldown)
         {
-
+            lastShootRightArmTime = Time.time;
+        
             Target closestTarget = FindClosestTarget();
             vfxManager.PlayBurstVFX("R_Arm");
             r_ArmColl.enabled = true;
 
-
             partManager.DetachPart(partManager.r_Arm);
-
-            StopAllCoroutines(); // Stop any ongoing movement
+            StopAllCoroutines();
             StartCoroutine(MovePartToTarget(partManager.r_Arm, closestTarget.transform.position, shootingForce));
 
             _isR_ArmDetached = true;
-            
-            StartCoroutine(Cooldown());
+            rightCD.StartCountdown(shootCooldown); // Just for visual feedback
         }
         else
         {
@@ -478,23 +483,21 @@ public class Attach : MonoBehaviour
 
     public void ShootLeftArm()
     {
-        if (_inputReader.IsInCombat && !_isOnCooldown)
+        if (_inputReader.IsInCombat && Time.time >= lastShootLeftArmTime + shootCooldown)
         {
+            lastShootLeftArmTime = Time.time;
+        
             Target closestTarget = FindClosestTarget();
             vfxManager.PlayBurstVFX("L_Arm");
-
             partManager.l_Arm.GetComponent<MagneticField>().isPositivePolarity = false;
             l_ArmColl.enabled = true;
 
             partManager.DetachPart(partManager.l_Arm);
-
-            StopAllCoroutines(); // Stop any ongoing movement
+            StopAllCoroutines();
             StartCoroutine(MovePartToTarget(partManager.l_Arm, closestTarget.transform.position, shootingForce));
 
-           
-                   
             _isL_ArmDetached = true;
-            StartCoroutine(Cooldown());
+            leftCD.StartCountdown(shootCooldown);
         }
         else
         {
