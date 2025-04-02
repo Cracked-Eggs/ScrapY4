@@ -491,8 +491,9 @@ public class Attach : MonoBehaviour
             StopAllCoroutines(); // Stop any ongoing movement
             StartCoroutine(MovePartToTarget(partManager.l_Arm, closestTarget.transform.position, shootingForce));
 
+           
+                   
             _isL_ArmDetached = true;
-
             StartCoroutine(Cooldown());
         }
         else
