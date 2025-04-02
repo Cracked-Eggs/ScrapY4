@@ -6,6 +6,7 @@ using System;
 using UnityEngine.VFX;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEngine.Events;
 
 public class Attach : MonoBehaviour
 {
@@ -24,8 +25,12 @@ public class Attach : MonoBehaviour
     public GameObject DetachHolder;
 
     public MagneticField magneticField;
-   
 
+
+    [SerializeField] UnityEvent DetachLeft;
+    [SerializeField] UnityEvent ReattachLeft;
+    [SerializeField] UnityEvent DetachRight;
+    [SerializeField] UnityEvent ReattachRight;
     [SerializeField] public float customGravity = -9.81f;
     [SerializeField] AudioClip magnetRepel;
     [SerializeField] public float shootingForce = 500f;
@@ -227,6 +232,8 @@ public class Attach : MonoBehaviour
         partManager.DetachPart(partManager.l_Leg);
         partManager.DetachPart(partManager.r_Arm);
         partManager.DetachPart(partManager.l_Arm);
+        DetachRight.Invoke();
+        DetachLeft.Invoke();
         chestCollider.SetActive(false);
 
         CharacterController controller = GetComponent<CharacterController>();
@@ -541,12 +548,12 @@ public class Attach : MonoBehaviour
 
         if (_isL_ArmDetached)
         {
-            
+            ReattachLeft.Invoke();
             RecallLeftArm();
         }
         else
         {
-            
+            DetachLeft.Invoke();
             DroppingLeftArm();
         }
     }
@@ -572,13 +579,13 @@ public class Attach : MonoBehaviour
         lastDetachRightArmTime = Time.time;
 
         if (_isR_ArmDetached)
-        {
-                // The arm is out, recall it
+        { 
+            ReattachRight.Invoke();
           RecallRightArm();
         }
         else
-        {
-                // The arm is not out, drop it
+        { 
+            DetachRight.Invoke();
           DroppingRightArm();
         }
         
