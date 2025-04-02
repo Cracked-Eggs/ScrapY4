@@ -28,7 +28,6 @@ public class Attach : MonoBehaviour
 
     public MagneticField magneticField;
 
-
     [SerializeField] UnityEvent DetachLeft;
     [SerializeField] UnityEvent ReattachLeft;
     [SerializeField] UnityEvent DetachRight;
@@ -47,13 +46,11 @@ public class Attach : MonoBehaviour
     public float detachRightArmCooldown = 2.0f;
     public float detachAllCooldown = 2.0f;
     private float lastDetachLeftArmTime = -2.0f;
-    float shootCooldown = 2.0f;
+    public float shootCooldown = 2.0f;
     private float lastDetachRightArmTime = -2.0f;
     private float lastDetachAllTime = -2.0f;
-    private float lastShootRightArmTime = -2.0f;
-    private float lastShootLeftArmTime = -2.0f;
-    private bool _isRightArmOnCooldown = false;
-    private bool _isLeftArmOnCooldown = false;
+    private float lastShootTime = -2.0f;
+    private bool _isOnCooldown = false;
     Vector3 currentRotation;
     Vector3 mouseWorldPosition;
     public bool inVent = false;
@@ -74,10 +71,7 @@ public class Attach : MonoBehaviour
     public bool _isBothLegsDetached = false;
     public bool _isEverythingDetached = false;
 
-   
     public PartManager partManager;
-
-    // Reference to the second radius checker script
     [SerializeField] private RadiusChecker secondaryRadiusChecker;
 
     private void Awake()
@@ -102,25 +96,29 @@ public class Attach : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
         {
-            debugTransform.position = raycastHit.point; // Optional: Visualize the aim point
+            debugTransform.position = raycastHit.point;
         }
         mouseWorldPosition = raycastHit.point; 
     }
+
     private void Start()
     {
-      vfxManager.StopAllVFX();
+        vfxManager.StopAllVFX();
     }
-    public void ToggleDetachReattach(InputAction.CallbackContext context)
+
+      public void ToggleDetachReattach(InputAction.CallbackContext context)
     {
         if (partManager.isReattaching) return;
 
         if (isDetached)
         {
             AttemptReattach();
+            ReattachLeft.Invoke();
+            ReattachRight.Invoke();
         }
         else
         {
-            if (CanDetach()) // Check if detaching is allowed
+            if (CanDetach())
             {
                 DetachAll();
             }
@@ -130,33 +128,31 @@ public class Attach : MonoBehaviour
             }
         }
     }
+
     public void AttemptReattach()
     {
         if (inVent) return;
         if (secondaryRadiusChecker.currentBodyParts >= secondaryRadiusChecker.totalBodyParts) return;
         if (Time.time < lastDetachAllTime + detachAllCooldown) return;
         
-
         lastDetachAllTime = Time.time;
         _animator.enabled = true;
-
         characterController.enabled = true;
         Vector3 initialEulerAngles = playerStateMachine.initalRotation.eulerAngles;
-
         transform.rotation = Quaternion.Euler(initialEulerAngles.x, currentRotation.y,initialEulerAngles.z);
       
         List<(GameObject part, Action resetFlag, bool isDetached)> bodyParts = new()
-    {
-        (partManager.r_Arm, () => _isR_ArmDetached = false, _isR_ArmDetached),
-        (partManager.l_Arm, () => _isL_ArmDetached = false, _isL_ArmDetached),
-        (partManager.r_Leg, () => _isR_LegDetached = false, _isR_LegDetached),
-        (partManager.l_Leg, () => _isL_LegDetached = false, _isL_LegDetached),
-        (partManager.torso, () => _isTorsoDetached = false, _isTorsoDetached)
-    };
+        {
+            (partManager.r_Arm, () => _isR_ArmDetached = false, _isR_ArmDetached),
+            (partManager.l_Arm, () => _isL_ArmDetached = false, _isL_ArmDetached),
+            (partManager.r_Leg, () => _isR_LegDetached = false, _isR_LegDetached),
+            (partManager.l_Leg, () => _isL_LegDetached = false, _isL_LegDetached),
+            (partManager.torso, () => _isTorsoDetached = false, _isTorsoDetached)
+        };
 
         bool bodyPartInRange = false;
         secondaryRadiusChecker.targetBodyParts.Clear();
-        canShoot = true; // Allow shooting again
+        canShoot = true;
 
         foreach (var (bodyPart, resetFlag, isDetached) in bodyParts)
         {
@@ -165,19 +161,15 @@ public class Attach : MonoBehaviour
                 secondaryRadiusChecker.targetBodyParts.Add(bodyPart);
                 resetFlag();
                 bodyPartInRange = true;
-
-                // Play VFX for reattaching
-               
             }
         }
 
         if (!bodyPartInRange)
         {
             Debug.Log("No body parts in range to reattach. Canceling reattachment.");
-            return; // Exit early if no parts are available
+            return;
         }
 
-        // Adjust character controller only if reattachment happened
         if (TryGetComponent<CharacterController>(out CharacterController controller))
         {
             controller.center = new Vector3(0, -2.46f, 0);
@@ -191,13 +183,11 @@ public class Attach : MonoBehaviour
         }
 
         secondaryRadiusChecker.isRetracting = true;
-
         foreach (GameObject bodyPart in secondaryRadiusChecker.targetBodyParts)
         {
             StartCoroutine(WaitForRetractComplete(bodyPart));
         }
 
-        // Finally, switch back to normal movement state
         playerStateMachine.SwitchState(new PlayerFreeLookState(playerStateMachine));
         if(TryGetComponent<Rigidbody>(out rb_head))
         {
@@ -214,12 +204,12 @@ public class Attach : MonoBehaviour
     {
         isDetached = _isL_ArmDetached || _isR_ArmDetached || _isL_LegDetached || _isR_LegDetached || _isTorsoDetached;
     }
+
     public void DetachAll()
     {
         if (Time.time < lastDetachAllTime + detachAllCooldown) return;
         if (partManager.isReattaching) return;
 
-        // Ensure detaching is only possible when all parts are retrieved OR if permanently lost
         if (!CanDetach())
         {
             Debug.Log("Cannot detach: Some parts are missing and not permanently lost.");
@@ -227,7 +217,6 @@ public class Attach : MonoBehaviour
         }
 
         lastDetachAllTime = Time.time;
-      
         playerStateMachine.HandleLoseBody();
         characterController.enabled = false;
         _animator.enabled = false;
@@ -256,13 +245,11 @@ public class Attach : MonoBehaviour
         _isTorsoDetached = true;
         partManager.l_Arm.GetComponent<MagneticField>().enabled = true;
         partManager.r_Arm.GetComponent<MagneticField>().enabled = true;
-        
-        //leftArmSphereColl.enabled = true;
-        //rightArmSphereColl.enabled = true;
         canShoot = false;
         l_ArmColl.enabled = true;
         r_ArmColl.enabled = true;
     }
+
     private bool CanDetach()
     {
         int missingParts = 0;
@@ -272,20 +259,19 @@ public class Attach : MonoBehaviour
         if (_isR_LegDetached) missingParts++;
         if (_isTorsoDetached) missingParts++;
 
-        // Allow detaching if no parts are missing OR if too many parts are lost
         return missingParts == 0 || missingParts >= 2;
     }
+
     private IEnumerator SmoothRise(float riseAmount)
     {
-        float dropAmount = 0.05f; // Small downward effect
+        float dropAmount = 0.05f;
         Vector3 start = transform.position;
-        Vector3 dip = start - Vector3.up * dropAmount; // Slight downward pull
+        Vector3 dip = start - Vector3.up * dropAmount;
         Vector3 end = start + Vector3.up * riseAmount;
 
         float duration = 0.2f;
         float elapsed = 0f;
 
-        // Small dip down before rising
         while (elapsed < duration * 0.3f)
         {
             transform.position = Vector3.Lerp(start, dip, elapsed / (duration * 0.3f));
@@ -311,27 +297,27 @@ public class Attach : MonoBehaviour
         if (bodyPart == partManager.l_Arm) return _isL_ArmDetached;
         if (bodyPart == partManager.r_Leg) return _isR_LegDetached;
         if (bodyPart == partManager.l_Leg) return _isL_LegDetached;
-        if (bodyPart == partManager.torso) return false; // Assume torso is always attached
-        if (bodyPart == partManager.head) return false; // Assume head is always attached
+        if (bodyPart == partManager.torso) return false;
+        if (bodyPart == partManager.head) return false;
 
-        // Default case: body part is considered not detached
         return false;
     }
+
     private bool IsBodyPartInSecondaryRadius(GameObject bodyPart)
     {
         if (secondaryRadiusChecker != null && bodyPart != null)
         {
-            // Check if the body part is inside the secondary radius
             float distance = Vector3.Distance(secondaryRadiusChecker.transform.position, bodyPart.transform.position);
             return distance <= secondaryRadiusChecker.radius;
         }
         return false;
     }
+
     public void ShootOrRecallRightArm(InputAction.CallbackContext context)
     {
         if(canShoot)
         {
-            if (Time.time < lastShootRightArmTime + shootCooldown) return;
+            if (Time.time < lastShootTime + shootCooldown) return;
 
             if (_isR_ArmDetached)
             {
@@ -342,13 +328,13 @@ public class Attach : MonoBehaviour
                 ShootRightArm();
             }
         }
-        
     }
+
     public void ShootOrRecallLeftArm(InputAction.CallbackContext context)
     {
         if (canShoot) 
         {
-            if (Time.time < lastShootLeftArmTime + shootCooldown) return;
+            if (Time.time < lastShootTime + shootCooldown) return;
 
             if (_isL_ArmDetached)
             {
@@ -359,7 +345,6 @@ public class Attach : MonoBehaviour
                 ShootLeftArm();
             }
         }
-       
     }
 
     IEnumerator MovePartToTarget(GameObject part, Vector3 targetPosition, float speed)
@@ -370,7 +355,7 @@ public class Attach : MonoBehaviour
         {
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
-            rb.isKinematic = true; // Disable physics while moving
+            rb.isKinematic = true;
         }
 
         while (Vector3.Distance(part.transform.position, targetPosition) > 0.1f)
@@ -382,29 +367,18 @@ public class Attach : MonoBehaviour
         if (rb) rb.isKinematic = false;
     }
 
-    private IEnumerator RightArmCooldown()
+    private IEnumerator Cooldown()
     {
-        rightCD.StartCountdown(shootCooldown);
-        _isRightArmOnCooldown = true;
+        _isOnCooldown = true;
         yield return new WaitForSeconds(shootCooldown);
-        _isRightArmOnCooldown = false;
+        _isOnCooldown = false;
     }
-
-    private IEnumerator LeftArmCooldown()
-    {
-        leftCD.StartCountdown(shootCooldown);
-        _isLeftArmOnCooldown = true;
-        yield return new WaitForSeconds(shootCooldown);
-        _isLeftArmOnCooldown = false;
-    }
-
 
     public void ShootRightArm()
     {
-        if (_inputReader.IsInCombat && Time.time >= lastShootRightArmTime + shootCooldown)
+        if (_inputReader.IsInCombat && !_isOnCooldown)
         {
-            lastShootRightArmTime = Time.time;
-        
+            lastShootTime = Time.time;
             Target closestTarget = FindClosestTarget();
             vfxManager.PlayBurstVFX("R_Arm");
             r_ArmColl.enabled = true;
@@ -414,39 +388,34 @@ public class Attach : MonoBehaviour
             StartCoroutine(MovePartToTarget(partManager.r_Arm, closestTarget.transform.position, shootingForce));
 
             _isR_ArmDetached = true;
-            rightCD.StartCountdown(shootCooldown); // Just for visual feedback
+            rightCD.StartCountdown(shootCooldown);
+            leftCD.StartCountdown(shootCooldown);
+            StartCoroutine(Cooldown());
         }
         else
         {
             if (partManager.isReattaching) return;
             if (_inputReader.IsAiming == false) return;
-            if (_isR_ArmDetached) return; // Prevent double shooting
+            if (_isR_ArmDetached) return;
 
             vfxManager.PlayBurstVFX("R_Arm");
-
             partManager.DetachPart(partManager.r_Arm);
-
-       
-            StopAllCoroutines(); // Stop any ongoing movement
+            StopAllCoroutines();
             StartCoroutine(MovePartToTarget(partManager.r_Arm, mouseWorldPosition, shootingForce));
-       
+            DetachRight.Invoke();
             r_ArmColl.enabled = false;
             _isR_ArmDetached = true;
             R_indicator.enabled = true;
         }
-       
-        
     }
     
     private Target FindClosestTarget()
     {
-        // Find all targets in the scene
         Target[] targets = FindObjectsOfType<Target>();
         Target closestTarget = null;
         float closestDistance = Mathf.Infinity;
         Vector3 currentPosition = transform.position;
 
-        // Iterate through all targets to find the closest one
         foreach (Target target in targets)
         {
             float distance = Vector3.Distance(currentPosition, target.transform.position);
@@ -460,7 +429,6 @@ public class Attach : MonoBehaviour
         return closestTarget;
     }
 
-
     public void RecallRightArm()
     {
         if (!_isR_ArmDetached) return;
@@ -470,8 +438,8 @@ public class Attach : MonoBehaviour
             secondaryRadiusChecker.targetBodyParts.Add(partManager.r_Arm);
             secondaryRadiusChecker.isRetracting = true;
             StartCoroutine(WaitForRetractComplete(partManager.r_Arm));
+            ReattachRight.Invoke();
             _isR_ArmDetached = false;
-
             R_indicator.enabled = false;
             r_ArmColl.enabled = false;
         }
@@ -483,10 +451,9 @@ public class Attach : MonoBehaviour
 
     public void ShootLeftArm()
     {
-        if (_inputReader.IsInCombat && Time.time >= lastShootLeftArmTime + shootCooldown)
+        if (_inputReader.IsInCombat && !_isOnCooldown)
         {
-            lastShootLeftArmTime = Time.time;
-        
+            lastShootTime = Time.time;
             Target closestTarget = FindClosestTarget();
             vfxManager.PlayBurstVFX("L_Arm");
             partManager.l_Arm.GetComponent<MagneticField>().isPositivePolarity = false;
@@ -498,51 +465,47 @@ public class Attach : MonoBehaviour
 
             _isL_ArmDetached = true;
             leftCD.StartCountdown(shootCooldown);
+            rightCD.StartCountdown(shootCooldown);
+            StartCoroutine(Cooldown());
         }
         else
         {
             if (partManager.isReattaching) return;
             if (_inputReader.IsLAiming == false) return;
-            if (_isL_ArmDetached) return; // Prevent double shooting
+            if (_isL_ArmDetached) return;
 
             vfxManager.PlayBurstVFX("L_Arm");
-       
             partManager.l_Arm.GetComponent<MagneticField>().isPositivePolarity = false;
             l_ArmColl.enabled = true;
-        
             partManager.DetachPart(partManager.l_Arm);
-
-            StopAllCoroutines(); // Stop any ongoing movement
+            StopAllCoroutines();
             StartCoroutine(MovePartToTarget(partManager.l_Arm, mouseWorldPosition, shootingForce));
+            DetachLeft.Invoke();
             _isL_ArmDetached = true;
             L_indicator.enabled = true;
-
-           
         }
-        
-       
     }
 
     public void RecallLeftArm()
     {
         if (!_isL_ArmDetached) return;
-            if (secondaryRadiusChecker.isLeftArmInRange)
-            {
-                magneticHit = true;
-                secondaryRadiusChecker.targetBodyParts.Add(partManager.l_Arm);
-                secondaryRadiusChecker.isRetracting = true;
-                StartCoroutine(WaitForRetractComplete(partManager.l_Arm));
-                _isL_ArmDetached = false;
-                L_indicator.enabled = false;
-
-                l_ArmColl.enabled = false;
-                
-            }
-            else
-            {
-                Debug.Log("Left arm is not in range for reattachment.");
-            }
+        if (secondaryRadiusChecker.isLeftArmInRange)
+        {
+            magneticHit = true;
+            secondaryRadiusChecker.targetBodyParts.Add(partManager.l_Arm);
+            secondaryRadiusChecker.isRetracting = true;
+            StartCoroutine(WaitForRetractComplete(partManager.l_Arm));
+            ReattachLeft.Invoke();
+            _isL_ArmDetached = false;
+            L_indicator.enabled = false;
+            l_ArmColl.enabled = false;
+        }
+        else
+        {
+            Debug.Log("Left arm is not in range for reattachment.");
+        }
     }
+    
     public void DropLeftArm(InputAction.CallbackContext context)
     {
         if (!canShoot) return;
