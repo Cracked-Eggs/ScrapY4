@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1622536833609576216}
   - component: {fileID: 1233293616397907362}
   - component: {fileID: 3518425052716022812}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 1
+  _audioManager: {fileID: 0}
 --- !u!95 &3518425052716022812
 Animator:
   serializedVersion: 5
@@ -76,6 +77,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1622536833609576216}
     m_Modifications:
+    - target: {fileID: -8986820418933982343, guid: f00e8c264c9dca24187fc24aa30375c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -8726849451020221980, guid: f00e8c264c9dca24187fc24aa30375c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f00e8c264c9dca24187fc24aa30375c1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -126,10 +137,80 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5175975326623573350, guid: f00e8c264c9dca24187fc24aa30375c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -4939430483494088539, guid: f00e8c264c9dca24187fc24aa30375c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -3111565609762313623, guid: f00e8c264c9dca24187fc24aa30375c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -2435906558167258503, guid: f00e8c264c9dca24187fc24aa30375c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -2414770807959062965, guid: f00e8c264c9dca24187fc24aa30375c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -2324166898847336796, guid: f00e8c264c9dca24187fc24aa30375c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -636119465610239799, guid: f00e8c264c9dca24187fc24aa30375c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -493668891776427907, guid: f00e8c264c9dca24187fc24aa30375c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 268897975627425696, guid: f00e8c264c9dca24187fc24aa30375c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f00e8c264c9dca24187fc24aa30375c1,
         type: 3}
       propertyPath: m_Name
       value: SlideDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f00e8c264c9dca24187fc24aa30375c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019788983816881426, guid: f00e8c264c9dca24187fc24aa30375c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3725976655519274113, guid: f00e8c264c9dca24187fc24aa30375c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4243253020314578374, guid: f00e8c264c9dca24187fc24aa30375c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8455464208243511634, guid: f00e8c264c9dca24187fc24aa30375c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
