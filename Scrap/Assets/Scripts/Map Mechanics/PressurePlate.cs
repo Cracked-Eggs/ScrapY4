@@ -1,18 +1,22 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class PressurePlate : MonoBehaviour
 {
-    Animator animator;
-    const string PressedHash = "isPressed";
-   
+    // Animation & Audio
+    private Animator animator;
+    private const string PressedHash = "isPressed";
+    private bool wasPressed = false; // Tracks previous state to detect changes
 
-    [SerializeField] public UnityEvent magnetEvent;
-    [SerializeField] UnityEvent offMagnetEvent;
+    [SerializeField] private AudioClip pressurePlateSound;
+    private AudioSource audioSource;
 
-    // Flags for each body part
+    // Events
+    [SerializeField] public UnityEvent magnetEvent; // Fires when plate is pressed
+    [SerializeField] public UnityEvent offMagnetEvent; // Fires when plate is released
+
+    // Body part tracking
     public bool isHeadOnPlate = false;
     public bool isTorsoOnPlate = false;
     public bool isRightArmOnPlate = false;
@@ -20,12 +24,19 @@ public class PressurePlate : MonoBehaviour
     public bool isRightLegOnPlate = false;
     public bool isLeftLegOnPlate = false;
 
+    // Object tracking
     public HashSet<GameObject> objectsOnPlate = new HashSet<GameObject>();
-    private int previousObjectCount = 0; // Track previous frame's count
+    private int previousObjectCount = 0;
 
     void Awake()
     {
         animator = GetComponentInChildren<Animator>();
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null) // Ensure AudioSource exists
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -33,12 +44,8 @@ public class PressurePlate : MonoBehaviour
         if (IsValidObject(other))
         {
             objectsOnPlate.Add(other.gameObject);
-            PrintObjectsOnPlate();
-            animator.SetBool(PressedHash, true);
-            magnetEvent.Invoke();
-
-            // Set flags based on the object that collided
             SetBodyPartOnPlate(other.gameObject, true);
+            UpdatePlateState();
         }
     }
 
@@ -47,86 +54,77 @@ public class PressurePlate : MonoBehaviour
         if (IsValidObject(other))
         {
             objectsOnPlate.Remove(other.gameObject);
-            PrintObjectsOnPlate();
-
-            // Reset flags when the object leaves the plate
             SetBodyPartOnPlate(other.gameObject, false);
+            UpdatePlateState();
         }
     }
 
     void FixedUpdate()
     {
-        // Store the previous object count before updating the set
-        int currentObjectCount = objectsOnPlate.Count;
-
-        // Remove objects that are no longer valid (destroyed or moved)
+        // Clean up destroyed objects
         objectsOnPlate.RemoveWhere(obj => obj == null || !obj.activeInHierarchy || !IsStillInTrigger(obj));
+        UpdatePlateState();
+    }
 
-        // Check for transition from occupied to empty
-        if (previousObjectCount > 0 && objectsOnPlate.Count == 0)
+    void UpdatePlateState()
+    {
+        bool shouldBePressed = objectsOnPlate.Count > 0;
+
+        // Only update if state changed
+        if (shouldBePressed != wasPressed)
         {
-            animator.SetBool(PressedHash, false);
-            offMagnetEvent.Invoke();
+            animator.SetBool(PressedHash, shouldBePressed);
+
+            if (shouldBePressed)
+            {
+                magnetEvent.Invoke();
+            }
+            else
+            {
+                offMagnetEvent.Invoke();
+            }
+
+            PlayPressurePlateSound();
+            wasPressed = shouldBePressed;
         }
 
-        // Update previous count for the next frame
         previousObjectCount = objectsOnPlate.Count;
+    }
+
+    void PlayPressurePlateSound()
+    {
+        if (pressurePlateSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(pressurePlateSound);
+        }
     }
 
     bool IsValidObject(Collider other)
     {
-        return other.CompareTag("Player") || other.CompareTag("R_Arm") || other.CompareTag("L_Arm") || other.CompareTag("Head") || other.CompareTag("Torso") || other.CompareTag("R_Leg") || other.CompareTag("L_Leg");
+        return other.CompareTag("Player") || 
+               other.CompareTag("R_Arm") || 
+               other.CompareTag("L_Arm") || 
+               other.CompareTag("Head") || 
+               other.CompareTag("Torso") || 
+               other.CompareTag("R_Leg") || 
+               other.CompareTag("L_Leg");
     }
 
     bool IsStillInTrigger(GameObject obj)
     {
         Collider objCollider = obj.GetComponent<Collider>();
-        if (objCollider == null) return false;
-
-        return GetComponent<Collider>().bounds.Intersects(objCollider.bounds);
+        return objCollider != null && GetComponent<Collider>().bounds.Intersects(objCollider.bounds);
     }
 
-    void PrintObjectsOnPlate()
+    void SetBodyPartOnPlate(GameObject bodyPart, bool isOnPlate)
     {
-        if (objectsOnPlate.Count > 0)
-        {
-            Debug.Log("Objects on plate: " + string.Join(", ", objectsOnPlate));
-        }
-        else
-        {
-            Debug.Log("Pressure plate is empty.");
-        }
-    }
+        if (bodyPart.CompareTag("Head")) isHeadOnPlate = isOnPlate;
+        else if (bodyPart.CompareTag("Torso")) isTorsoOnPlate = isOnPlate;
+        else if (bodyPart.CompareTag("R_Arm")) isRightArmOnPlate = isOnPlate;
+        else if (bodyPart.CompareTag("L_Arm")) isLeftArmOnPlate = isOnPlate;
+        else if (bodyPart.CompareTag("R_Leg")) isRightLegOnPlate = isOnPlate;
+        else if (bodyPart.CompareTag("L_Leg")) isLeftLegOnPlate = isOnPlate;
 
-    // Method to set the body part flags
-    private void SetBodyPartOnPlate(GameObject bodyPart, bool isOnPlate)
-    {
-        if (bodyPart.CompareTag("Head"))
-        {
-            isHeadOnPlate = isOnPlate;
-        }
-        else if (bodyPart.CompareTag("Torso"))
-        {
-            isTorsoOnPlate = isOnPlate;
-        }
-        else if (bodyPart.CompareTag("R_Arm"))
-        {
-            isRightArmOnPlate = isOnPlate;
-        }
-        else if (bodyPart.CompareTag("L_Arm"))
-        {
-            isLeftArmOnPlate = isOnPlate;
-        }
-        else if (bodyPart.CompareTag("R_Leg"))
-        {
-            isRightLegOnPlate = isOnPlate;
-        }
-        else if (bodyPart.CompareTag("L_Leg"))
-        {
-            isLeftLegOnPlate = isOnPlate;
-        }
-
-        
-        Debug.Log($"Head: {isHeadOnPlate}, Torso: {isTorsoOnPlate}, Right Arm: {isRightArmOnPlate}, Left Arm: {isLeftArmOnPlate}, Right Leg: {isRightLegOnPlate}, Left Leg: {isLeftLegOnPlate}");
+        Debug.Log($"Head: {isHeadOnPlate}, Torso: {isTorsoOnPlate}, R_Arm: {isRightArmOnPlate}, L_Arm: {isLeftArmOnPlate}, R_Leg: {isRightLegOnPlate}, L_Leg: {isLeftLegOnPlate}");
     }
 }
