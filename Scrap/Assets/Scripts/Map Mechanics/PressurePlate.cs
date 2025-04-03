@@ -125,6 +125,5 @@ public class PressurePlate : MonoBehaviour
         else if (bodyPart.CompareTag("R_Leg")) isRightLegOnPlate = isOnPlate;
         else if (bodyPart.CompareTag("L_Leg")) isLeftLegOnPlate = isOnPlate;
 
-        Debug.Log($"Head: {isHeadOnPlate}, Torso: {isTorsoOnPlate}, R_Arm: {isRightArmOnPlate}, L_Arm: {isLeftArmOnPlate}, R_Leg: {isRightLegOnPlate}, L_Leg: {isLeftLegOnPlate}");
     }
 }
