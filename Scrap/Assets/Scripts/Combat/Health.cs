@@ -16,6 +16,7 @@ public class Health : MonoBehaviour
     bool isInvulnerable;
     float lastDamageTime;
     float damageCooldown = 0.5f;
+    AudioManager audioManager;
 
     public event Action OnTakeDamage;
     public event Action OnDie;
@@ -27,6 +28,7 @@ public class Health : MonoBehaviour
     {
         health = maxHealth;
         attachScript = GetComponent<Attach>();
+        audioManager = FindObjectOfType<AudioManager>();
     }
 
     public void SetInvulnerable(bool isInvulnerable) => this.isInvulnerable = isInvulnerable;
@@ -39,6 +41,7 @@ public class Health : MonoBehaviour
 
         health = Mathf.Max(health - damage, 0);
         lastDamageTime = Time.time;
+        audioManager.Play("Hit");
 
         if (damagePrefab != null)
         {
