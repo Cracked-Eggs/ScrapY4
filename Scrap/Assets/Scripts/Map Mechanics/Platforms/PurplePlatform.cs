@@ -13,7 +13,9 @@ public class PurplePlatform : MonoBehaviour
     private bool isWaiting = false;
     private Vector3 startPosition;
     private const float waypointThreshold = 0.05f;
-    
+    private Vector3 lastPosition;
+    private Vector3 movementDelta;
+
     public Attach attach;
     public CharacterController playerController = null;
     [SerializeField] private List<Rigidbody> bodyParts = new List<Rigidbody>();
@@ -47,9 +49,11 @@ public class PurplePlatform : MonoBehaviour
         {
             ReturnToStart();
         }
-        
-        MovePlayerWithPlatform();
-        MoveBodyPartsWithPlatform();
+       
+            CalculateMovementDelta();
+            MovePlayerWithPlatform(); MoveBodyPartsWithPlatform();
+       
+       
     }
     
     void Move()
@@ -89,7 +93,12 @@ public class PurplePlatform : MonoBehaviour
         currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
         isWaiting = false;
     }
-    
+    void CalculateMovementDelta()
+    {
+        movementDelta = transform.position - lastPosition;
+        lastPosition = transform.position;
+    }
+
     public void TriggerMovement()
     {
         isTriggered = true;
@@ -104,7 +113,7 @@ public class PurplePlatform : MonoBehaviour
     {
         if (playerController != null)
         {
-            playerController.Move(transform.position - waypoints[currentWaypointIndex - 1].position);
+            playerController.Move(movementDelta);
         }
     }
     
@@ -114,7 +123,7 @@ public class PurplePlatform : MonoBehaviour
         {
             if (rb != null)
             {
-                rb.position += transform.position - waypoints[currentWaypointIndex - 1].position;
+                rb.position += movementDelta;
             }
         }
     }
@@ -156,7 +165,7 @@ public class PurplePlatform : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playerController = null;
-            isTriggered = false;
+            
         }
         if (other.CompareTag("R_Arm") || other.CompareTag("L_Arm") || other.CompareTag("R_Leg") || other.CompareTag("L_Leg") || other.CompareTag("Torso"))
         {
