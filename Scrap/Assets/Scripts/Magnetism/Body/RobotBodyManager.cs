@@ -647,7 +647,6 @@ public class Attach : MonoBehaviour
         {
             if (Time.time - startTime > timeout)
             {
-                Debug.LogWarning(bodyPart.name + " retraction timed out.");
                 yield break;
             }
             yield return null;
@@ -655,14 +654,12 @@ public class Attach : MonoBehaviour
 
         yield return StartCoroutine(partManager.ShakeAndReattach(bodyPart));
 
-        Debug.Log(bodyPart.name + " has been reattached.");
             
 
         // Remove the body part from targetBodyParts after successful reattachment
         if (secondaryRadiusChecker.targetBodyParts.Contains(bodyPart))
         {
             secondaryRadiusChecker.targetBodyParts.Remove(bodyPart);
-            Debug.Log(bodyPart.name + " removed from targetBodyParts.");
         }
     }
     public void ActivateGrappleAndReattach(InputAction.CallbackContext context)

@@ -148,7 +148,6 @@ public class RadiusChecker : MonoBehaviour
             FlowField flowField = bodyPart.GetComponent<FlowField>();
             if (flowField == null)
             {
-                    Debug.Log("poop");
                 flowField = bodyPart.AddComponent<FlowField>(); // Add dynamically
             }
 
@@ -193,7 +192,6 @@ public class RadiusChecker : MonoBehaviour
         // Debug log to see the order of body parts
         foreach (var part in targetBodyParts)
         {
-            Debug.Log("Body part: " + part.name + " Priority: " + bodyPartPriorities[part]);
         }
     }
     void CheckBodyPartsInSecondaryRadius()
@@ -217,7 +215,6 @@ public class RadiusChecker : MonoBehaviour
                     if (bodyPart == attachScript.partManager.r_Arm) isRightArmInRange = true;
                     if (bodyPart == attachScript.partManager.l_Arm) isLeftArmInRange = true;
 
-                    Debug.Log("Body part " + bodyPart.name + " is inside the secondary radius.");
                 }
                 else
                 {
@@ -257,7 +254,6 @@ public class RadiusChecker : MonoBehaviour
                     // Update the main radius flag
                     isBodyPartInMainRange = true;
 
-                    Debug.Log("Body part " + bodyPart.name + " is inside the main radius.");
                 }
                 else
                 {
@@ -280,7 +276,6 @@ public class RadiusChecker : MonoBehaviour
     {
         currentBodyParts += change;
         currentBodyParts = Mathf.Clamp(currentBodyParts, 0, totalBodyParts); // Ensure it stays within bounds
-        Debug.Log($"Updated body part count: {currentBodyParts}/{totalBodyParts}");
     }
 
     private void OnDrawGizmosSelected()

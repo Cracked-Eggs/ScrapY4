@@ -301,17 +301,12 @@ public class PartManager : MonoBehaviour
         if (part.TryGetComponent<Rigidbody>(out Rigidbody partRb))
         {
             
-            partRb.isKinematic = false; Debug.Log("Rigidbody mass before detachment: " + partRb.mass);
+            partRb.isKinematic = false;
             partRb.mass = 1f;
-            Debug.Log("Rigidbody mass after detachment: " + partRb.mass);
 
             partRb.WakeUp(); // Ensure the Rigidbody is awake
 
-
             Physics.SyncTransforms();
-
-
-            Debug.Log("yo");
         }
        
 
