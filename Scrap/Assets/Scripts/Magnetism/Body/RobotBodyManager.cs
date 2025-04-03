@@ -3,9 +3,6 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
-using UnityEngine.VFX;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine.Events;
 
 public class Attach : MonoBehaviour
@@ -616,6 +613,7 @@ public class Attach : MonoBehaviour
     }
     private IEnumerator WaitForRetractComplete(GameObject bodyPart)
     {
+        audioManager.Play("Attract");
         float timeout = 100f; // Adjust based on your needs
         float startTime = Time.time;
         if (bodyPart.CompareTag("L_Arm"))
@@ -651,6 +649,7 @@ public class Attach : MonoBehaviour
             }
             yield return null;
         }
+        
 
         yield return StartCoroutine(partManager.ShakeAndReattach(bodyPart));
 
