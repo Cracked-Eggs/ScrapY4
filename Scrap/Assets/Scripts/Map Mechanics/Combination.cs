@@ -5,13 +5,13 @@ using UnityEngine.Events;
 
 public class CombinationPuzzleManager : MonoBehaviour
 {
-    public List<TogglePressurePlate> Plates = new List<TogglePressurePlate>(); 
+    public List<TogglePressurePlate> Plates = new List<TogglePressurePlate>();
     public List<int> CorrectSequence = new List<int>();
 
-    private List<int> pressedSequence = new List<int>(); 
+    private List<int> pressedSequence = new List<int>();
 
-    [SerializeField] private UnityEvent onCorrectSequence; 
-    [SerializeField] private UnityEvent onWrongSequence; 
+    [SerializeField] private UnityEvent onCorrectSequence;
+    [SerializeField] private UnityEvent onWrongSequence;
 
     private void Start()
     {
@@ -28,6 +28,9 @@ public class CombinationPuzzleManager : MonoBehaviour
         pressedSequence.Add(index);
         Debug.Log("Pressed Sequence: " + string.Join(", ", pressedSequence));
 
+        // Reset just the individual plate after a small delay
+        StartCoroutine(ResetSinglePlateAfterDelay(index));
+
         if (pressedSequence.Count == CorrectSequence.Count)
         {
             if (IsSequenceCorrect())
@@ -38,12 +41,19 @@ public class CombinationPuzzleManager : MonoBehaviour
             else
             {
                 Debug.Log("Wrong Order! Resetting...");
-                ResetPlates(); 
+                ResetPlates(); // Reset all plates
                 pressedSequence.Clear();
                 onWrongSequence.Invoke();
             }
         }
     }
+
+    private IEnumerator ResetSinglePlateAfterDelay(int index)
+    {
+        yield return new WaitForSeconds(0.3f); // Small delay to show interaction
+        Plates[index].ResetPlate(); // Reset only the pressed plate
+    }
+
     private void ResetPlates()
     {
         StartCoroutine(ResetPlatesAfterDelay());
@@ -51,14 +61,14 @@ public class CombinationPuzzleManager : MonoBehaviour
 
     private IEnumerator ResetPlatesAfterDelay()
     {
-        yield return new WaitForSeconds(0.6f); 
+        yield return new WaitForSeconds(0.6f);
 
         foreach (TogglePressurePlate plate in Plates)
         {
-            plate.ResetPlate(); 
+            plate.ResetPlate();
         }
 
-        pressedSequence.Clear(); 
+        pressedSequence.Clear();
     }
 
     private bool IsSequenceCorrect()
