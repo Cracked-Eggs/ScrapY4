@@ -4,11 +4,11 @@ public class PlayerRollingHeadState : PlayerBaseState
 {
     private Rigidbody rb;
 
-    [SerializeField] public float rollSpeed = 9f;
-    [SerializeField] public float rotationSpeed = 0.0000035f;
+    [SerializeField] public float rollSpeed = 350;
+    [SerializeField] public float rotationSpeed = 0.35f;
 
 
-    
+
     [SerializeField] private float jetpackRotationSpeed =1000f; 
 
     public PlayerRollingHeadState(PlayerStateMachine stateMachine) : base(stateMachine) { }
@@ -52,8 +52,10 @@ public class PlayerRollingHeadState : PlayerBaseState
     {
         if (movement.sqrMagnitude > 0.01f)
         {
-            rb.AddForce(movement * rollSpeed, ForceMode.Acceleration);
-            rb.AddTorque(stateMachine.transform.right * -movement.magnitude * rotationSpeed);
+            rb.AddForce(movement * rollSpeed * deltaTime, ForceMode.Acceleration);
+
+            rb.AddTorque(stateMachine.transform.right * -movement.magnitude * rotationSpeed * deltaTime);
+
         }
     }
 
@@ -64,12 +66,13 @@ public class PlayerRollingHeadState : PlayerBaseState
             Debug.Log("Hovering: Applying hover force!");
 
             // Apply hover force, but limit vertical speed
-           
-                rb.AddForce(rb.transform.up * stateMachine.thrustForce, ForceMode.Impulse);
+
+                rb.AddForce(rb.transform.up * stateMachine.thrustForce * deltaTime, ForceMode.Impulse);
                 stateMachine.curFuel -= Time.deltaTime;
-          
+
             // Call the rotation function here
-            RotateHeadTowardsUpward();
+            RotateHeadTowardsMovement();
+
         }
         else if (Physics.Raycast(stateMachine.groundedTransform.position, Vector3.down, 1f, LayerMask.GetMask("Ground")) && stateMachine.curFuel < stateMachine.maxFuel)
         {
@@ -79,12 +82,16 @@ public class PlayerRollingHeadState : PlayerBaseState
     }
 
 
-    private void RotateHeadTowardsUpward()
+    private void RotateHeadTowardsMovement()
     {
-       
-        Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+        Vector3 movementDirection = rb.velocity;
+        movementDirection.y = 0f; // Ignore vertical velocity to avoid tilting forward or backward too much
 
-        
-        stateMachine.transform.rotation = Quaternion.RotateTowards(stateMachine.transform.rotation, targetRotation, jetpackRotationSpeed * Time.deltaTime);
+        if (movementDirection.sqrMagnitude > 0.01f) // Ensure there's enough movement
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(movementDirection.normalized, Vector3.up);
+            stateMachine.transform.rotation = Quaternion.RotateTowards(stateMachine.transform.rotation, targetRotation, jetpackRotationSpeed * Time.deltaTime);
+        }
     }
+
 }
