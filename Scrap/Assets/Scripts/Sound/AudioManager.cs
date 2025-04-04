@@ -6,9 +6,11 @@
         public Sound[] sounds;
         public Sound[] footstepSounds;
         public Sound[] attackSounds;
+        public Sound[] heavySounds;
 
         private int footstepIndex = 0; // Tracks the current footstep index
         int attackIndex = 0;
+        int heavyindex = 0;
         private bool isReversing = false; // Flag to track playback direction
         private bool isAReversing = false; // Flag to track playback direction
 
@@ -29,6 +31,13 @@
             }
             
             foreach (Sound s in attackSounds)
+            {
+                s.source = gameObject.AddComponent<AudioSource>();
+                s.source.clip = s.clip;
+                s.source.volume = s.volume;
+            }
+            
+            foreach (Sound s in heavySounds)
             {
                 s.source = gameObject.AddComponent<AudioSource>();
                 s.source.clip = s.clip;
@@ -115,6 +124,38 @@
             else if (attackIndex < 0)
             {
                 attackIndex = 1; // Start moving forward from the second sound
+                isAReversing = false;
+            }
+        }
+        
+        public void PlayHeavyAttack()
+        {
+            if (heavySounds == null || heavySounds.Length == 0)
+                return;
+
+            // Play the current heavy attack sound
+            heavySounds[heavyindex].source.Play();
+
+            // Adjust index based on direction (you might want to add a separate isHeavyReversing flag)
+            if (isAReversing) // You could create a separate isHeavyReversing if you want independent control
+            {
+                heavyindex--;
+            }
+            else
+            {
+                heavyindex++;
+            }
+
+            // If we reach the end, reverse direction
+            if (heavyindex >= heavySounds.Length)
+            {
+                heavyindex = heavySounds.Length - 2; // Start moving back from the second last sound
+                isAReversing = true;
+            }
+            // If we reach the start, switch back to forward direction
+            else if (heavyindex < 0)
+            {
+                heavyindex = 1; // Start moving forward from the second sound
                 isAReversing = false;
             }
         }

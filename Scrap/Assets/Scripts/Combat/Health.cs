@@ -37,7 +37,14 @@ public class Health : MonoBehaviour
     {
         if (Time.time < lastDamageTime + damageCooldown) return;
 
-        if (!ignoreInvulnerability && (health == 0 || isInvulnerable)) return;
+        if (health == 0) return;
+
+        // Check if invulnerable and not ignoring invulnerability
+        if (!ignoreInvulnerability && isInvulnerable)
+        {
+            audioManager.Play("Block");
+            return;
+        }
 
         health = Mathf.Max(health - damage, 0);
         lastDamageTime = Time.time;

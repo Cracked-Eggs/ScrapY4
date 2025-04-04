@@ -118,6 +118,7 @@ public class Attach : MonoBehaviour
             if (CanDetach())
             {
                 DetachAll();
+                audioManager.Play("DetachAll");
             }
             else
             {

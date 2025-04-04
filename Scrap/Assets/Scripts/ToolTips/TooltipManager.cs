@@ -43,8 +43,30 @@ public class TooltipManager : MonoBehaviour
             StartCoroutine(HideTooltipAfterDelay(tooltip, tooltip.duration));
         }
     }
+
+    public void HideTooltip(Tooltips tooltip)
+    {
+        StartCoroutine(HideTooltipAfterDelay(tooltip, 0.1f));
+    }
     
     public void ShowAttackCoroutine(string id)
+    {
+        Tooltips tooltip = tooltips.Find(t => t.id == id);
+        if (tooltip != null && !tooltip.hasBeenShown)
+        {
+            // Activate the tooltip
+            tooltip.gameObject.SetActive(true);
+            tooltip.Animator.SetBool("CanShow", true);
+
+            // Mark the tooltip as shown
+            tooltip.hasBeenShown = true;
+
+            // Start a coroutine to hide the tooltip after 1 second
+            StartCoroutine(HideAttack(tooltip, tooltip.duration));
+        }
+    }
+    
+    public void ShowHeavyCouroutine(string id)
     {
         Tooltips tooltip = tooltips.Find(t => t.id == id);
         if (tooltip != null && !tooltip.hasBeenShown)
@@ -155,6 +177,7 @@ public class TooltipManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay); // Wait for the specified duration
         tooltip.Animator.SetBool("CanShow", false);
+        ShowHeavyCouroutine("Heavy");
     }
     
     private IEnumerator HideAttract(Tooltips tooltip, float delay)
@@ -175,6 +198,13 @@ public class TooltipManager : MonoBehaviour
         yield return new WaitForSeconds(delay); // Wait for the specified duration
         tooltip.Animator.SetBool("CanShow", false);
         ShowAttackCoroutine("Attack");
+    }
+    
+    private IEnumerator HeavyCoroutine(Tooltips tooltip, float delay)
+    {
+        yield return new WaitForSeconds(delay); // Wait for the specified duration
+        tooltip.Animator.SetBool("CanShow", false);
+        ShowHeavyCouroutine("Heavy");
     }
     
     private IEnumerator BlockCoroutine(Tooltips tooltip, float delay)
