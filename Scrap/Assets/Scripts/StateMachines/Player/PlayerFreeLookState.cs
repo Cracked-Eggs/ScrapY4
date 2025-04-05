@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class PlayerFreeLookState : PlayerBaseState
@@ -23,12 +24,12 @@ public class PlayerFreeLookState : PlayerBaseState
 
     public override void Tick(float deltaTime)
     {
-        if (stateMachine.InputReader.IsAiming)
+        if (stateMachine.InputReader.IsAiming && stateMachine.canAim)
         {
             stateMachine.SwitchState(new PlayerAimingState(stateMachine));
         }
 
-        if (stateMachine.InputReader.IsLAiming)
+        if (stateMachine.InputReader.IsLAiming && stateMachine.canAim)
         {
             stateMachine.SwitchState(new PlayerLeftAimingState(stateMachine));
         }

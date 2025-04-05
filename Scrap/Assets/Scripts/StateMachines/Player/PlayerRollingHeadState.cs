@@ -29,7 +29,7 @@ public class PlayerRollingHeadState : PlayerBaseState
     {
         Vector3 movement = CalculateMovement();
         Roll(movement, deltaTime);
-        HandleJetpack(deltaTime);
+        //HandleJetpack(deltaTime);
     }
 
     public override void Exit()

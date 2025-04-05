@@ -27,7 +27,8 @@ public class PlayerStateMachine : StateMachine
     [field: SerializeField] public float DodgeDuration { get; private set; }
     [field: SerializeField] public float DodgeLength { get; private set; }
     [field: SerializeField] public float JumpForce { get; private set; }
-    [field: SerializeField] public bool isHovering {get;set;}
+    [field: SerializeField] public bool isHovering { get; set; }
+    [field: SerializeField] public bool canAim;
 
     [field: SerializeField] public bool Attacked;
     [field: SerializeField] public CinemachineInputProvider FreeLookInput { get; private set; }
@@ -60,7 +61,7 @@ public class PlayerStateMachine : StateMachine
         SwitchState(new PlayerFreeLookState(this));
         Attach = GetComponent<Attach>();
     }
-    
+
     void OnEnable()
     {
         Health.OnTakeDamage += HandleTakeDamage;
@@ -95,4 +96,10 @@ public class PlayerStateMachine : StateMachine
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
     }
+
+    public void CanAim()
+    {
+        canAim = true;
+    }
 }
+

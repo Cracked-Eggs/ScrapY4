@@ -395,6 +395,7 @@ public class Attach : MonoBehaviour
             if (partManager.isReattaching) return;
             if (_inputReader.IsAiming == false) return;
             if (_isR_ArmDetached) return;
+            if (!playerStateMachine.canAim) return;
 
             vfxManager.PlayBurstVFX("R_Arm");
             partManager.DetachPart(partManager.r_Arm);
@@ -471,6 +472,7 @@ public class Attach : MonoBehaviour
             if (partManager.isReattaching) return;
             if (_inputReader.IsLAiming == false) return;
             if (_isL_ArmDetached) return;
+            if (!playerStateMachine.canAim) return;
 
             vfxManager.PlayBurstVFX("L_Arm");
             partManager.l_Arm.GetComponent<MagneticField>().isPositivePolarity = false;
