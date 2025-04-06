@@ -364,6 +364,31 @@ public class Attach : MonoBehaviour
 
         if (rb) rb.isKinematic = false;
     }
+    IEnumerator LaunchPartToTarget(GameObject part, Vector3 targetPosition, float forceStrength, ForceMode forceMode)
+    {
+        Rigidbody rb = part.GetComponent<Rigidbody>();
+        if (rb == null)
+            yield break;
+
+        // Reset motion
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.isKinematic = false;
+
+        // Calculate direction and apply force
+        Vector3 direction = (targetPosition - part.transform.position).normalized;
+        rb.AddForce(direction * forceStrength, forceMode);
+
+        // Optional: Wait until the part is close enough to the target
+        while (Vector3.Distance(part.transform.position, targetPosition) > 0.5f) // Adjust threshold as needed
+        {
+            yield return null;
+        }
+
+        // Optional: freeze the part after reaching the target
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+    }
 
     private IEnumerator Cooldown()
     {
@@ -400,7 +425,7 @@ public class Attach : MonoBehaviour
             vfxManager.PlayBurstVFX("R_Arm");
             partManager.DetachPart(partManager.r_Arm);
             StopAllCoroutines();
-            StartCoroutine(MovePartToTarget(partManager.r_Arm, mouseWorldPosition, shootingForce));
+            StartCoroutine(LaunchPartToTarget(partManager.r_Arm, mouseWorldPosition, shootingForce, ForceMode.Impulse));
             DetachRight.Invoke();
             r_ArmColl.enabled = false;
             _isR_ArmDetached = true;
@@ -479,7 +504,7 @@ public class Attach : MonoBehaviour
             l_ArmColl.enabled = true;
             partManager.DetachPart(partManager.l_Arm);
             StopAllCoroutines();
-            StartCoroutine(MovePartToTarget(partManager.l_Arm, mouseWorldPosition, shootingForce));
+            StartCoroutine(LaunchPartToTarget(partManager.l_Arm, mouseWorldPosition, shootingForce, ForceMode.Impulse));
             DetachLeft.Invoke();
             _isL_ArmDetached = true;
             L_indicator.enabled = true;
