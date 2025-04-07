@@ -367,28 +367,27 @@ public class Attach : MonoBehaviour
     IEnumerator LaunchPartToTarget(GameObject part, Vector3 targetPosition, float forceStrength, ForceMode forceMode)
     {
         Rigidbody rb = part.GetComponent<Rigidbody>();
-        if (rb == null)
-            yield break;
+        if (!rb) yield break;
 
-        // Reset motion
+        rb.useGravity = false;
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.isKinematic = false;
 
-        // Calculate direction and apply force
         Vector3 direction = (targetPosition - part.transform.position).normalized;
         rb.AddForce(direction * forceStrength, forceMode);
 
-        // Optional: Wait until the part is close enough to the target
-        while (Vector3.Distance(part.transform.position, targetPosition) > 0.5f) // Adjust threshold as needed
+       
+        while (Vector3.Distance(part.transform.position, targetPosition) > 1f) 
         {
             yield return null;
         }
 
-        // Optional: freeze the part after reaching the target
-        rb.velocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+       
+        rb.useGravity = true;
     }
+
+
 
     private IEnumerator Cooldown()
     {
