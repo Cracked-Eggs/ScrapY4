@@ -31,34 +31,48 @@ public class FlowField : MonoBehaviour
                 for (int z = 0; z < gridSize.z; z++)
                 {
                     Vector3 worldPos = origin + new Vector3(x, y, z) * cellSize;
-                    if (Physics.CheckSphere(worldPos, cellSize * 0.4f, obstacleLayer))
+                    bool isBlocked = Physics.CheckSphere(worldPos, cellSize * 0.4f, obstacleLayer);
+
+                    if (isBlocked)
                     {
+                        // Blocked cell: find a nearby valid direction
                         flowField[x, y, z] = FindNearestValidDirection(worldPos, targetPosition);
+
                     }
                     else
                     {
-                        flowField[x, y, z] = (targetPosition - worldPos).normalized;
+                        // Check if we can see the target directly
+                        Vector3 dirToTarget = (targetPosition - worldPos);
+                        if (!Physics.Raycast(worldPos, dirToTarget.normalized, dirToTarget.magnitude, obstacleLayer))
+                        {
+                            flowField[x, y, z] = dirToTarget.normalized;
+                        }
+                        else
+                        {
+                            // Can't see target — fallback to valid direction
+                            flowField[x, y, z] = FindNearestValidDirection(worldPos, targetPosition);
+                        }
                     }
-
                 }
             }
         }
     }
+
     private Vector3 FindNearestValidDirection(Vector3 startPos, Vector3 targetPosition)
     {
         Vector3 bestDirection = Vector3.zero;
         float bestDistance = float.MaxValue;
         float checkRadius = cellSize * 0.4f;
 
-        // Primary movement directions
         Vector3[] directions = {
-        Vector3.forward, Vector3.back, Vector3.right, Vector3.left,
-        Vector3.up, Vector3.down,
-        (Vector3.forward + Vector3.right).normalized, (Vector3.forward + Vector3.left).normalized,
-        (Vector3.back + Vector3.right).normalized, (Vector3.back + Vector3.left).normalized
-    };
+            Vector3.forward, Vector3.back, Vector3.right, Vector3.left,
+            Vector3.up, Vector3.down,
+            (Vector3.forward + Vector3.right).normalized,
+            (Vector3.forward + Vector3.left).normalized,
+            (Vector3.back + Vector3.right).normalized,
+            (Vector3.back + Vector3.left).normalized
+        };
 
-        // Try all directions to find the closest one
         foreach (Vector3 dir in directions)
         {
             Vector3 checkPos = startPos + dir * cellSize;
@@ -73,23 +87,19 @@ public class FlowField : MonoBehaviour
             }
         }
 
-       
         if (bestDirection == Vector3.zero)
         {
+            // Still blocked — push randomly to help escape
             Vector3 randomDirection = new Vector3(
                 Random.Range(-1f, 1f),
                 Random.Range(-1f, 1f),
                 Random.Range(-1f, 1f)
             ).normalized;
-
-            return randomDirection; // Add a small push to break out of being stuck
+            return randomDirection;
         }
 
         return bestDirection.normalized;
     }
-
-
-
 
     public Vector3 GetFlowDirection(Vector3 position)
     {
@@ -107,7 +117,7 @@ public class FlowField : MonoBehaviour
     {
         if (needsUpdate)
         {
-            GenerateFlowField(lastTargetPosition); // Recalculate path
+            GenerateFlowField(lastTargetPosition);
             needsUpdate = false;
         }
     }
@@ -140,8 +150,7 @@ public class FlowField : MonoBehaviour
 
     public void SetNewTarget(Vector3 newTargetPosition)
     {
-        lastTargetPosition = newTargetPosition; // Store the player's position
-        needsUpdate = true; // Always mark for update
+        lastTargetPosition = newTargetPosition;
+        needsUpdate = true;
     }
-
 }
