@@ -208,11 +208,6 @@ public class Attach : MonoBehaviour
         if (Time.time < lastDetachAllTime + detachAllCooldown) return;
         if (partManager.isReattaching) return;
 
-        if (!CanDetach())
-        {
-            Debug.Log("Cannot detach: Some parts are missing and not permanently lost.");
-            return;
-        }
 
         lastDetachAllTime = Time.time;
         playerStateMachine.HandleLoseBody();
@@ -463,7 +458,7 @@ public class Attach : MonoBehaviour
             StartCoroutine(WaitForRetractComplete(partManager.r_Arm));
             ReattachRight.Invoke();
             _isR_ArmDetached = false;
-            R_indicator.enabled = false;
+            //R_indicator.enabled = false;
             r_ArmColl.enabled = false;
         }
         else
@@ -521,7 +516,7 @@ public class Attach : MonoBehaviour
             StartCoroutine(WaitForRetractComplete(partManager.l_Arm));
             ReattachLeft.Invoke();
             _isL_ArmDetached = false;
-            L_indicator.enabled = false;
+            //L_indicator.enabled = false;
             l_ArmColl.enabled = false;
         }
         else
@@ -558,7 +553,7 @@ public class Attach : MonoBehaviour
             partManager.DetachPart(partManager.l_Arm);
             _isL_ArmDetached = true;
             audioManager.Play("Detach");
-            L_indicator.enabled = true;
+            //L_indicator.enabled = true;
         }
 
     }
@@ -591,7 +586,7 @@ public class Attach : MonoBehaviour
             partManager.DetachPart(partManager.r_Arm);
             _isR_ArmDetached = true;
             audioManager.Play("Detach");
-            R_indicator.enabled = true;
+            //R_indicator.enabled = true;
             r_ArmColl.enabled = false;
             
           

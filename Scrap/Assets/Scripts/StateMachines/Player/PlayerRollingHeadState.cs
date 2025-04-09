@@ -4,7 +4,7 @@ public class PlayerRollingHeadState : PlayerBaseState
 {
     private Rigidbody rb;
 
-    [SerializeField] public float rollSpeed = 350;
+    [SerializeField] public float rollSpeed = 600;
     [SerializeField] public float rotationSpeed = 0.35f;
 
 

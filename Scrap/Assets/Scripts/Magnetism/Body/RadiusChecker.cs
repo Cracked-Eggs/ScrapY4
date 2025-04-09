@@ -139,11 +139,14 @@ public class RadiusChecker : MonoBehaviour
     }
 
     // Coroutine to retract body parts one by one
-   public IEnumerator RetractBodyPartOneByOne()
+
+ 
+    public IEnumerator RetractBodyPartOneByOne()
 {
     foreach (GameObject bodyPart in targetBodyParts)
     {
-        if (bodyPart != null)
+            if (bodyPart.GetComponent<VentPathFollower>() != null) continue;
+            if (bodyPart != null)
         {
             FlowField flowField = bodyPart.GetComponent<FlowField>();
             if (flowField == null)
