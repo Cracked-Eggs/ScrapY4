@@ -24,12 +24,12 @@ public class PlayerFreeLookState : PlayerBaseState
 
     public override void Tick(float deltaTime)
     {
-        if (stateMachine.InputReader.IsAiming && stateMachine.canAim)
+        if (stateMachine.InputReader.IsAiming)
         {
             stateMachine.SwitchState(new PlayerAimingState(stateMachine));
         }
 
-        if (stateMachine.InputReader.IsLAiming && stateMachine.canAim)
+        if (stateMachine.InputReader.IsLAiming)
         {
             stateMachine.SwitchState(new PlayerLeftAimingState(stateMachine));
         }
