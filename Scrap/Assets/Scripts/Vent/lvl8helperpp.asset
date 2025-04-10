@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee78492f7b09dea459e62ac52fa953a5, type: 3}
   m_Name: lvl8helperpp
   m_EditorClassIdentifier: 
-  pathPoints: []
+  pathPoints:
+  - {x: -32.95611, y: 5.456001, z: 173.04146}
+  - {x: -32.95611, y: 6.000001, z: 173.04146}
+  - {x: -32.95611, y: 7.359201, z: 173.02626}

@@ -186,6 +186,7 @@ public class PartManager : MonoBehaviour
         if (part.TryGetComponent<Rigidbody>(out Rigidbody partRb))
         {
             partRb.isKinematic = true;
+            partRb.useGravity = true;
         }
 
         
