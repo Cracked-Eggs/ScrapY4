@@ -9,6 +9,7 @@ public class Level3Platform : MonoBehaviour
     [Header("Movement")]
     [SerializeField] float moveSpeed = 3f;
     [SerializeField] bool startRaised;
+    [SerializeField] AudioManager AudioManager;
 
     Vector3 targetPosition;
     bool isMoving;
@@ -36,12 +37,14 @@ public class Level3Platform : MonoBehaviour
     public void Raise()
     {
         targetPosition = raisedPosition;
+        AudioManager.Play("Plate");
         isMoving = true;
     }
 
     public void Lower()
     {
         targetPosition = loweredPosition;
+        AudioManager.Play("Plate");
         isMoving = true;
     }
 
