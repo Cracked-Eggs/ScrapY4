@@ -7,6 +7,9 @@ public class Platforms : MonoBehaviour
     AudioManager audioManager;
     [SerializeField] float delay = 1f;
     
+    private float lastPlayTime;
+    public float soundCooldown = 0.5f;
+    
     Animator platformAnimator;
     bool isOn = false;
 
@@ -44,6 +47,22 @@ public class Platforms : MonoBehaviour
 
     public void Play()
     {
-        audioManager.Play("Plate");
+        if (Time.time > lastPlayTime + soundCooldown)
+        {
+            audioManager.Play("Plate");
+            lastPlayTime = Time.time;
+        }
+    }
+    
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+            other.transform.parent = transform;
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+            other.transform.SetParent(null);
     }
 }
