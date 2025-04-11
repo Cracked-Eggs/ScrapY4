@@ -3,17 +3,23 @@ using UnityEngine;
 public class PlayerFallingState : PlayerBaseState
 {
     int FallHash = Animator.StringToHash("Fall");
+    int LandHash = Animator.StringToHash("Land");
+    
     Vector3 momentum;
+    bool hasPlayedLanding = false;
 
     const float CrossFadeDuration = 0.1f;
+    const float LandAnimDuration = 0.3f; // Adjust based on your landing animation length
 
     public PlayerFallingState(PlayerStateMachine stateMachine) : base(stateMachine) { }
 
     public override void Enter()
     {
+        hasPlayedLanding = false;
         momentum = stateMachine.Controller.velocity;
         momentum.y = 0f;
 
+        // Immediately play falling animation
         stateMachine.Animator.CrossFadeInFixedTime(FallHash, CrossFadeDuration);
     }
 
@@ -22,18 +28,43 @@ public class PlayerFallingState : PlayerBaseState
         Vector3 movement = CalculateMovement();
 
         if (movement != Vector3.zero)
+        {
             momentum = movement * stateMachine.FreeLookMovementSpeed;
+        }
 
         Move(momentum, deltaTime);
 
         if (stateMachine.Controller.isGrounded)
-            ReturnToLocomotion();
+        {
+            if (!hasPlayedLanding)
+            {
+                // Play landing animation
+                stateMachine.Animator.CrossFadeInFixedTime(LandHash, CrossFadeDuration);
+                hasPlayedLanding = true;
+                
+                // Delay the state transition to allow landing animation to play
+                stateMachine.StartCoroutine(DelayedTransitionToLocomotion(LandAnimDuration));
+            }
+            return;
+        }
 
         if (movement != Vector3.zero)
+        {
             FaceMovementDirection(movement, deltaTime);
+        }
     }
 
-    public override void Exit() { }
+    public override void Exit() 
+    {
+        // Reset any landing flags when exiting
+        hasPlayedLanding = false;
+    }
+
+    private System.Collections.IEnumerator DelayedTransitionToLocomotion(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ReturnToLocomotion();
+    }
 
     Vector3 CalculateMovement()
     {
