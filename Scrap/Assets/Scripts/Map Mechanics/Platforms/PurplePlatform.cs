@@ -7,7 +7,7 @@ public class PurplePlatform : MonoBehaviour
     [SerializeField] Transform[] waypoints;
     [SerializeField] float speed;
     [SerializeField] float changeDirectionDelay;
-    
+
     private int currentWaypointIndex = 0;
     private bool isTriggered = false;
     private bool isWaiting = false;
@@ -33,66 +33,51 @@ public class PurplePlatform : MonoBehaviour
         startPosition = transform.position;
         SaveBodyPartOriginalPositions();
     }
-    
+
     void FixedUpdate()
     {
         if (attach.isPlayerGrappled)
         {
             playerController = null;
         }
-        
+
         if (isTriggered)
         {
-            Move();
+            MoveTowards(waypoints[0].position); // Move to waypoint while held
         }
         else
         {
-            ReturnToStart();
+            MoveTowards(startPosition); // Return when released
         }
-       
-            CalculateMovementDelta();
-            MovePlayerWithPlatform(); MoveBodyPartsWithPlatform();
-       
-       
+
+        CalculateMovementDelta();
+        MovePlayerWithPlatform();
+        MoveBodyPartsWithPlatform();
     }
-    
-    void Move()
+
+    void MoveTowards(Vector3 targetPosition)
     {
-        if (!isWaiting && currentWaypointIndex < waypoints.Length)
+        if (Vector3.Distance(transform.position, targetPosition) > waypointThreshold)
         {
-            Vector3 targetPosition = waypoints[currentWaypointIndex].position;
             Vector3 direction = (targetPosition - transform.position).normalized;
             transform.position += direction * speed * Time.fixedDeltaTime;
-            
+
+            // Snap to final position if close enough
             if (Vector3.Distance(transform.position, targetPosition) <= waypointThreshold)
             {
                 transform.position = targetPosition;
-                isWaiting = true;
-                StartCoroutine(ChangeDelay());
             }
         }
     }
-    
-    void ReturnToStart()
-    {
-        if (!isWaiting && Vector3.Distance(transform.position, startPosition) > waypointThreshold)
-        {
-            Vector3 direction = (startPosition - transform.position).normalized;
-            transform.position += direction * speed * Time.fixedDeltaTime;
-        }
-        else if (!isWaiting)
-        {
-            transform.position = startPosition;
-            currentWaypointIndex = 0;
-        }
-    }
-    
+
+
     IEnumerator ChangeDelay()
     {
         yield return new WaitForSeconds(changeDirectionDelay);
         currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
         isWaiting = false;
     }
+
     void CalculateMovementDelta()
     {
         movementDelta = transform.position - lastPosition;
@@ -103,12 +88,12 @@ public class PurplePlatform : MonoBehaviour
     {
         isTriggered = true;
     }
-    
+
     public void StopMovement()
     {
         isTriggered = false;
     }
-    
+
     void MovePlayerWithPlatform()
     {
         if (playerController != null)
@@ -116,7 +101,7 @@ public class PurplePlatform : MonoBehaviour
             playerController.Move(movementDelta);
         }
     }
-    
+
     void MoveBodyPartsWithPlatform()
     {
         foreach (Rigidbody rb in bodyParts)
@@ -165,7 +150,6 @@ public class PurplePlatform : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playerController = null;
-            
         }
         if (other.CompareTag("R_Arm") || other.CompareTag("L_Arm") || other.CompareTag("R_Leg") || other.CompareTag("L_Leg") || other.CompareTag("Torso"))
         {
