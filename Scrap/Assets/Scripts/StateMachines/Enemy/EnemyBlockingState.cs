@@ -5,11 +5,12 @@ public class EnemyBlockingState : EnemyBaseState
     int BlockHash = Animator.StringToHash("Block");
     const float CrossFadeDuration = 0.1f;
 
-    float blockDuration = 10f; // Adjust this value as needed
-    float movementSpeedWhileBlocking = 1f; // Adjust this to control how fast the enemy moves while blocking
+    float blockDuration = 10f; 
+    float movementSpeedWhileBlocking = 1f; 
     float RotationSpeed = 5f;
+    float backUpTimer = 0f;
+    const float BackUpInterval = 1.5f;
 
-    // Cache the player transform to avoid repeated access
     private Transform playerTransform;
 
     public EnemyBlockingState(EnemyStateMachine stateMachine) : base(stateMachine)
@@ -27,19 +28,22 @@ public class EnemyBlockingState : EnemyBaseState
     public override void Tick(float deltaTime)
     {
         FacePlayer();
-
-        if (IsInAttackRange())
+        
+        backUpTimer += deltaTime;
+        
+        if (backUpTimer >= BackUpInterval)
         {
-            stateMachine.SwitchState(new EnemyAttackingState(stateMachine));
+            Vector3 direction = (stateMachine.transform.position - stateMachine.Player.transform.position).normalized;
+            stateMachine.Controller.Move(direction * movementSpeedWhileBlocking * 0.3f * deltaTime);
+            backUpTimer = 0f;
         }
         else
         {
-            movementSpeedWhileBlocking = 1f; // Reset to default speed
+            Vector3 direction = (stateMachine.Player.transform.position - stateMachine.transform.position).normalized;
+            stateMachine.Controller.Move(direction * movementSpeedWhileBlocking * 0.1f * deltaTime);
         }
 
-        MoveTowardPlayer(deltaTime);
-
-        stateMachine.Animator.SetFloat("Speed", movementSpeedWhileBlocking);
+        stateMachine.Animator.SetFloat("Speed", movementSpeedWhileBlocking * 0.5f);
         blockDuration -= deltaTime;
 
         if (blockDuration <= 0f)
@@ -48,6 +52,7 @@ public class EnemyBlockingState : EnemyBaseState
             return;
         }
     }
+
 
     public override void Exit()
     {
@@ -63,10 +68,8 @@ public class EnemyBlockingState : EnemyBaseState
 
     void MoveTowardPlayer(float deltaTime)
     {
-        // Calculate the direction to the player
         Vector3 direction = (playerTransform.position - stateMachine.transform.position).normalized;
 
-        // Move the enemy toward the player at the current speed while blocking
         stateMachine.Controller.Move(direction * movementSpeedWhileBlocking * deltaTime);
     }
 
@@ -82,7 +85,6 @@ public class EnemyBlockingState : EnemyBaseState
 
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-        // Smoothly interpolate between the current rotation and the target rotation
         stateMachine.transform.rotation = Quaternion.Slerp(
             stateMachine.transform.rotation,
             targetRotation,

@@ -8,8 +8,9 @@ public class EnemyChasingState : EnemyBaseState
     const float AnimatorDampTime = 0.1f;
     
     float elapsedTime = 0f;
-
-    float rotationSpeed = 5f; // Adjust this to control how fast the enemy turns 
+    float rotationSpeed = 5f;
+    float tooCloseTimer = 0f;
+    const float TooCloseThreshold = 0.5f;
 
     public EnemyChasingState(EnemyStateMachine stateMachine) : base(stateMachine) { }
 
@@ -29,12 +30,42 @@ public class EnemyChasingState : EnemyBaseState
             stateMachine.SwitchState(new EnemyIdleState(stateMachine));
             return;
         }
-        else if (IsInAttackRange())
+
+        bool attackOnCooldown = Time.time < stateMachine.LastAttackTime + stateMachine.AttackCooldown;
+        bool inAttackRange = IsInAttackRange();
+
+        if (!attackOnCooldown && inAttackRange)
         {
             stateMachine.SwitchState(new EnemyAttackingState(stateMachine));
             return;
         }
-        else if (elapsedTime >= stateMachine.BlockGrace && Random.value < stateMachine.BlockChance && stateMachine.CanBlock)
+        else if (attackOnCooldown && inAttackRange)
+        {
+            tooCloseTimer += deltaTime;
+            
+            if (tooCloseTimer >= TooCloseThreshold)
+            {
+                // Either block or create space
+                if (stateMachine.CanBlock && Random.value < 0.7f) // 70% chance to block
+                {
+                    stateMachine.SwitchState(new EnemyBlockingState(stateMachine));
+                }
+                else
+                {
+                    MoveAwayFromPlayer(deltaTime);
+                }
+                return;
+            }
+        }
+        else
+        {
+            tooCloseTimer = 0f; // Reset if not too close
+        }
+
+        // Normal chasing behavior
+        if (elapsedTime >= stateMachine.BlockGrace && 
+            Random.value < stateMachine.BlockChance && 
+            stateMachine.CanBlock)
         {
             stateMachine.SwitchState(new EnemyBlockingState(stateMachine));
             return;
@@ -42,8 +73,19 @@ public class EnemyChasingState : EnemyBaseState
 
         MoveToPlayer(deltaTime);
         FacePlayer();
-
         stateMachine.Animator.SetFloat(SpeedHash, 1f, AnimatorDampTime, deltaTime);
+    }
+
+    void MoveAwayFromPlayer(float deltaTime)
+    {
+        Vector3 direction = (stateMachine.transform.position - stateMachine.Player.transform.position).normalized;
+        direction.y = 0; // Keep movement horizontal
+        
+        stateMachine.Controller.Move(direction * stateMachine.MovementSpeed * 0.5f * deltaTime);
+        
+        FacePlayer();
+        
+        stateMachine.Animator.SetFloat(SpeedHash, 0.5f, AnimatorDampTime, deltaTime);
     }
 
     public override void Exit()
@@ -70,7 +112,6 @@ public class EnemyChasingState : EnemyBaseState
 
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-        // Smoothly interpolate between the current rotation and the target rotation
         stateMachine.transform.rotation = Quaternion.Slerp(
             stateMachine.transform.rotation,
             targetRotation,
