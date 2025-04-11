@@ -110,17 +110,7 @@ public class FlowField : MonoBehaviour
         int y = Mathf.Clamp(Mathf.RoundToInt((position.y - origin.y) / cellSize), 0, (int)gridSize.y - 1);
         int z = Mathf.Clamp(Mathf.RoundToInt((position.z - origin.z) / cellSize), 0, (int)gridSize.z - 1);
 
-        Vector3 direction = flowField[x, y, z];
-
-        if (transform.position.y < position.y) // Player is lower
-        {
-            direction.y = 0f; // Zero out vertical influence
-            direction.Normalize(); // Re-normalize to maintain speed
-        }
-
-        return direction;
-
-
+        return flowField[x, y, z];
     }
 
     void Update()
