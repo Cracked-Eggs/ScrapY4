@@ -24,6 +24,8 @@ public class EnemyStateMachine : StateMachine
     [field: SerializeField] public float PatrolSpeed { get; private set; } = 2f;
     [field: SerializeField] public float BlockChance { get; private set; } = 0.01f;
     [field: SerializeField] public float BlockGrace { get; private set; } = 1.5f;
+    public float AttackCooldown = 3f;
+    public float LastAttackTime { get; set; } = Mathf.NegativeInfinity;
     [field: SerializeField] public bool CanBlock;
 
     public Health Player;

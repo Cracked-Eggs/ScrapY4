@@ -8,8 +8,7 @@ public class EnemyChasingState : EnemyBaseState
     const float AnimatorDampTime = 0.1f;
     
     float elapsedTime = 0f;
-
-    float rotationSpeed = 5f; // Adjust this to control how fast the enemy turns 
+    float rotationSpeed = 5f;
 
     public EnemyChasingState(EnemyStateMachine stateMachine) : base(stateMachine) { }
 
@@ -29,12 +28,18 @@ public class EnemyChasingState : EnemyBaseState
             stateMachine.SwitchState(new EnemyIdleState(stateMachine));
             return;
         }
-        else if (IsInAttackRange())
+
+        // Check attack cooldown first
+        bool attackOnCooldown = Time.time < stateMachine.LastAttackTime + stateMachine.AttackCooldown;
+        
+        if (!attackOnCooldown && IsInAttackRange())
         {
             stateMachine.SwitchState(new EnemyAttackingState(stateMachine));
             return;
         }
-        else if (elapsedTime >= stateMachine.BlockGrace && Random.value < stateMachine.BlockChance && stateMachine.CanBlock)
+        else if (elapsedTime >= stateMachine.BlockGrace && 
+                 Random.value < stateMachine.BlockChance && 
+                 stateMachine.CanBlock)
         {
             stateMachine.SwitchState(new EnemyBlockingState(stateMachine));
             return;
@@ -45,6 +50,8 @@ public class EnemyChasingState : EnemyBaseState
 
         stateMachine.Animator.SetFloat(SpeedHash, 1f, AnimatorDampTime, deltaTime);
     }
+
+
 
     public override void Exit()
     {
