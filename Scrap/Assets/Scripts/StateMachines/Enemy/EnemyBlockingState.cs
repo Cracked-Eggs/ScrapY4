@@ -28,6 +28,15 @@ public class EnemyBlockingState : EnemyBaseState
     {
         FacePlayer();
 
+        if (IsInAttackRange())
+        {
+            stateMachine.SwitchState(new EnemyAttackingState(stateMachine));
+        }
+        else
+        {
+            movementSpeedWhileBlocking = 1f; // Reset to default speed
+        }
+
         MoveTowardPlayer(deltaTime);
 
         stateMachine.Animator.SetFloat("Speed", movementSpeedWhileBlocking);
@@ -39,7 +48,6 @@ public class EnemyBlockingState : EnemyBaseState
             return;
         }
     }
-
 
     public override void Exit()
     {

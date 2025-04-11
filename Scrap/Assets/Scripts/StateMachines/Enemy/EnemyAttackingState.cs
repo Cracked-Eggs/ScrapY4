@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemyAttackingState : EnemyBaseState
 {
     int AttackHash = Animator.StringToHash("Attack");
+
     const float TransitionDuration = 0.1f;
 
     public EnemyAttackingState(EnemyStateMachine stateMachine) : base(stateMachine) { }
@@ -12,15 +13,12 @@ public class EnemyAttackingState : EnemyBaseState
         stateMachine.WeaponL.SetAttack(stateMachine.AttackDamage, stateMachine.AttackKnockback);
         stateMachine.WeaponR.SetAttack(stateMachine.AttackDamage, stateMachine.AttackKnockback);
         stateMachine.Animator.CrossFadeInFixedTime(AttackHash, TransitionDuration);
-        stateMachine.LastAttackTime = Time.time; // Record attack time
     }
 
     public override void Tick(float deltaTime)
     {
         if (GetNormalizedTime(stateMachine.Animator) >= 1)
-        {
             stateMachine.SwitchState(new EnemyChasingState(stateMachine));
-        }
         
         FacePlayer();
     }
