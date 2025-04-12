@@ -18,6 +18,7 @@ public class EnemyImpactState : EnemyBaseState
 
         if(duration <= 0f)
             stateMachine.SwitchState(new EnemyIdleState(stateMachine));
+    
     }
 
     public override void Exit() { }

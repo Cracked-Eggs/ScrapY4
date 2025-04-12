@@ -27,6 +27,7 @@ public class EnemyStateMachine : StateMachine
     [field: SerializeField] public bool CanBlock;
     [field: SerializeField] public float AttackCooldown = 3f;
     [field: SerializeField] public float LastAttackTime { get; set; } = Mathf.NegativeInfinity;
+    [field: SerializeField] public bool BlockEnemy { get; set; }
     
 
     public Health Player;
@@ -38,10 +39,10 @@ public class EnemyStateMachine : StateMachine
         Agent.updatePosition = false;
         Agent.updateRotation = false;
         
-        if (PatrolPoints.Count == 0)
-            SwitchState(new EnemyIdleState(this));
+        if (BlockEnemy)
+            SwitchState(new EnemyIdleBlockState(this));
         else
-            SwitchState(new EnemyPatrolState(this));
+            SwitchState(new EnemyIdleState(this));
     }
     
     void OnEnable()
