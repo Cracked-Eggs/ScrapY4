@@ -27,26 +27,33 @@ public class PlayerFallingState : PlayerBaseState
     {
         Vector3 movement = CalculateMovement();
 
+        if (stateMachine.Controller.isGrounded)
+        {
+            if (!hasPlayedLanding)
+            {
+                stateMachine.Animator.CrossFadeInFixedTime(LandHash, CrossFadeDuration);
+                hasPlayedLanding = true;
+                stateMachine.StartCoroutine(DelayedTransitionToLocomotion(LandAnimDuration));
+            
+                // Apply friction when landing
+                momentum *= 0.5f; // Reduce momentum by half immediately
+            }
+            else
+            {
+                // Continue slowing down
+                momentum = Vector3.Lerp(momentum, Vector3.zero, deltaTime * 10f);
+            }
+            Move(momentum, deltaTime);
+            return;
+        }
+
+        // Regular falling movement
         if (movement != Vector3.zero)
         {
             momentum = movement * stateMachine.FreeLookMovementSpeed;
         }
 
         Move(momentum, deltaTime);
-
-        if (stateMachine.Controller.isGrounded)
-        {
-            if (!hasPlayedLanding)
-            {
-                // Play landing animation
-                stateMachine.Animator.CrossFadeInFixedTime(LandHash, CrossFadeDuration);
-                hasPlayedLanding = true;
-                
-                // Delay the state transition to allow landing animation to play
-                stateMachine.StartCoroutine(DelayedTransitionToLocomotion(LandAnimDuration));
-            }
-            return;
-        }
 
         if (movement != Vector3.zero)
         {
