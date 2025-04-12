@@ -47,5 +47,13 @@ public class LevelManager : MonoBehaviour
             SaveSystem.instance.activeSave.currentLevel = "Level 7";
         else if (SaveSystem.instance.activeSave.currentLevel == "Level 7")
             SaveSystem.instance.activeSave.currentLevel = "Level 8";
+         else if (SaveSystem.instance.activeSave.currentLevel == "Level 8")
+                    SaveSystem.instance.activeSave.currentLevel = "Level 9";
+         else if (SaveSystem.instance.activeSave.currentLevel == "Level 9")
+             SaveSystem.instance.activeSave.currentLevel = "Level 10";
+         else if (SaveSystem.instance.activeSave.currentLevel == "Level 10")
+             SaveSystem.instance.activeSave.currentLevel = "Level 11";
+         else if (SaveSystem.instance.activeSave.currentLevel == "Level 11")
+             SaveSystem.instance.activeSave.currentLevel = "Level 12";
     }
 }
