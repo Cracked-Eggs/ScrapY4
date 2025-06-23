@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class miniroomventtrigger : MonoBehaviour
+public class MiniRoomVentTrigger : MonoBehaviour
 {
     public GameObject trigger;
 
